@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="af_ZA" xml:lang="af_ZA">
+<head>
+  <title>Wat is Nuut in Weergawe 1.0</title>
+  <link href="css/help.css" rel="stylesheet" type="text/css" />
+  <meta name="kopiereg" content="(C) 2005 Open Source Matters. All rights reserved." />
+  <meta name="lisensie" content="http://www.gnu.org/lisensies/gpl-2.0.html GNU/GPL" />
+</head>
+<body>
+  <h1>
+    Wat is Nuut in Weergawe 1.0</h1>
+  <p>
+    Die volgende beskryf die hoogtepunte van die debut weergawe van Joomla!  Alle
+    kommentaar, veranderinge en verbeteringe is met verwysing tot Mambo 4.5.2.3 gemaak .<br />
+  </p>
+  <h3>
+    Fout Verbeteringe</h3>
+  <p>
+    Several crucial fixes het been applied to hierdie weergawe:</p>
+  <ul>
+    <li> Jy kan now properly login to different sites even if they share dieselfde
+      domain en is nested in sub-directories.</li>
+    <li>Slow queries in die Gebruiker Bestuurder het been corrected.  Hierdie bug affected
+      sites metthousands of registered gebruikers.  Registered gebruikers (that don't het
+      redigeer rights) is ook excluded van die Outeur select lys vertoon when redigeering inhoud
+      bladsys.</li>
+    <li>Variable references that caused notices in PHP 4.4 het been fixed.<br />
+    </li>
+  </ul>
+  <p>
+    Check die CHANGELOG.php l&ecirc;er vir meer inligting.</p>
+  <p>
+     </p>
+  <h3>
+     Security Fixes</h3>
+  <p>
+     Several important vulnerabilities het been patched in hierdie weergawe:</p>
+  <ul>
+    <li>Known vulnerabilities in die phpMailer class</li>
+    <li>SQL injection vulnerability via die gebruiker activation feature</li>
+    <li>SQL injection vulnerability via die peilings component</li>
+    <li>L&ecirc;&euml;rs such as die CHANGELOG het been converted to PHP l l&ecirc;ersecirc; l&ecirc;erseuml;rs to prevent them being
+      visible.</li>
+    <li>The &quot;E-pos van Friend&quot; form has been hardened to reduce die risk of
+      it being used as 'n gateway vir spam</li>
+    <li>The mosGetParam has been hardened by using phpInputFilter vir NO_HTML mode</li>
+    <li>'n alternative weergawe of globals.php has been provided.  Indien jy renaam globals.php-off
+      to globals.php Joomla! sal emulate die php setting register_globals=off.
+      Hierdie affords some protection against certainly types of malicious attacks maar may
+      prevent some third party toepassings van working correctly.<br />
+    </li>
+  </ul>
+  <p>
+     </p>
+  <h3>
+    Joomla! Werf (Front End)</h3>
+  <ul>
+    <li> die site is now visibile to Administrateurs even when die site is in Offline
+      mode.<br />
+    </li>
+    <li>Frontend Gebruikers kan select die WYSIWYG redigeerder they want to gebruik rather than having
+      to gebruik die verstek.</li>
+  </ul>
+  <p>
+     </p>
+  <h3>
+     Joomla! Administrateur (Agterkant)<br />
+  </h3>
+  <ul>
+    <li>The Stelsel Information skakel has been added terug na die Stelsel Menu.
+      <br />
+    </li>
+    <li>&quot;Force Logout&quot; in die Gebruiker Bestuurder taakbalk has been renamed to simply
+      &quot;Logout&quot;.</li>
+    <li>&quot;Submit - Inhoud&quot; is 'n nuwe menu type beskikbaar</li>
+    <li>HTML output is now buffered to improve performance of non-vertoon aksies (like
+      saving inhoud)</li>
+    <li>Gebruikers kan select die WYSIWYG redigeerder they want to gebruik rather than having to use
+      die verstek.</li>
+    <li>Kontak component: added parameter to defineer 'n certain kategorie vir 'n kontak
+      menu.</li>
+  </ul>
+  <p>
+     </p>
+  <h3>
+    Templette </h3>
+  <p>
+     Die Solar Flare 2 templet has been freshened met die new name.  Andy
+    Miller joined forces metRobert Deutz to deliver 'n stunning new Adminstrator Templet
+    vir Joomla!</p>
+  <p>
+    Taakbalk ikone in die Administrateur taakbalk is now vertoon in full colour rather than
+    greyed out (which would normally indicate they were unbeskikbaar). </p>
+  <p>
+     </p>
+  <h3>
+    Miscellaneous Bits</h3>
+  <ul>
+    <li>'n &quot;check again&quot; knoppie has been added na die eerste bladsy of die web installeerder. </li>
+  </ul>
+  <p>
+     </p>
+  <h3>
+    Ondersteuning vir MySQL 4.1.x<br />
+  </h3>
+  <p>
+     Joomla! sal ondersteun installation en gebruik metPHP 5 en MySQL 4.1.
+    'n Alternative databasis l&ecirc;er is provided in die /includes l&ecirc;ergids.  SImply
+    copy databasis.mysqli.php over die bestaande databased.php l&ecirc;er.  Following this
+    jy kan gebruik die web installeerder normally to install Joomla!.<br />
+  </p>
+  <h3>
+    Library Opgradeerings</h3>
+  <p>
+     Die volgende ontwikkellaar libraries is nou opgradeer:</p>
+  <ul>
+    <li>patTemplate (this weergawe now supports die kort tag modifiers)</li>
+    <li>Overlib</li>
+    <li>TinyMCE</li>
+    <li>Walter Zorn tooltips</li>
+    <li>JSCookMenu</li>
+    <li>DOMIT!</li>
+    <li>DOMIT! RSS<br />
+    </li>
+  </ul>
+  <p>
+     </p>
+  <h3>
+    Gebruikbaarheid en Toeganglikheid</h3>
+  <p>
+    'n huge thrust is being made to make Joomla! compliant metweb standards vir useability
+    en accessibility.  While much meer sal be done in future versions, die volgende
+    eerste steps het been taken to achieve hierdie goal:</p>
+  <ul>
+    <li>Label tags het been added to Werf module en component output</li>
+    <li>mosHTML::selectList en mosHTML::radioList outomaties provide die correct label
+      tags </li>
+  </ul>
+  <p>
+     </p>
+  <h3>
+    Ontwikkellaar Ekstras</h3>
+  <p>
+    'n Aantal nuwe dinge is beskikbaar vir ontwikkellaars. Hulle is:</p>
+  <ul>
+    <li> patHTML class provides several utility methods vir handling selection lys</li>
+    <li>mosAbstractTasker class now auto-maps public methods to tasks</li>
+    <li>setTemplateVars method has been added to both die Werf en Administrateur bladsy
+      navigation classes</li>
+    <li>mosHash funksie provides 'n convenient method vir producing secure hashes</li>
+    <li>'n &lt;span class=&quot;article_separator&quot;&gt;&lt;/span&gt; now separates
+      inhoud items in lys</li>
+    <li>mosParameter::_mos_filelys has been added to supportXML params</li>
+    <li>Paramater l l&ecirc;ersecirc; l&ecirc;erseuml;rs kan now gebruik die root element &lt;mosparams&gt;.  Hierdie enables
+      jy to het meer than one XML params l&ecirc;er in jou component installation l l&ecirc;ersecirc; l&ecirc;erseuml;rs.</li>
+    <li>'n aantal new mambot triggers het been included: onStart, onAfterMainframe</li>
+    <li>'n aantal new taakbalk ikone het been added</li>
+    <li>The mosToolBar::help method now correctly supports local hulp l l&ecirc;ersecirc; l&ecirc;erseuml;rs in 'n komponente
+      /help folder.</li>
+    <li>mosDBTable::isCheckedOut method has been added</li>
+    <li>CSS styles het been added na die administrateur templet to ondersteun Joomla! 1.5-like
+      (Mambo 4.5.3-like) skerm layouts.</li>
+    <li>The dTree javascript tree library has been added</li>
+    <li>databasis:setQuery now takes arguments vir query limit offset en aantal records
+      to be returned.</li>
+  </ul>
+  <p>
+     </p>
+  <p>
+    <br />
+  </p>
+  <h3>
+     Versoenbaarheid</h3>
+  <p>
+    We het made every pooging to make hierdie weergawe terugwaards versoenbaar met Mambo
+    4.5.2.3 maar daar is 'n few changes that may affect 'n small selection of bestaande
+    addons.  Indien jy is 'n ontwikkellaar of Mambo addons (and soon to be Joomla! ontwikkellaar)
+    then jou attention should be drawn na die volgende points:<br />
+  </p>
+  <ul>
+    <li>patTemplate::createTemplate arguments het changed</li>
+    <li>databasis:setQuery arguments het changed maar hierdie is unlikely to affect most sites<br />
+    </li>
+  </ul>
+  <p>
+     </p>
+  <p>
+     </p>
+</body>
+</html>

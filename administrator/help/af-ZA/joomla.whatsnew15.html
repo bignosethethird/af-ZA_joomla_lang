@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="af_ZA" xml:lang="af_ZA">
+<head>
+  <title>Wat is nuut in Weergawe 1.5</title>
+  <link href="css/help.css" rel="stylesheet" type="text/css" />
+  <meta name="kopiereg" content="(C) 2005-2007 Open Source Matters. All rights reserved." />
+  <meta name="lisensie" content="http://www.gnu.org/lisensies/gpl-2.0.html GNU/GPL" />
+</head>
+<body>
+  <h1>
+    Watt is nuut in Weergawe 1.5</h1>
+  <p>
+    Die volgende outlines die hoofpunte of die second major release of Joomla!</p>
+  <p>
+    As met previous releases, Joomla! provides 'n unified en easy-to-use framework
+    vir delivering inhoud vir websites of all kinds. To ondersteun die changing nature
+    of die Internet en emerging web technologies, Joomla! required substantial restructuring
+    of sy core funksienaliteit en we ook used hierdie pooging to simplify many challenges
+    metin die current gebruiker interface. Joomla! 1.5 has many new features.</p>
+  <p>
+    Die goals vir die Joomla! 1.5 release is to:</p>
+  <ul>
+    <li>Substantially improve usability, manageability, en scalability far beyond the
+      original Mambo foundations.</li>
+    <li>Expand accessibility to ondersteun internationalisasie, dubbel-greep karakters en
+      Right-to-Left ondersteun vir Arabic en Hebrew taals.</li>
+    <li>Extend die integration of external toepassings deur Web Services en remote
+      authentication such as die Lightweight Directory Toegang Protocol (LDAP).</li>
+    <li>Enhance die inhoud delivery, templet en presentation capabilities to ondersteun
+      accessibility standards en inhoud delivery to any destination.</li>
+    <li>Achieve 'n meer sustainable en flexible framework vir component en extension
+      developers.</li>
+    <li>Deliver backwards compatibility metprevious releases of komponente, templet,
+      modules en other extensions.</li>
+  </ul>
+  <h3>
+    Wat is "ektensies"?</h3>
+  <p>
+    Komponente, tale, modules, inpropprogrammer en templette is nou kollektief as
+    <strong>Ektensies</strong> bekend.</p>
+  <h3>
+    Waar is die installeerder nou?</h3>
+  <p>
+    Die verbeterde installeerder kan be found under die extensions option. With versions prior
+    to 1.5 jy needed to select 'n spesifieke extension type when jy wanted to install
+    it. With Joomla! 1.5 jy just select die extension jy want to upload, en click
+    on install. Die installeerder sal do all die hard work vir jy.</p>
+  <h3>
+    What happened na die locale setting?</h3>
+  <p>
+    Hierdie is nou in die taal gedefineer
+    <lang>
+    .xml l&ecirc;er in die taal metadata settings. Indien jy is having locale problems (dates
+    don't verskyn in jou taal, by voorbeeld) jy might want to check/edit die entries
+    in die locale tag. Note that multiple locale strings kan be set en die host sal
+    usually accept die eerste one recognised.</p>
+  <h3>
+    Neet &eacute;&eacute;n redigeer venster! Hoe maak ek 'n "Lees meer..."?</h3>
+  <p>
+    Hierdie is now implemented by inserting 'n tag (button is in die redigeerder area) 'n dotted
+    line verskyns in die geredigeer teks showing die split location vir die "Read more...".
+    'n Nuwe bot takes care of die rest.</p>
+  <p>
+    Dit is worth mentioning that hierdie does not het 'n negative effect on migrated data
+    van older sites. Die new implementation is fully backwards versoenbaar.</p>
+  <h3>
+    Waar is die Inpropprogramme nou?</h3>
+  <p>
+    Inpropprogramme het been renamed as "Plugins". Inpropprogramme were introduced in Mambo en offered
+    possibilities to add plugin logic to jou werf mainly vir die purpose of manipulating
+    inhoud. In Joomla!, Plugins sal now het much broader capabilities than Inpropprogramme.
+    Plugins is able to extend funksienaliteit at die framework layer as well.</p>
+  <h3>
+    Waar is die statiese inhoud?</h3>
+  <p>
+    In Joomla! versions prior to 1.5 there was 'n distinct difference between staties
+    en normal inhoud. Both inhoud types is still around, maar is not handled as
+    separate items. Indien jy want to create staties inhoud, just select "uncategorised"
+    as seksie en kategorie en die inhoud is handled as staties inhoud.</p>
+  <h3>
+    Wat omtrent ontwikkellaars?</h3>
+  <p>
+    Hierdie is die release that developers' het been waiting for. 'n massive pooging has
+    been made to refactor en reorganise die core of Joomla! into 'n true extendable
+    framework. Die new features in die framework is too many to lys hier maar additional
+    documentation kan be found op die <a href="http://dev.joomla.org" target="_blank">
+      Joomla! Ontwikkellaar Network site</a>.</p>
+  <h3>
+    Versoenbaarheid</h3>
+  <p>
+    Ons het elke moontlike pooging aangewend om hierdie weergawe met Joomla 1.0 terugwaards-versoenbaar
+    te maak. In order to install 1.0 extensions jy sal probably need to activate die legacy
+    code plugin. Hierdie kan be found in die Plugin Bestuurder (it's called "Stelsel - Legacy")
+    en jy just need to enable it.</p>
+</body>
+</html>

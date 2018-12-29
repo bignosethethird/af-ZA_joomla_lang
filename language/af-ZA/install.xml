@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="language" version="3.8" client="site" method="upgrade">
+  <name>Afrikaans</name>
+  <tag>af-ZA</tag>
+  <version>3.8.3.1</version>
+  <creationDate>December 2017</creationDate>
+  <author>Gerrit Hoekstra</author>
+  <authorUrl>http://joomlacode.org/gf/project/afrikaans_taal/frs/</authorUrl>
+  <authorEmail>bignosethethird@gmail.com</authorEmail>
+  <copyright>Copyright (C) 2005 - 2017 Open Source Matters. All rights reserved</copyright>
+  <copyright>Copyright (C) Afrikaans Translation 2006 - 2017 Gerrit Hoekstra en Span. Alle regte voorbehou.</copyright>
+  <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+  <description>Afrikaanse Taalpaket in die vertroulike aanspreeksvorm</description>   
+  <files>
+      <filename file="meta">af-ZA.xml</filename>
+      <filename file="meta">install.xml</filename>
+      <filename>af-ZA.localise.php</filename>
+      <file>af-ZA.com_contact.ini</file>
+      <file>af-ZA.com_content.ini</file>
+      <file>af-ZA.com_mailto.ini</file>
+      <file>af-ZA.com_media.ini</file>
+      <file>af-ZA.com_messages.ini</file>
+      <file>af-ZA.com_newsfeeds.ini</file>
+      <file>af-ZA.com_search.ini</file>
+      <file>af-ZA.com_users.ini</file>
+      <file>af-ZA.com_weblinks.ini</file>
+      <file>af-ZA.com_wrapper.ini</file>
+      <file>af-ZA.files_joomla.sys.ini</file>
+      <file>af-ZA.ini</file>
+      <file>af-ZA.lib_joomla.ini</file>
+      <file>af-ZA.lib_joomla.sys.ini</file>
+      <file>af-ZA.lib_phpmailer.sys.ini</file>
+      <file>af-ZA.lib_phputf8.sys.ini</file>
+      <file>af-ZA.lib_simplepie.sys.ini</file>
+      <file>af-ZA.mod_articles_archive.ini</file>
+      <file>af-ZA.mod_articles_archive.sys.ini</file>
+      <file>af-ZA.mod_articles_categories.ini</file>
+      <file>af-ZA.mod_articles_categories.sys.ini</file>
+      <file>af-ZA.mod_articles_category.ini</file>
+      <file>af-ZA.mod_articles_category.sys.ini</file>
+      <file>af-ZA.mod_articles_latest.ini</file>
+      <file>af-ZA.mod_articles_latest.sys.ini</file>
+      <file>af-ZA.mod_articles_news.ini</file>
+      <file>af-ZA.mod_articles_news.sys.ini</file>
+      <file>af-ZA.mod_articles_popular.ini</file>
+      <file>af-ZA.mod_articles_popular.sys.ini</file>
+      <file>af-ZA.mod_banners.ini</file>
+      <file>af-ZA.mod_banners.sys.ini</file>
+      <file>af-ZA.mod_breadcrumbs.ini</file>
+      <file>af-ZA.mod_breadcrumbs.sys.ini</file>
+      <file>af-ZA.mod_custom.ini</file>
+      <file>af-ZA.mod_custom.sys.ini</file>
+      <file>af-ZA.mod_feed.ini</file>
+      <file>af-ZA.mod_feed.sys.ini</file>
+      <file>af-ZA.mod_footer.ini</file>
+      <file>af-ZA.mod_footer.sys.ini</file>
+      <file>af-ZA.mod_languages.ini</file>
+      <file>af-ZA.mod_languages.sys.ini</file>
+      <file>af-ZA.mod_login.ini</file>
+      <file>af-ZA.mod_login.sys.ini</file>
+      <file>af-ZA.mod_menu.ini</file>
+      <file>af-ZA.mod_menu.sys.ini</file>
+      <file>af-ZA.mod_random_image.ini</file>
+      <file>af-ZA.mod_random_image.sys.ini</file>
+      <file>af-ZA.mod_related_items.ini</file>
+      <file>af-ZA.mod_related_items.sys.ini</file>
+      <file>af-ZA.mod_search.ini</file>
+      <file>af-ZA.mod_search.sys.ini</file>
+      <file>af-ZA.mod_stats.ini</file>
+      <file>af-ZA.mod_stats.sys.ini</file>
+      <file>af-ZA.mod_syndicate.ini</file>
+      <file>af-ZA.mod_syndicate.sys.ini</file>
+      <file>af-ZA.mod_users_latest.ini</file>
+      <file>af-ZA.mod_users_latest.sys.ini</file>
+      <file>af-ZA.mod_weblinks.ini</file>
+      <file>af-ZA.mod_weblinks.sys.ini</file>
+      <file>af-ZA.mod_whosonline.ini</file>
+      <file>af-ZA.mod_whosonline.sys.ini</file>
+      <file>af-ZA.mod_wrapper.ini</file>
+      <file>af-ZA.mod_wrapper.sys.ini</file>
+      <file>af-ZA.pkg_joomla.sys.ini</file>
+      <file>af-ZA.tpl_atomic.ini</file>
+      <file>af-ZA.tpl_atomic.sys.ini</file>
+      <file>af-ZA.tpl_beez_20.ini</file>
+      <file>af-ZA.tpl_beez_20.sys.ini</file>
+      <file>af-ZA.tpl_beez5.ini</file>
+      <file>af-ZA.tpl_beez5.sys.ini</file>
+      <file>index.html</file>
+    </files>
+</extension>

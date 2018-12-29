@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="af_ZA" xml:lang="af_ZA">
+<head>
+  <title>Poll Bestuurder : New / Redigeer</title>
+  <link href="css/help.css" rel="stylesheet" type="text/css" />
+  <meta name="kopiereg" content="(C) 2005 Open Source Matters. Alle Regte Voorbehou." />
+  <meta name="lisensie" content="http://www.gnu.org/lisensies/gpl-2.0.html GNU/GPL" />
+</head>
+<body>
+  <h1>
+    Peiling Bestuurder : New / Redigeer</h1>
+  <div style="text-align: right;">
+    -- Voorlopige Weergawe<br />
+  </div>
+  <br />
+  Hierdie bladsy laat jou create of redigeer 'n peiling vir jou werf.<br />
+  <br />
+  <span style="font-weight: bold;">Taakbalk Ikone:</span><br />
+  Voorskou: Klieking hierdie ikoon sal open 'n pop-up venster meta preview of die peiling
+  soos dit sal verskyn op jou werf: titel, opsies, en vote/resultaatate knoppies.<br />
+  <br />
+  Stoor: Stoor die new / geredigeer peiling en keer terug na to Bestuurder.<br />
+  <br />
+  Sluit: Kanselleer die aksie. Enige verandering is lost. Indien opened to redigeer, die peiling
+  remains ingeteken.<br />
+  <br />
+  <br />
+  <span style="font-weight: bold;">Details:<br />
+  </span>Titel: Type hier die titel question of die peiling soos dit sal verskyn op jou
+  site (100 characters max).<br />
+  <br />
+  Lag: Enter hier die aantal sekondes gebruikers het to wait before being able to vote
+  in dieselfde peiling again. Hierdie interval is expressed in sekondes. Die verstek
+  value is 86400 (24 hours).
+  <br />
+  <ul style="margin-left: 40px;">
+    <li>For 24 hours use: 86400.</li>
+    <li>For 12 hours use: 43200.  </li>
+    <li>For 6 hours use: 21600.</li>
+    <li>For 1 hour use: 3600.</li>
+  </ul>
+  Opsies: (input fields 1 to 12) Fill in hier die various opsies die gebruiker kan select
+  van to cast his vote. Empty items sal not be vertoonde. Gebruikers may select only
+  one of die possible answers.<br />
+  <br />
+  <span style="font-weight: bold;">LET OP:</span> Jy mag add additional opsies after
+  die peiling has commenced. Deleting opsies sal corrupt die data, so jy should create
+  'n nuwe peiling.<br />
+  <br />
+  <span style="color: rgb(255, 0, 0);">Waarskuwing: </span>As of 03/02/05 hierdie is bugged
+  because jy is allowed to stoor 'n peiling sonder items, which sal generate 'n mysql
+  error. <span style="font-weight: bold;">You should at least het two opsies filled
+    out.</span><br />
+  <br />
+  Show on menu items: Kies hier which bladsy(s) die peiling should be vertoonde on. Allows
+  to skakel die peiling to spesifieke menu items only. Works together met die &quot;Peilings&quot;
+  Module (mod_poll) which sal vertoon die configured peilings. Jy mag select multiple
+  Menu Item Skakels.<br />
+  <br />
+  <span style="font-weight: bold;">LET OP:</span> Hierdie means that peilings assigned to
+  spesifieke Menu Items moet het die 'Peilings' module assigned na dieselfde Menu Items
+  to be vertoonde (Modules-&gt; Werf Modules).<br />
+  <br />
+  <a href="index.php?option=com_inhoud&task=view&id=291&Itemid=68">Hulp Skerm: Peilings</a>
+  (Module)<br />
+  <br />
+  <br />
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="af_ZA" xml:lang="af_ZA">
+<head>
+  <title>Inhoud Items : New / Redigeer</title>
+  <link href="css/help.css" rel="stylesheet" type="text/css" />
+  <meta name="kopiereg" content="(C) 2005 Open Source Matters. Alle Regte Voorbehou." />
+  <meta name="lisensie" content="http://www.gnu.org/lisensies/gpl-2.0.html GNU/GPL" />
+</head>
+<body>
+  <h1>
+    Inhoud Items : New / Redigeer</h1>
+  <div style="text-align: right;">
+    --- Voorlopige Weergawe<br />
+  </div>
+  <br />
+  Hierdie bladsy allows to create of redigeer 'n Inhoud Item.<br />
+  <br />
+  <span style="font-weight: bold;">Taakbalk Ikone<br />
+    <br />
+  </span>Voorskou: Opens 'n nuwe venster to preview die inhoud as jy would in die Frontend
+  of jou werf.<br />
+  <br />
+  Oplaai: Opens 'n nuwe venster wat jou toelaat upload 'n l&ecirc;er of 'n prent van jou rekenaar
+  na die images/stories folder.<br />
+  <br />
+  Stoor: Stoor die inhoud en keer terug na die Bestuurder.<br />
+  <br />
+  Toepas: Stoor die inhoud en behou die vertoonde inhoud om verder te redigeer.<br />
+  <br />
+  Sluit: Kanselleer die aksie. Enige veranderings is verlore. Indien die item opened to redigeer, die Inhoud
+  Item remains ingeteken.<br />
+  <br />
+  <br />
+  <span style="font-weight: bold;">Item Details</span><br />
+   <br />
+  Titel: Type hier is die titel of die inhoud. Hierdie is die titel soos dit sal verskyn
+  op die bladsy of table lysing hierdie inhoud.<br />
+  <br />
+  Titel Alias: Hierdie field is not used by core.  SEF scripts en dinamiese titel/meta
+  scripts gebruik it en it may het 'n future use.<br />
+  <br />
+  Seksie: Kies hier die Seksie jy want die item to belong to.<br />
+  <br />
+  Kategorie: Kies hier die kategorie jy want die item to belong to. Die dropdown
+  lys sal vertoon die beskikbaar Kategori&euml; vir die Secton chosen above.<br />
+  <br />
+  Intro Teks (required): Type hier die introductory portion of die inhoud. Hierdie is
+  die part vertoonde in Blog Lists vir both Kategori&euml; en Seksies. It kan ook be
+  configured to be hidden when jy view die inhoud.<br />
+  <br />
+  Main Teks (optioneel): Hierdie is die body van jou inhoud. Dit is only vertoon when viewing
+  that inhoud in full view, en is not vertoon in Blog Lists.
+  <br />
+  <br />
+  <span style="font-weight: bold;">Inhoud Inpropprogramme:</span><br />
+  Inhoud Inpropprogramme is special tags jy place in jou inhoud that Joomla parses to
+  perform 'n particular aksie of funksie. Hierdie Inpropprogramme sal be beskikbaar (if publiseered)
+  even if jy Kies NO WYSIWYG redigeerder in die Globale Konfigurasie. They may be publiseered
+  of geredigeer deur die Mambot Bestuurder (Inpropprogramme-&gt;Werf Inpropprogramme, Filter set to inhoud).<br />
+  <br />
+  Die two verstek Inpropprogramme spesifiek used when redigeering inhoud are:
+  <br />
+  <ul style="margin-left: 40px;">
+    <li>{mosimage} (mosimage Mambot): Used to tell Joomla where to place graphics in jou
+      inhoud.</li>
+    <li>{ mospagebreak} (mospaging Joomla): Instructs Joomla to create 'n bladsy break in
+      jou inhoud. Jy kan break jou inhoud into several bladsys if jy like. Indien jy
+      do, 'n table of inhoud sal vertoon to let jy navigate between die different bladsys
+      created.</li>
+  </ul>
+  <br />
+  Knoppies to insert these codes may be publiseered of not deur (Inpropprogramme-&gt;Werf
+  Inpropprogramme, Filter set to redigeerder.xtd). Jy mag ook manually type them into jou inhoud.
+  Remember that in order vir jou images to show in die inhoud, jy moet insert the
+  {mosimage} code snippet waar jy would like jou image to be placed in jou inhoud.
+  <br />
+  <br />
+  LET OP: Die images in die Intro Teks kan be hidden vir Blog Lists. Hierdie is 'n configurable
+  setting vir these Menu Items. Also, hierdie is 'n global setting that sal affect jou
+  entire web site as 'n verstek in Globale Konfigurasies. Indien jy is having trouble
+  getting images to vertoon metin die Intro Teks en die problem keeps cropping up
+  in Blog Lists, then make sure that die Parameters vir MOSImages is set to Show for
+  that menu entry.<br />
+  <br />
+  <span style="font-weight: bold;">Formatting inhoud</span><br />
+  Die formatting opsies interface depend op die Redigeerder jy is using.<br />
+  Many redigeerders is beskikbaar as Open Source (deur http://ontwikkellaar.joomla.org)
+  of commercial products.<br />
+  <br />
+  Joomla comes met2 verstek redigeerders:<br />
+  <ul style="margin-left: 40px;">
+    <li>NO WYSIWYG: Hierdie redigeerder laat jou enter teks en/of HTML code directly.</li>
+    <li>TinyMCE: Hierdie redigeerder laat redigeer in WYSIWYG of HTML modus (See spesifieke Hulp).</li>
+  </ul>
+  LET OP: Dit is advised to publiseer only one redigeerder at 'n time in Mambot Bestuurder en to
+  stoor ook dat choice in Globale Konfigurasie.<br />
+  <br />
+  <br />
+  <span style="font-weight: bold;">The Attributes Area vir inhoud consists of five
+    tabs: </span>
+  <br />
+  Publiseering, Images, Parameters, Meta Info en Skakel na Menu.<br />
+  <br />
+  <span style="font-weight: bold;">Publiseering</span><br />
+  <span style="font-style: italic;">Publiseering Info</span><br />
+  <br />
+  Show on Voorblad: Check die boksie if jy want hierdie inhoud to be assigned to the
+  FrontPage Komponent.<br />
+  <br />
+  Gepubliseer: Check die boksie to let die item show op jou werf.<br />
+  <br />
+  Toegang Level: Kies wie sal be able to view hierdie inhoud. Public, registered or
+  special.<br />
+  <br />
+  Outeur Alias: Jy kan publiseer die outeur's naam vir 'n piece of inhoud. Jy kan
+  Kies 'n Registered gebruiker as vertoonde deur die dropdown of type any naam there
+  ('n outeur that does not het 'n account of inhoud created by many outeurs as 'n
+  groep).<br />
+  <br />
+  Change Creator: Hierdie allows jy to assign ownership of hierdie inhoud to ander registered
+  gebruiker.<br />
+  <br />
+  Ordering: Kies die order in which hierdie inhoud is lysed relative to others in
+  hierdie Kategorie. Die choices beskikbaar in die dropdown sal show once changes to the
+  item is saved of applied.<br />
+  <br />
+  Override Created Date: Hierdie vertoon die created datum vir die inhoud. Jy kan wysig
+  die datum if necessary.<br />
+  <br />
+  Start Publiseering: Kies die datum when hierdie document is to be publiseered op die web
+  site.<br />
+  <br />
+  Finish Publiseering: Indien desired, jy kan set die datum when jou inhoud is to be expired.<br />
+  <br />
+  Inhoud ID: Hierdie is die ID of die inhoud in die databasis.<br />
+  <br />
+  State: Hierdie vertoon die current status of die document. Dit is not redigeerbaar.<br />
+  <br />
+  Hits: Hierdie gives die aantal times hierdie inhoud was viewed. Die Reset Hits Value
+  knoppie allows jy to reset die counter to zero.<br />
+  <br />
+  Revised: Hierdie vertoon die aantal redigeers hierdie inhoud has undergone.<br />
+  <br />
+  Created: Hierdie is die datum hierdie inhoud item was created.<br />
+  <br />
+  By: Hierdie is die naam of die gebruiker that created die inhoud item.<br />
+  <br />
+  Last Modified: Hierdie is die datum when hierdie inhoud item was last modified, if ever.<br />
+  <br />
+  By: Hierdie is die naam of die gebruiker that last modified hierdie inhoud, if ever.
+  <br />
+  <br />
+  <br />
+  <span style="font-weight: bold;">Images</span><br />
+  <span style="font-style: italic;">MOSImage Beheer</span><br />
+  <br />
+  Sub-folder: Kies hier die sub-vouer jy want to get die images van. Hierdie are
+  in images/stories/.<br />
+  <br />
+  Gallery Images: Hierdie dropdown lys die images beskikbaar in die spesifieke sub-vouer.
+  <br />
+  Highlight one of multiple image name(s) en kliek op die 'Add' button.<br />
+  Die name(s) sal vertoon in die Inhoud Images dropdown.<br />
+  <br />
+  Inhoud Images<br />
+  Die 'up' en 'down' knoppies determine die order of images if there is meer than
+  one on hierdie bladsy. Die images sal vertoon relative na die instances of {mosimage}
+  tags in jou inhoud.<br />
+  <br />
+  Redigeer die image selected<br />
+  Kies 'n prent in 'Inhoud Images'.<br />
+  Source: Vertoon die verstek naam of die image highlighted. Jy mag redigeer that name.<br />
+  Image Align: Lets jy Kies between None, center, left of right.<br />
+  Alt Teks: Lets jy Kies 'n Alt Teks vir die image.<br />
+  Border: Type hier die aantal pixels jy want die border to be around die image.<br />
+  Caption: Type hier 'n caption vir die image.<br />
+  Caption Align: Lets jy Kies between None, center, left of right.<br />
+  Width: Type hier 'n number in pixels to override die width of die image<br />
+  Toepas: Kliek on hierdie knoppie to apply all die parameters defined vir hierdie image<br />
+  <br />
+  <span style="font-weight: bold;">Parameters</span><br />
+  <span style="font-style: italic;">Parameter Beheer<br />
+    <br />
+  </span>Hierdie parameters control what jy see when jy view 'n Inhoud Item in full
+  view.<br />
+  <br />
+  Page Class Suffix: Allows jy to set customized styles vir hierdie bladsy. Die suffix
+  jy type hier is outomaties added na die CSS classes vir hierdie bladsy, en sal
+  het to be defined in jou templet's CSS stylesheet vir usage.<br />
+  <br />
+  Back Knoppie: Beheers whether to show of hide 'n &quot;Back&quot; teks skakel that
+  would verskyn op die bottom of die bladsy en return die gebruiker na die previously viewed
+  bladsy. Die pull down laat select 'Use Globale' to gebruik die parameter as defined globally
+  deur die Werf-&gt;Globale Konfigurasie, 'Hide' of 'Show'.<br />
+  <br />
+  Page Titel: Teks to vertoon at die top of die bladsy.<br />
+  <br />
+  Show/Hide Page Titel: Hides of vertoon die Page Titel teks (defined in die field beskryf
+  above).<br />
+  <br />
+  Seksie Name: Hides of vertoon die naam of die seksie to which elke item belongs.
+  Indien hierdie option is turned on, elke item's seksie naam sal be vertoon under die item's
+  titel op die home bladsy.<br />
+  <br />
+  Seksie Name Linkable: Ontspers jy to make elke item's seksie naam linkable. Applies
+  only when die Seksie Name option (beskryf above) is set to 'Show.'<br />
+  <br />
+  Kategorie Name: Hides of vertoon die naam of die kategorie to which elke item belongs.
+  Indien hierdie option is turned on, elke item's kategorie naam sal be vertoon under die item's
+  titel op die home bladsy.<br />
+  <br />
+  Kategorie Name Linkable: Ontspers jy to make elke item's kategorie naam linkable.
+  Applies only when die Kategorie Name option (beskryf above) is set to 'Show.'<br />
+  <br />
+  For elke of die volgende eight items lysed below, jy kan gebruik die option selected
+  in die Globale Konfigurasie settings (Werf -&gt; Globale Konfigurasie) by selecting
+  'Use Globale' of jy kan override die Globale Konfigurasie setting by selecting 'Show'
+  of 'Hide.' Overriding die settings hier vir items sal not affect die Globale Konfigurasie
+  settings en sal not affect die settings op die rest of die site.<br />
+  <br />
+  Linked Titels: Ontspers jy to make item titels linked. Die skakel sal go na die item
+  bladsy.<br />
+  <br />
+  Item Rating: Hides of vertoon ratings given to home bladsy items by jou werf's gebruikers.<br />
+  <br />
+  Outeur Names: Hides of vertoon die name of outeurs of items.<br />
+  <br />
+  Created Date en Tyd: Hides of vertoon die datum en time that items were created.<br />
+  <br />
+  Modified Date en Tyd: Hides of vertoon die datum en time that items were last modified.<br />
+  <br />
+  PDF Ikoon: Hides of vertoon die ikoon en skakel na die PDF weergawe of items.<br />
+  <br />
+  Afdruk Ikoon: Hides of vertoon die ikoon en skakel na die printer-friendly format of items.<br />
+  <br />
+  E-pos Ikoon: Hides of vertoon die ikoon en skakel na die bladsy that enables gebruikers to email
+  items to others.<br />
+  <br />
+  Key Reference: 'n teks key that die item may be referenced by (like 'n hulp reference).<br />
+  <br />
+  Docbook Type: Experimental, do not gebruik in production work. Associates 'n type of
+  DocBook document to hierdie item.<br />
+  <br />
+  <span style="font-weight: bold;">Meta Info</span><br />
+  <span style="font-style: italic;">Meta Data</span><br />
+  <br />
+  Beskrywing: Hierdie inligting is inserted in die headers van jou inhoud. Dit is
+  commonly used by search engines.<br />
+  <br />
+  Keywords: Hierdie sleutelwoorde is related na die header inligting provided vir search
+  engines, maar they ook provide ander important funksie. Hierdie sleutelwoorde drive
+  die What's Verwandte Module that provides automatic links to other inhoud items that
+  shares 'n similar sleutelwoord.
+  <br />
+  <br />
+  Add Sect/Cat/Titel:  Klieking on hierdie knoppie is 'n convenient way to insert
+  die inhoud's inligting inna die sleutelwoorde field, including die inhoud's titel,
+  seksie name, en kategorie name.
+  <br />
+  <br />
+  <span style="font-weight: bold;">Skakel na Menu<br />
+    <br />
+  </span>Hierdie sal create 'n 'Link - Inhoud Item' in die menu jy select.<br />
+  <br />
+  Kies 'n Menu: Highlight hier once die menus defined vir jou werf.<br />
+  <br />
+  Menu Item Name: Die naam of die Menu soos dit sal verskyn op jou werf.<br />
+  <br />
+  Skakel na Menu: Kliek on hierdie knoppie to create die Menu Item.<br />
+  <br />
+  <br />
+  <span style="font-weight: bold;">Bestaande Menu Items<br />
+    <br />
+  </span>Hierdie vertoon 'n lys of all 'Link - Inhoud Item' Menu Items referencing
+  hierdie inhoud.<br />
+  <br />
+</body>
+</html>

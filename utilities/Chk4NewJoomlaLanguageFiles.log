@@ -1,0 +1,21 @@
+2013.03.14 08:39:24 INFO: ============= Begin ==========================================
+2013.03.14 08:39:24 DEBUG: af-ZA=af-ZA
+$SVNPROJECT=/home/gerrit/svn/afrikaans_taal/trunk/af-ZA_Joomla-trunk-3.0^C
+$SP=/home/gerrit/git/joomla-cms/
+ 
+2013.03.14 08:39:25 INFO: Checking target subversion directory layout
+2013.03.14 08:39:25 DIE: Unexpected subversion directory layout - Expected: /home/gerrit/svn/afrikaans_taal/trunk/af-ZA_Joomla-trunk-3.0^C/installation/language/af-ZA
+2013.03.14 08:40:28 INFO: ============= Begin ==========================================
+2013.03.14 08:40:28 DEBUG: af-ZA=af-ZA
+$SVNPROJECT=/home/gerrit/svn/afrikaans_taal/trunk/af-ZA_Joomla-trunk-3.0/
+$SP=/home/gerrit/git/joomla-cms/
+ 
+2013.03.14 08:40:28 INFO: Checking target subversion directory layout
+2013.03.14 08:40:28 DIE: /usr/bin/svn does not exist
+2013.03.14 08:45:26 INFO: ============= Begin ==========================================
+2013.03.14 08:45:26 DEBUG: af-ZA=af-ZA
+$SVNPROJECT=/home/gerrit/svn/afrikaans_taal/trunk/af-ZA_Joomla-trunk-3.0/
+$SP=/home/gerrit/git/joomla-cms/
+ 
+2013.03.14 08:45:26 INFO: Checking target subversion directory layout
+2013.03.14 08:45:26 DIE: Could not create working directory /home/gerrit/joomlawork/af-ZA_
