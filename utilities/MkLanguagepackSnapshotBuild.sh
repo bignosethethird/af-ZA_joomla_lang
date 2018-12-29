@@ -1,23 +1,20 @@
 #!/bin/bash
-# $Id: MkLanguagepackSnapshotBuild.sh 1957 2015-07-04 16:59:51Z gerrit_hoekstra $
 
 # What does it do?
 # ~~~~~~~~~~~~~~~
-# This script fetches the latest state of all translations from SVN and
-# collates it into language packs for installing into a Joomla 1.5
-# installation. This installation is then checked back into SVN in the
-# NightlyBuilds directory.
-#
-# Using daily builds allows a curious person, who is prepared to take some
-# risks with regards to language instability, to install the project and to
-# evaluate it (and to fawn and marvel at your fantastic work). Once you are
-# happy with the functionality and the stability of the language pack, you can
-# release it into the public domain - typically in the Files sections of your
-# project in http://joomlacode.org (this last bit is a manual process).
+# This script fetches the latest state of the relevant branch from GIT and
+# collates it into language packs for installing into a Joomla
+# installation. The branch or tag that the packages is built from is 
+# $TRANSLATIONVERSION, which is set in the configuration file and is in the
+# the form x.y.xvn, e.g. 3.9.0v1
+# This installation is then checked back into GIT in the
+# Releases directory.
 #
 # Usage
 # ~~~~~
-# You would normally run this via a cron job on a daily basis.
+# Run manually at the end of the translation session:
+#   MkLanguagepackSnapshotBuild.sh configuration_file
+# You could also normally run this via a cron job on a daily basis.
 # Copy this script to a suitable place such as /usr/local/bin.
 # Enter the following in your cron table (use the command `crontab -e` as user
 # `root`) to run this process every night at 2.10 am for example:
@@ -73,30 +70,16 @@
 #  o index.html
 #  o install.xml
 #  o TARGETLINGO.xml
-#  o pkg_site_TARGETLINGO.xml TODO
+#  o pkg_site_TARGETLINGO.xml 
 #  o site_TARGETLINGO.xml
-#  o pkg_admin_TARGETLINGO.xml TODO
+#  o pkg_admin_TARGETLINGO.xml 
 #  o admin_TARGETLINGO.xml
 #  o pkg_TARGETLINGO.xml
-#  o TARGETLINGO_joomla_lang_site_X.X.XvX.zip TODO
-#  o TARGETLINGO_joomla_lang_admin_X.X.XvX.zip TODO
-#  o TARGETLINGO_joomla_lang_install_X.X.XvX.zip TODO
+#  o TARGETLINGO_joomla_lang_site_X.X.XvX.zip 
+#  o TARGETLINGO_joomla_lang_admin_X.X.XvX.zip 
+#  o TARGETLINGO_joomla_lang_install_X.X.XvX.zip 
 #  o TARGETLINGO_joomla_lang_full_X.X.XvX.zip
 #
-#
-# Configuration
-# ~~~~~~~~~~~~~
-# This is held in the configuration file, [iso-language-code]-[iso-country-code].conf
-#
-# Fixed values
-# ~~~~~~~~~~~~
-#    This is a sub-directory off the SVNPROJECTURL where nightly builds
-#    a.k.a. snapshots are stored. (No leading slash). Do not change.
-SVNSNAPSHOTS="nightlybuilds"
-# This is the sub directory off the SVNPROJECTURL where actual translations
-# files are worked on. (No leading slash)
-# Set your local working folder (no trailing slashes)
-WORKFOLDER="${HOME}/joomlawork"
 # Initial value until config file is read
 TARGETLINGO="xx-XX"
 
@@ -108,6 +91,22 @@ BUILDDATE=$(date +%Y%m%d)
 THISYEAR=$(date +%Y)
 EXITCODE=0
 COMMAND="$0" # Save command
+
+
+# local working folder (no trailing slashes)
+WORKFOLDER="${HOME}/joomlawork"
+if [[ ! -d $WORKFOLDER ]]; then
+  printf "[$LINENO] Making $WORKFOLDER...\n"
+  mkdir -p $WORKFOLDER
+fi
+if [[ ! -d $WORKFOLDER ]]; then
+  printf "[$LINENO] Working folder $WORKFOLDER does not exist."
+  exit 1
+fi
+if [[ ! -w $WORKFOLDER ]]; then
+  printf "[$LINENO] Working folder $WORKFOLDER is not writable."
+  exit 1
+fi
 
 # Set up logging - this is important if we run this as a cron job
 PROGNAME=${0##*/}
@@ -179,7 +178,7 @@ for sig in KILL TERM INT EXIT; do trap "cleanup $sig" "$sig" ; done
 # Configuration
 #============================================================================#
 
-INFO "[$LINENO] === BEGIN [PID $$] \$Id: MkLanguagepackSnapshotBuild.sh 1957 2015-07-04 16:59:51Z gerrit_hoekstra $ ==="
+INFO "[$LINENO] === BEGIN [PID $$] "
 
 function ReadConfiguration {
   INFO "[$LINENO] Checking configuration file"
@@ -192,7 +191,6 @@ function ReadConfiguration {
 
 ReadConfiguration $1
 
-
 # Derived Values
 # ~~~~~~~~~~~~~~
 # Package name 
@@ -204,129 +202,58 @@ ReadConfiguration $1
 #    TYPE = site, admin, full, install
 packageNameTemplate="${TARGETLINGO}_joomla_lang_TYPE_${TRANSLATIONVERSION}.zip"
 
-# Local subversion sandbox in workfolder to pull latest code cut down to
-local_sandbox_dir="${TARGETLINGO}_sandbox"
-
-
 #============================================================================#
 # Build Functions
 #============================================================================#
 
 function CreateWorkspace {
-  INFO "[$LINENO] Check/create working directory $WORKFOLDER"
-  if [[ ! -d $WORKFOLDER ]]; then
-    printf "Making $WORKFOLDER...\n"
-    mkdir -p $WORKFOLDER
-  fi
-  if [[ ! -d $WORKFOLDER ]]; then
-    DIE "[$LINENO] Working folder $WORKFOLDER does not exist."
-  fi
-  if [[ ! -w $WORKFOLDER ]]; then
-    DIE "[$LINENO] Working folder $WORKFOLDER is not writable."
-  fi
+  INFO "[$LINENO] Check sandbox directory is where this is launched from"
+  [[ "${PWD##*/}" != "utilities" ]] && DIE "[$LINENO] This utility needs to be run from the sandbox $GITREPONAME/utilities"
+  parentdir=${PWD%/*}
+  [[ "${parentdir##*/}" != "$GITREPONAME" ]] && DIE "[$LINENO] This utility needs to be run from the sandbox $GITREPONAME/utilities"
+  # Local subversion sandbox in workfolder to pull latest code cut down to
+  local_sandbox_dir="$parentdir"
 
   cd $WORKFOLDER
   rm -fr admin 2>/dev/null
   mkdir admin
   rm -fr site 2>/dev/null
-  mkdir site
-  mkdir -p $local_sandbox_dir 2>/dev/null
-  #rm -fr $SVNSNAPSHOTS 2>/dev/null
-  #rm -fr $SVNFILES 2>/dev/null
+  mkdir site  
 }
 
 
 # Current Working Directory is $WORKFOLDER = joomlawork
 function GetLastSnapshots {
-  INFO "[$LINENO] Get Snapshots from $SVNPROJECTURL/$SVNSNAPSHOTS into $local_sandbox_dir/$SVNSNAPSHOTS"
-
-  # Create parent directory of SVN tree prevent directory globbing
-#  PARENT_DIR=$(dirname $SVNSNAPSHOTS)
-#  if [[ -n $PARENT_DIR ]]; then
-#    rm -fr $PARENT_DIR 2>/dev/null
-#    if [[ ! -d $PARENT_DIR ]]; then
-#      INFO "Create directory $PARENT_DIR"
-#      mkdir -p $PARENT_DIR 1>/dev/null
-#      if [[ ! -d $PARENT_DIR ]]; then
-#        DIE "Could not create directory $PARENT_DIR off $WORKFOLDER"
-#      fi
- #   fi
- #   cd $PARENT_DIR
- # else
- #   rm -fr $SVNFILES
- # fi
-
+  INFO "[$LINENO] Get Snapshots from branch $TRANSLATIONVERSION"
   # Get the content of the snapshot folder
-  DEBUG "svn checkout --username $SVNUSERNAME --password $SVNPASSWD $SVNPROJECTURL/$SVNSNAPSHOTS $local_sandbox_dir/$SVNSNAPSHOTS 1>/dev/null 2>&1"
-  svn checkout --username $SVNUSERNAME --password $SVNPASSWD $SVNPROJECTURL/$SVNSNAPSHOTS $local_sandbox_dir/$SVNSNAPSHOTS 1>/dev/null 2>&1
-  RETCODE=$?
-  if [[ $RETCODE -ne 0 ]]; then
-    cd $STARTDIR
-    DIE "[$LINENO] Could not get the snapshot files from SVN."
-  fi
+  [[ -z $TRANSLATIONVERSION ]] && DIE "[$LINENO] TRANSLATIONVERSION is not specified"
+  echo ${TRANSLATIONVERSION} | grep v > /dev/null
+  [[ $? -ne 0 ]]  && DIE "[$LINENO] TRANSLATIONVERSION dies not contain the version specifier. It must be in the form x.y.zvn"  
+  [[ -z ${TRANSLATIONVERSION#*v} ]] && DIE "[$LINENO] TRANSLATIONVERSION dies not contain the version number after the 'v'. It must be in the form x.y.zvn"
+  git branch --list | grep $TRANSLATIONVERSION > /dev/null
+  [[ $? -ne 0 ]] && DIE "[$LINENO] There is not branch or tag in git name $TRANSLATIONVERSION"
 
-  # Return to workspace
-  #if [[ -n $PARENT_DIR ]]; then
-  #  cd - 1>/dev/null
-  #fi
-}
-
-# Current Working Directory is $WORKFOLDER = joomlawork
-function GetLastSourceFiles {
-  INFO "[$LINENO] Get Source Files from $SVNPROJECTURL/$SVNFILES into $local_sandbox_dir/$SVNFILES"
-
-  # Create parent directory of SVN tree prevent directory globbing
-  #PARENT_DIR=$(dirname $SVNFILES)
-  #if [[ -n $PARENT_DIR ]]; then
-  #  rm -fr $PARENT_DIR 2>/dev/null
-  #  if [[ ! -d $PARENT_DIR ]]; then
-  #    INFO "Create directory $PARENT_DIR"
-  #    mkdir -p $PARENT_DIR 1>/dev/null
-  #    if [[ ! -d $PARENT_DIR ]]; then
-  #      DIE "Could not create directory $PARENT_DIR off $WORKFOLDER"
-  #    fi
-  #  fi
-  #  cd $PARENT_DIR
-  #else
-  #  rm -fr $SVNFILES
-  #fi
-
-  DEBUG "[$LINENO] svn checkout --username $SVNUSERNAME --password $SVNPASSWD $SVNPROJECTURL/$SVNFILES $local_sandbox_dir/$SVNFILES 1>/dev/null 2>&1"
-  svn checkout --username $SVNUSERNAME --password $SVNPASSWD $SVNPROJECTURL/$SVNFILES $local_sandbox_dir/$SVNFILES 1>/dev/null 2>&1
-  RETCODE=$?
-  if [[ $RETCODE -ne 0 ]]; then
-    cd $STARTDIR
-    DIE "[$LINENO] Could not get the source files from SVN. The files may already exist in your sandbox but you have not added and/or checked them in to the version control system.
-The following steps may solve your problem:
-cd $local_sandbox_dir
-svn add $SVNFILES
-svn ci 'new release' $SVNFILES
-"
-  fi
-
-  # Return to workspace
-  #if [[ -n $PARENT_DIR ]]; then
-  #  cd - 1>/dev/null
-  #fi
+  git checkout $TRANSLATIONVERSION
+  [[ $? -ne 0 ]] && DIE "[$LINENO] There was a problem with checking out git branch name $TRANSLATIONVERSION"
 }
 
 # Collate translated files into snapshot build folders 'site' and 'admin'
 # Current Working Directory is $WORKFOLDER = joomlawork
 function CopyTranslationsToPackagingArea {
-  INFO "[$LINENO] Copying Source Files from $SVNPROJECTURL/$SVNFILES/administrator into admin"
-  find $local_sandbox_dir/${SVNFILES}/administrator/language -type f -name "${TARGETLINGO}.*.ini" | grep -v "\.svn" | sort -u | xargs -I {} cp {} admin/.
-  find $local_sandbox_dir/${SVNFILES}/administrator/language -type f -name "${TARGETLINGO}.ini"   | grep -v "\.svn" | sort -u | xargs -I {} cp {} admin/.
-  find $local_sandbox_dir/${SVNFILES}/administrator/language -type f -name "${TARGETLINGO}.localise.php" | grep -v "\.svn" | sort -u | xargs -I {} cp {} admin/.
-  INFO "[$LINENO] Copying Source Files from $SVNPROJECTURL/$SVNFILES/language into site"
-  find $local_sandbox_dir/${SVNFILES}/language -type f -name "${TARGETLINGO}.*.ini" | grep -v "\.svn" | sort -u | xargs -I {} cp {} site/.
-  find $local_sandbox_dir/${SVNFILES}/language -type f -name "${TARGETLINGO}.ini"   | grep -v "\.svn" | sort -u | xargs -I {} cp {} site/.
-  find $local_sandbox_dir/${SVNFILES}/language -type f -name "${TARGETLINGO}.localise.php" | grep -v "\.svn" | sort -u | xargs -I {} cp {} site/.
-  INFO "[$LINENO] Copying Source Files from $SVNPROJECTURL/$SVNFILES/libraries into site"
-  find $local_sandbox_dir/${SVNFILES}/libraries -type f -name "${TARGETLINGO}.*.ini" | grep -v "\.svn" | sort -u | xargs -I {} cp {} site/.
-  INFO "[$LINENO] Copying Source Files from $SVNPROJECTURL/$SVNFILES/plugins into site"
-  find $local_sandbox_dir/${SVNFILES}/plugins -type f -name "${TARGETLINGO}.*.ini"   | grep -v "\.svn" | sort -u | xargs -I {} cp {} site/.
-  INFO "[$LINENO] Copying Source Files from $SVNPROJECTURL/$SVNFILES/templates into site"
-  find $local_sandbox_dir/${SVNFILES}/templates -type f -name "${TARGETLINGO}.*.ini" | grep -v "\.svn" | sort -u | xargs -I {} cp {} site/.
+  INFO "[$LINENO] Copying Source Files from $GITREPONAME/administrator into admin"
+  find $local_sandbox_dir/administrator/language -type f -name "${TARGETLINGO}.*.ini" | grep -v "\.git" | sort -u | xargs -I {} cp {} admin/.
+  find $local_sandbox_dir/administrator/language -type f -name "${TARGETLINGO}.ini"   | grep -v "\.git" | sort -u | xargs -I {} cp {} admin/.
+  find $local_sandbox_dir/administrator/language -type f -name "${TARGETLINGO}.localise.php" | grep -v "\.git" | sort -u | xargs -I {} cp {} admin/.
+  INFO "[$LINENO] Copying Source Files from $GITREPONAME/language into site"
+  find $local_sandbox_dir/language -type f -name "${TARGETLINGO}.*.ini" | grep -v "\.git" | sort -u | xargs -I {} cp {} site/.
+  find $local_sandbox_dir/language -type f -name "${TARGETLINGO}.ini"   | grep -v "\.git" | sort -u | xargs -I {} cp {} site/.
+  find $local_sandbox_dir/language -type f -name "${TARGETLINGO}.localise.php" | grep -v "\.git" | sort -u | xargs -I {} cp {} site/.
+  INFO "[$LINENO] Copying Source Files from $GITREPONAME/libraries into site"
+  find $local_sandbox_dir/libraries -type f -name "${TARGETLINGO}.*.ini" | grep -v "\.git" | sort -u | xargs -I {} cp {} site/.
+  INFO "[$LINENO] Copying Source Files from $GITREPONAME/plugins into site"
+  find $local_sandbox_dir/plugins -type f -name "${TARGETLINGO}.*.ini"   | grep -v "\.git" | sort -u | xargs -I {} cp {} site/.
+  INFO "[$LINENO] Copying Source Files from $GITREPONAME/templates into site"
+  find $local_sandbox_dir/templates -type f -name "${TARGETLINGO}.*.ini" | grep -v "\.git" | sort -u | xargs -I {} cp {} site/.
 }
 
 # Parameters: 1. admin, site
@@ -435,16 +362,16 @@ function MkXMLInstallDescription {
     # If flag is not a URL then it must a file
     # HTML if URL:  src="http://....png"
     # HTML if File: src="data:image/png;base64,...=="
-    INFO "[$LINENO] Checking if $local_sandbox_dir/${SVNFILES}/utilities/${LINGOFLAG} exists..."
-    if [[ -f ${local_sandbox_dir}/${SVNFILES}/utilities/${LINGOFLAG} ]]; then
+    INFO "[$LINENO] Checking if $local_sandbox_dir/utilities/${LINGOFLAG} exists..."
+    if [[ -f ${local_sandbox_dir}/utilities/${LINGOFLAG} ]]; then
 # TODO: This does not work on Chrome!
-      INFO "[$LINENO] Using ${local_sandbox_dir}/${SVNFILES}/utilities/${LINGOFLAG} as a graphics file"
-      uuencoded_flag=$(uuencode -m ${local_sandbox_dir}/${SVNFILES}/utilities/${LINGOFLAG} ${LINGOFLAG} | sed 1d )
+      INFO "[$LINENO] Using ${local_sandbox_dir}/utilities/${LINGOFLAG} as a graphics file"
+      uuencoded_flag=$(uuencode -m ${local_sandbox_dir}/utilities/${LINGOFLAG} ${LINGOFLAG} | sed 1d )
       [[ $? -ne 0 ]] && DIE "[$LINENO] Could not uuencode file ${LINGOFLAG}."
       # Make up MIME tag:
       flag_file_extension=$(echo ${LINGOFLAG##*.} | tr [A-Z] [a-z])
       if [[ -z $flag_file_extension ]]; then
-        flag_file_extension=$(identify ${local_sandbox_dir}/${SVNFILES}/utilities/${LINGOFLAG} | awk '{print $2}' | tr [A-Z] [a-z])
+        flag_file_extension=$(identify ${local_sandbox_dir}/utilities/${LINGOFLAG} | awk '{print $2}' | tr [A-Z] [a-z])
       fi
       flag="data:image/${flag_file_extension};base64,${uuencoded_flag}"
     else
@@ -523,19 +450,19 @@ function MkXMLInstallFileList {
   case $CLIENT in
     "admin")
       # Localizable files
-      find $local_sandbox_dir/${SVNFILES}/administrator/language -type f -name "*.php" | grep -v "\.svn" | sort -u | sed -e "s|.*/||g" -e "s/^/    <filename>/" -e "s/$/<\/filename>/" >> $FILENAME
+      find $local_sandbox_dir/administrator/language -type f -name "*.php" | grep -v "\.git" | sort -u | sed -e "s|.*/||g" -e "s/^/    <filename>/" -e "s/$/<\/filename>/" >> $FILENAME
       # Add all .ini files to package list
-      find $local_sandbox_dir/${SVNFILES}/administrator/language -type f -name "*.ini" | grep -v "\.svn" | sort -u | sed -e "s|.*/||g" -e "s/^/    <filename>/" -e "s/$/<\/filename>/" >> $FILENAME
+      find $local_sandbox_dir/administrator/language -type f -name "*.ini" | grep -v "\.git" | sort -u | sed -e "s|.*/||g" -e "s/^/    <filename>/" -e "s/$/<\/filename>/" >> $FILENAME
       ;;
     "site")
       # Add any localizable files to files to the package list
-      find $local_sandbox_dir/${SVNFILES}/language -type f -name "${TARGETLINGO}.localise.php" | grep -v "\.svn" | sort -u | sed -e "s|.*/||g" -e "s/^/    <filename>/" -e "s/$/<\/filename>/" >> $FILENAME
+      find $local_sandbox_dir/language -type f -name "${TARGETLINGO}.localise.php" | grep -v "\.git" | sort -u | sed -e "s|.*/||g" -e "s/^/    <filename>/" -e "s/$/<\/filename>/" >> $FILENAME
       # Add all .ini files to package list
-      find $local_sandbox_dir/${SVNFILES}/libraries -type f -name "${TARGETLINGO}.*.ini" | grep -v "\.svn" | sort -u | sed -e "s|.*/||g" -e "s/^/    <filename>/" -e "s/$/<\/filename>/" >> $FILENAME
-      find $local_sandbox_dir/${SVNFILES}/plugins -type f -name "${TARGETLINGO}.*.ini"   | grep -v "\.svn" | sort -u | sed -e "s|.*/||g" -e "s/^/    <filename>/" -e "s/$/<\/filename>/" >> $FILENAME
-      find $local_sandbox_dir/${SVNFILES}/templates -type f -name "${TARGETLINGO}.*.ini" | grep -v "\.svn" | sort -u | sed -e "s|.*/||g" -e "s/^/    <filename>/" -e "s/$/<\/filename>/" >> $FILENAME
-      find $local_sandbox_dir/${SVNFILES}/language -type f -name "${TARGETLINGO}.*.ini"  | grep -v "\.svn" | sort -u | sed -e "s|.*/||g" -e "s/^/    <filename>/" -e "s/$/<\/filename>/" >> $FILENAME
-      find $local_sandbox_dir/${SVNFILES}/language -type f -name "${TARGETLINGO}.ini"    | grep -v "\.svn" | sort -u | sed -e "s|.*/||g" -e "s/^/    <filename>/" -e "s/$/<\/filename>/" >> $FILENAME
+      find $local_sandbox_dir/libraries -type f -name "${TARGETLINGO}.*.ini" | grep -v "\.git" | sort -u | sed -e "s|.*/||g" -e "s/^/    <filename>/" -e "s/$/<\/filename>/" >> $FILENAME
+      find $local_sandbox_dir/plugins -type f -name "${TARGETLINGO}.*.ini"   | grep -v "\.git" | sort -u | sed -e "s|.*/||g" -e "s/^/    <filename>/" -e "s/$/<\/filename>/" >> $FILENAME
+      find $local_sandbox_dir/templates -type f -name "${TARGETLINGO}.*.ini" | grep -v "\.git" | sort -u | sed -e "s|.*/||g" -e "s/^/    <filename>/" -e "s/$/<\/filename>/" >> $FILENAME
+      find $local_sandbox_dir/language -type f -name "${TARGETLINGO}.*.ini"  | grep -v "\.git" | sort -u | sed -e "s|.*/||g" -e "s/^/    <filename>/" -e "s/$/<\/filename>/" >> $FILENAME
+      find $local_sandbox_dir/language -type f -name "${TARGETLINGO}.ini"    | grep -v "\.git" | sort -u | sed -e "s|.*/||g" -e "s/^/    <filename>/" -e "s/$/<\/filename>/" >> $FILENAME
       ;;
     "install")
       DIE "Not impleimented yet"
@@ -583,19 +510,6 @@ function MkXMLInstallFileFooter {
   # printf "  <params />\n</install>\n"  >> $FILENAME
 }
 
-# Add or checkin to SVN nightlybuilds
-# Parameters: 1. file name in work directory to add
-function CheckInSVN {
-  FILENAME=$1
-  cp $FILENAME $local_sandbox_dir/$SVNSNAPSHOTS/.
-  svn add $local_sandbox_dir/$SVNSNAPSHOTS/$FILENAME 2>&1 | grep -v E200 | grep -v W150
-  INFO "[$LINENO] Committing package $FILE"
-  svn commit -m "Language Pack $FILENAME for $TARGETLINGO as of $TODAY"  $local_sandbox_dir/$SVNSNAPSHOTS/$FILENAME
-  RETCODE=$?
-  if [[ $RETCODE -ne 0 ]]; then
-    printf "  Could not commit changes to $local_sandbox_dir/$SVNSNAPSHOTS/$FILENAME - it may have been added a few momemts ago.\n" | tee -a $LOGFILE
-  fi
-}
 
 #============================================================================#
 # Main program
@@ -657,14 +571,12 @@ packageName=$(echo $packageNameTemplate | sed -e 's/TYPE/full/')
 INFO "[$LINENO] Make file $packageName"
 zip -r -j -q $packageName site_${TARGETLINGO}.zip admin_${TARGETLINGO}.zip pkg_${TARGETLINGO}.xml
 
-INFO "[$LINENO] Adding any new language installation packages to SVN (ignore SVN warnings)"
-CheckInSVN $packageName
+INFO "[$LINENO] Adding any new language installation packages to Git Releases"
+# TODO
 
 
 INFO "[$LINENO] Cleaning up..."
-#rm -fr $SVNPROJECTURL/$SVNSNAPSHOTS 2>/dev/null
-#rm -fr $SVNPROJECTURL/$SVNFILES 2>/dev/null
 cd $STARTDIR
 
-INFO "[$LINENO] The latest package snapshots are in the build sandbox in ${WORKFOLDER}/${local_sandbox_dir}/${SVNSNAPSHOTS}"
+INFO "[$LINENO] The latest package snapshots are in the build sandbox in ${WORKFOLDER}"
 INFO "[$LINENO] ============= END ============"
