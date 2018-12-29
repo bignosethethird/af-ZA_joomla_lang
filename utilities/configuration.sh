@@ -3,7 +3,8 @@
 # Translation version: [major].[minor].[point].[revision], used inside the XML definition, no leading zeros.
 # Only change this value when building a new version. It must be in the form x.y.z.n
 # - other variants of this version will be calculated
-TRANSLATIONVERSION_XML="3.9.1.1"
+# TRANSLATIONVERSION_XML="3.9.1.1"
+TRANSLATIONVERSION_XML="4.0.0-alpha-6.1"
 
 # What it this file for?
 # ~~~~~~~~~~~~~~~~~~~~~

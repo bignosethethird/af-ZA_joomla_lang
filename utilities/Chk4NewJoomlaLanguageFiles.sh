@@ -442,16 +442,20 @@ function DiffFileReport {
 #         $ ./${PATCHFILE}
 #         You should only run this file ONCE. If in doubt, run the 
 #         ${0##*/} script again.
-# Step 2: Verify that the changes were correcTARGETLINGOy made 
+# Step 2: Verify that the changes were correctly made 
 # Step 3: Run the ${0##*/} script again - 
-#         If you did everything correcTARGETLINGOy, then further work files will be
+#         If you did everything correctly, then further work files will be
 #         created similar to this file. 
 # 
 " > $PATCHFILE
     printf "# Files in the ${SOURCELINGO} source translation that don't yet exit in the ${TARGETLINGO} translation:\n" >> $PATCHFILE
     [[ ${SOURCELINGONOTINTARGETLINGO} -eq 0 ]] && printf "# None\n" >> $PATCHFILE
+
+    
+    # Files to create:
     for f in "${aSOURCELINGONotInTARGETLINGO[@]}"; do
-      printf "[[ ! -d %s ]] && \\ \n  mkdir -p %s\n"  >> $PATCHFILE $(dirname  ${local_sandbox_dir}/$f) $(dirname  ${local_sandbox_dir}/$f)
+      printf "echo Creating new file $f...\n" >> $PATCHFILE
+      printf "[[ ! -d %s ]] && \\ \n  mkdir -p %s\n"  >> $PATCHFILE $(dirname ${local_sandbox_dir}/$f) $(dirname ${local_sandbox_dir}/$f)
       printf "printf \"; $TARGETLINGO Language Translation for Joomla!
 ; Joomla! Project
 ; Copyright (C) 2005 - $YEAR Open Source Matters. All rights reserved.
@@ -462,11 +466,15 @@ function DiffFileReport {
       printf "git add ${local_sandbox_dir}/$f\n" >> $PATCHFILE      
     done
 
+    # Files to remove
     printf "# Files in the ${TARGETLINGO} target translation that don't exit in the ${SOURCELINGO} translation any more:\n" >> $PATCHFILE
+    printf "cd  ${local_sandbox_dir}\n" >> $PATCHFILE
     for f in "${aTARGETLINGONotInSOURCELINGO[@]}"; do
       #g=$(echo $f | sed -e 's|${SOURCELINGO}|${TARGETLINGO}|g')
-      printf "git rm ${local_sandbox_dir}/$f\n" >> $PATCHFILE
+      printf "echo Deleting old file $f...\n" >> $PATCHFILE
+      printf "git rm $f\n" >> $PATCHFILE
     done
+    printf "cd -\n" >> $PATCHFILE
 
     chmod +x $PATCHFILE
 

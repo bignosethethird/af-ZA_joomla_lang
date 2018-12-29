@@ -18,7 +18,7 @@
 # Copy this script to a suitable place such as /usr/local/bin.
 # Enter the following in your cron table (use the command `crontab -e` as user
 # `root`) to run this process every night at 2.10 am for example:
-# 10 2 * * * /usr/local/bin/MkLanguagepackSnapshotBuild.sh 
+# 10 2 * * * /usr/local/bin/MkLanguagepackSnapshotBuild.sh  
 #
 # So, what happens here?
 # ~~~~~~~~~~~~~~~~~~~~~
