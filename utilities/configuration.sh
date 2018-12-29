@@ -1,4 +1,9 @@
-# $Id: af-ZA.conf 1957 2015-07-04 16:59:51Z gerrit_hoekstra $
+#!/bin/bash
+
+# Translation version: [major].[minor].[point].[revision], used inside the XML definition, no leading zeros.
+# Only change this value when building a new version. It must be in the form x.y.z.n
+# - other variants of this version will be calculated
+TRANSLATIONVERSION_XML="3.9.1.1"
 
 # What it this file for?
 # ~~~~~~~~~~~~~~~~~~~~~
@@ -73,9 +78,6 @@ TARGETLINGO="af-ZA"
 
 # Build Configuration
 # ~~~~~~~~~~~~~~~~~~~
-# Translation version: [major].[minor].[point].[revision], used inside the XML definition, no leading zeros.
-# Only change this value!
-TRANSLATIONVERSION_XML="3.9.1.1"
 
 # Calculate the rest:
 major=$(echo $TRANSLATIONVERSION_XML  | sed -e "s/\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)/\1/g")
@@ -135,7 +137,6 @@ FIRSTDAY=1
 AUTHORNAME="Gerrit Hoekstra"
 # Email address of author or team
 AUTHOREMAIL="gerrit@hoekstra.co.uk"
-
 # Installation Configuration:
 #     A flag to display on successful completion of installation
 #     This can either be a publically-accessible URL or the name of graphics file. e.g.
