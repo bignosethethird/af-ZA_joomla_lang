@@ -65,3 +65,18 @@ If you have need to work on this repo as a different user on this user because y
 ```
 
 ## Hier gaat ons!
+
+
+
+# Useful Tips & Tools
+
+* Read this free eBook Pro Git by Scott Chacon, Ben Straub, Version 2.1.100, 2018-12-10
+* Set your command prompt to:
+```bash
+export PS1="\[\e]0;\u@\h \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w \[\033[33;1m\]\$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /')\[\033[01;34m\]\$\[\033[00m\] "
+```
+* Set this alias up to see your Git activities using the ```gg```-command:
+```bash
+alias gg="git log --graph --all --decorate --oneline"
+```
+
