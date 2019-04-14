@@ -75,7 +75,6 @@ SOURCELINGO="en-GB"
 # Put YOUR target language here:
 TARGETLINGO="af-ZA"
 
-
 # Build Configuration
 # ~~~~~~~~~~~~~~~~~~~
 
@@ -93,11 +92,11 @@ JOOMLAVERSION="${major}.${minor}.${point}"
 TRANSLATIONVERSION="${major}.${minor}.${point}v${revision}"
 # Git files are in this repo (no leading slashes). Unlikely to change.
 GITREPONAME="af-ZA_joomla_lang"
-
-
 # Language name - in your own language and the English exonym (
-# Note: endonym is the local name for the language: Kiswahili or Deutsch
-#       exonym is what 'outsiders' use to refer to the language: Swahili or German
+# Note: endonym is the local name for the language: 
+#           'Kiswahili' or 'Deutsch' or 'isiZulu'.
+#       exonym is what 'outsiders' use to refer to the language: 
+#           'Swahili' or 'German' or 'Zulu'.
 LINGONAME="Afrikaans (ZA)"
 LINGOEXONYM="Afrikaans"
 # This is the native name for the language and needs to be in the local script
@@ -111,7 +110,7 @@ PACKAGE_DESC="Afrikaanse Taalpaket in die vertroulike aanspreeksvorm"
 # Local language terms:
 # Your langauge term for "Language"
 LOCAL_LANGUAGE="Taal"
-# "Schema"
+# Your langauge term for "Schema"
 LOCAL_SCHEME="Skema"
 # Your langauge term for "Author"
 LOCAL_AUTHOR="Outeur"
@@ -119,11 +118,11 @@ LOCAL_AUTHOR="Outeur"
 LOCAL_WEBSITE="Webwerf"
 # Your langauge term for "Revision"
 LOCAL_VERSION="Hersiening"
-# Date
+# Your langauge term for Date
 LOCAL_DATE="Datum"
-# "Please check the project website frequently for the most recent translation"
+# Your langauge term for "Please check the project website frequently for the most recent translation"
 LOCAL_INSTALL="Laat asb. weet indien daar enige tik-foute of grammaktia-foute is - hulle sal so spoedig moontlik reggemaak word!"
-# "All rights reserved" in your language, or use the English.
+# Your langauge term for "All rights reserved", or use the English.
 LOCAL_ALLRIGHTS="Alle regte voorbehou"
 # Right To Left = 0 for most languages
 RTL=0
@@ -132,7 +131,6 @@ RTL=0
 LOCALE="af_ZA.uft8, af_ZA.UTF-8, af, af_ZA, afr_ZA, af-ZA, afrikaans, afrikaans-za, afr, south africa, suid-afrika"
 # First day of the week in the locale, mostly 1 = Sunday, sometimes 2 = Monday or 6=Saturday
 FIRSTDAY=1
-
 # Name of package author or team
 AUTHORNAME="Gerrit Hoekstra"
 # Email address of author or team
@@ -144,10 +142,8 @@ AUTHOREMAIL="gerrit@hoekstra.co.uk"
 #     If it is a file then specify relative to the directory that this file is in. If it is a file,
 #     it will be UU-encoded into the installation XML file. 
 #     The Recommended size for the images is 256x256 pixels, PNG format and with background alpha-channeled.
-LINGOFLAG="http://joomlacode.org/gf/download/docmanfileversion/2035/164576/South%20Africa.gif"
-# LINGOFLAG=flag.png
-#     The website that hosts this translation
+#     Find your flag in http://www.flags.net
+LINGOFLAG="http://www.flags.net/images/largeflags/SOAF0001.GIF"
+#     The website that hosts this translation team
 LINGOSITE="http://forge.joomla.org/gf/project/afrikaans_taal"
-# Updates Notifications for all languages can be checked here. 
-# This URL changes for each major Joomla! version release.
-UPDATE_URL="http://update.joomla.org/language/translationlist_3.xml"
+
