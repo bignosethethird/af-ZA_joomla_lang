@@ -1,31 +1,182 @@
 # Instructions
+
 The instructions are for any Joomla language pack that uses this tool-set for managing and building language packs for Joomla. Since the first langauae to use this pack was Afrikaans (a-ZA) and it is the first language in the alphabet, we use this for as an example thoughout. 
 
 ## Naming conventions
+
 The name of the language pack is made up from the 2-letter ISO code of the language code (lower-case), hyphenated with the 2-letter ISO code of the country (upper case) that the regional variation is aimed at. So for Afrikaans, we have af-ZA, for English we can have en-GB, en-US, en-NZ, en-ZA, etc.
 
-The name of the packaged file that is installed in to Joomla is ```[language specifier]_joomla_lang_full_[version details]```, where ```[version details]``` consists of the following series of numbers: ```[major revision].[minor revision].[point release]v[revision]``` The version number is given by the leader of the Joomla Language Development team, which will always coincide with the version of Joomla that it is aimed at, e.g. ```3.9.5```. As leader of your own translation team, you need to ensure that the GIT repository is branched to a branch that is called ```3.9.5``` (ideally branched off the ```3.9``` branch) so that the building process can use this value (more on branching later on). Furthermore, as a translation team leader, you are only allowed to increment the ```[revision]``` number, and then only every time that you need to publish a revision (starting at 1), say, when you someone discovered a spelling error that was then corrected. 
+The name of the packaged file that is installed to Joomla is `[language-specifier]_joomla_lang_full_[version-details]`, where `[version-details]` consists of the following series of numbers, along the lines of the `semantic versioning` convention: `[major-revision].[minor-revision].[point-release]v[revision]`. The version number is given by the leader of the Joomla Language Development team, which will always coincide with the version of Joomla that it is aimed at, e.g. `3.9.5`. As leader of your own translation team, you need to ensure that the GIT repository is branched to a branch that is called `3.9.5` so that the building process can use this tag value (more on branching and tagging later on). Furthermore, as a translation team leader, you are only allowed to increment the `[revision]` number (starting at 1), and then only every time that you need to publish a revision, say, when you discovered and corrected bug. 
 
-For example, the language pack verion would be ```3.9.5v1```, and in the case of the ```af-ZA``` language, your language pack would be called ```af-ZA_joomla_lang_full_3.9.5v1```. Since the actual file would be a ZIP file, the final file name would be hosted in Joomla Language Package repository would be called ```af-ZA_joomla_lang_full_3.9.5v1.zip```
+For example, the language pack version would be `3.9.5v1`, and in the case of the `af-ZA` language, your language pack would be called `af-ZA_joomla_lang_full_3.9.5v1`. Since the actual file would be a ZIP file, the final file name would be hosted in Joomla Language Package repository would be called `af-ZA_joomla_lang_full_3.9.5v1.zip`.
+
+## How much work is involved in creating a language pack?
+
+Let's look at Joomla Release 3.9.5 as example. You can use the commands below to determine this for any other release of Joomla:
+
+* Number of files to translate: 405
+
+```bash
+$ find  ~/git/joomla-cms -name "en-GB.*.ini" | wc -l
+405
+```
+
+* Number of lines to translate in all these files: 9892
+
+```bash
+$ find ~/git/joomla-cms -name "en-GB.*.ini" -exec grep '[A-Z_0-9]*="' {} > /tmp/a \;
+$ wc -l /tmp/a
+9892 /tmp/a
+```
+
+* This is how many lines are unique: 8358
+
+```bash
+$ sort -u /tmp/a > /tmp/b
+$ wc -l /tmp/b
+8358 /tmp/b
+```
+* Number of words to translate: 53492
+
+```bash
+$ cut -d"=" -f2- /tmp/b | sed -e 's/"//g'  -e 's/%.//g'   -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n//g' -e 's/:/ /g' | tr [A-Z] [a-z] > /tmp/c
+$ wc -w  /tmp/c
+53492 /tmp/c
+```
+ 
+* Top occurances of words
+
+This is for interest only, and may give you some insight in how to speed the translation process up. The most frequently-occurring work is the indicative article, 'the':
+
+```bash
+$ sed -e 's/\s\s*/\n/g' /tmp/c | grep [a-zA-Z] | grep -v [0-9] |  sed  -e 's/\.//g' -e 's/,//g' -e 's/(//g' -e 's/)//g' -e "s/^'//" -e "s/'$//" -e 's/;$//' -e 's/\!$//' -e 's/\?$//' | grep -v '^/' | sort > /tmp/d
+$ $ uniq -c /tmp/d | sort -nr  > /tmp/e
+$ less /tmp/e
+   2978 the
+   1655 to
+    997 a
+    763 for
+    725 of
+    675 in
+    652 this
+    643 is
+    530 you
+    510 or
+    507 be
+    501 not
+    480 and
+    418 will
+    414 user
+    407 your    
+etc...
+```
+
+The occurances of each words form a Zipfian distribution, as you would expect the case to be with a large corpus of any given spoken langauge. You can plot this file, note the straight-ish line formed:
+
+```bash
+$ gnuplot <<!
+> set terminal dumb
+> set logscale
+> set xrange [1:300]
+> plot '/tmp/f' with lines
+> !
+
+                                                                               
+  10000 +------------------------------------------------------------------+   
+        |+                         +                          +           +|   
+        |+                                                '/tmp/f' *******+|   
+        |+                                                                +|   
+        |                                                                  |   
+        |*****                                                            +|   
+        |     **                                                           |   
+   1000 |-+     ********                                                 +-|   
+        |+              ********                                          +|   
+        |+                      *********                                 +|   
+        |+                               *****                            +|   
+        |+                                    ********                    +|   
+        |                                             *******              |   
+    100 |-+                                                 *****        +-|   
+        |+                                                      *****     +|   
+        |+                                                          ****  +|   
+        |+                                                             ****|   
+        |+                                                                +|   
+        |+                                                                +|   
+        |                          +                          +            |   
+     10 +------------------------------------------------------------------+   
+        1                          10                        100               
+```
+
+* Number of unique words to translate: 3004
+
+```bash
+$ sort -u /tmp/d > /tmp/e
+$ wc -l /tmp/e
+3004 /tmp/e
+```
+
+Bare in mind that the context varies so a given English word such as 'file' can end up having to be translated into many different words.
+
+## How does the language pack build process work?
+
+The default English en-GB language pack that is bundled with the Joomla installation is used as a reference: _Your_ language pack needs to contain all the text strings that exist in the English langauge pack, which must obvioulsy be translated into your specific language. Needless to say, Joomla grows and changes all the time, with new language strings added to each release. Every time that you execute the build process, it compares what you arready have on your langauge pack against the latest English language pack, creates any new (but blank) files where necessary and gives you a report of what text strings need to be translated. You then translate the missing text strings directly in the report files. The less often you produce langauge packs, the more text strings you are likely to have to translate each time. If you are starting from scratch, expect a huge amount of text strings to be translated. Once the translations are completed in the report files, you can then 'execute' the completed report files. This adds the new strings to your previously-exisitng language pack. 
+
+Run the packagning process to produce the language pack, install the language pack into a spare Joomla instance and test it. If all is OK, then publish the language pack and commit your changes to your local Git repository, tag it and push it to your remote Git repository - ready to produce an new langauge pack when the next version of Joomla is released. 
+
+## What are these translation report files?
+
+The report files are in fact a series of BASH script files and are produced in the directory `~/joomlawork`:
+
+1. New files that need to produced. This file is called `WorkFile_af-ZA_files.sh`. This report file needs to be executed like this:
+
+```bash
+~/joomlawork/WorkFile_af-ZA_files.sh
+```
+
+Any required new files will be created in your local project directory. Your files will also be named according to your langauge and that is all taken care of by this build process. Once this report script has been executed, the build tool needs to be run again to produce the remaining three reports. If no new files are required, the build process skips this process and continues to create the following:
+
+2. New Text strings in the *installation* section that need to be translated. This file is called `WorkFile_af-ZA_install.sh`. 
+
+3. New Text strings in the *administration* section that need to be translated. This file is called `WorkFile_af-ZA_admin.sh`. 
+
+4. New Text strings in the *front-end* section that need to be translated. This file is called `WorkFile_af-ZA_site.sh`. 
+
+# Install the necessary tools 
+
+First you need to install and configure the tools required. You will need:
+
+* A good text editor that can do regular expression search and replacements, such as Visual Code, Notepad++, Kate, Eclipse, etc... 
+* Git - the source control tools of choice
+* A technical dictionary, either online or in book form.
 
 ## Install Git
 
-If you have not installed it yet. Here's how to do it on Ubuntu / Mint / other derivatives:
+If you have not installed Git yet, then here's how to do it on Ubuntu / Mint / other Linux derivatives:
 
 ```bash
 ~/ $ sudo apt-get install git
 ```
 
+## Create an account for yourself on Github
+
+Got to https://github.com and sign up for the free option. No need to part with any money!
+
+You can either join an existing project on Github by forking it your Github account, or create your own project using the af-ZA project at https://github.com/gerritonagoodday/af-ZA_joomla_lang/tree/master/utilities as a template.
+
 ## Configure yourself in Git
+
+From here on, all the steps are done in a terminal. Some, but not all of the operations can be done using a GUI tool such as GitKraken too. We will also assume that you are working on the af-ZA language pack.
+
+Open a terminal on your computer.
 
 Set your user name, email address and password up if this is the only Git account that you are likely to use. Only set your password up like this if you are on your personal computer:
 ```bash
 ~/ $ git config --global user.name "yourusername"
-~/ $ git config --global user.emai "your@email"
+~/ $ git config --global user.email "your@email"
 ~/ $ git config --global user.password "XXXXX"
 ```
 
-Check your configuration. The line with password will be shown 'in the clear' if you have previously set it up, so beware who is shoulder-surfing you: 
+Check your configuration. The line with password will be shown 'in the clear' if you have previously set it up, so be aware of who might be shoulder-surfing: 
+
 ```bash
 ~ $ git config --list
 user.email=your@email
@@ -35,29 +186,39 @@ user.password=XXXXX
 
 ## Clone this Git repository (a.k.a. repo)
 
-First create an area where you work on on all your Git repos, such as ```$HOME/git```:
+Create an area where you want to work with all your Git repos, such as `$HOME/git`:
+
 ```bash
 ~/ $ mkdir git
 ~/ $ cd git
 ```
 
-Clone this language pack repo:
+Clone the choosen language pack repo - we use the af-ZA language as an example:
+
 ```bash
 ~/git $ git clone https://github.com/gerritonagoodday/af-ZA_joomla_lang.git
 Cloning into 'af-ZA_joomla_lang'...
-remote: Enumerating objects: 4, done.
-remote: Counting objects: 100% (xxx/xxx), done.
-remote: Compressing objects: 100% (xxx/xxxx, done.
-remote: Total xxx (delta 0), reused 0 (delta 0), pack-reused 0
+etc...
 Unpacking objects: 100% (xxx/xxx), done.
 ```
 
 Enter the repo. This is now your work area.
+
 ```bash
-~/git $ 
 ~/git $ cd af-ZA_joomla_lang/
 ~/git/af-ZA_joomla_lang $ 
 ```
+
+## Special case: Create a new language pack
+
+This step is only required if you want to create a new Joomla language pack. Let's assume you want to create a language pack to Amharic / Ge'ez for Ethiopia ('am-ET'). You will only need the `utilities` directory from the 'af-ZA' project and will need to chancge a few values in the configuration.sh file, which is very well documented:
+
+```bash
+~/git $ mkdir am-ET_joomla_lang
+~/git/am-ET_joomla_lang $ cp -r ../af-ZA_joomla_lang/utilities .
+```
+
+Set the configuraton values in `configuration.sh` and continue with the following steps. If you are looking for a quick prototype language pack with about 75% translation accuracy mixed in with utter nonsense (you have been warned), select the 'Google Translate' option below.
 
 ## Local vs Global configuration:
 
@@ -92,56 +253,191 @@ remote: Total xxx (delta 0), reused 0 (delta 0), pack-reused 0
 Unpacking objects: 100% (xxx/xxx), done.
 ```
 
-Enter the newly-loaded repo directory:
+Go into the newly-loaded repo directory:
 
 ```bash
 ~/git $ cd joomla-cms
 ~/git/joomla-cms
 ```
 
-If you hae done the above all before, you can skip to here and just do a refresh of the repo with the ```pull``` command:
+If you already have a repo of this, you can skip to here and just do a refresh of the repo with the `pull` command:
 
 ```bash
 ~/git/joomla-cms $ git pull
 remote: Enumerating objects: 360, done.
-remote: Counting objects: 100% (xxx/xxx), done.
-remote: Compressing objects: 100% (xxx/xxx), done.
-remote: Total xxx (delta 0), reused 0 (delta 0), pack-reused 0
-Receiving objects: 100% (xxx/xxx), 309.35 KiB | 1.11 MiB/s, done.
-Resolving deltas: 100% (xxx/xxx), completed with xxx local objects.
-From https://github.com/joomla/joomla-cms
-   2bdb02a464..a64d385b75  4.0-dev    -> origin/4.0-dev
-   e82bed675b..34118a4cc2  staging    -> origin/staging
-You are not currently on a branch.
 etc...
 ```
 
 Ignore the last comments and instructions - these are meant for actual Joomla PHP developers.
 
-### Avoiding confusion: always know your current branch!
+### Select the relevant release
 
-You can avoid a lot of confusion and possible mishaps of getting code in branches mixed up by always displaying the currently-selected branch on the command line. This is shown by default if you installed the Linux Git features on Windows. On the Linux terminal, you need to modify the PS1 variable in your local ```~/.bashrc``` file to show the current branch. For Debian-based Linux distros (around line 68), change the PS1 assignment to this:
+From the Joomla Translation leader, the instruction is to complete the language pack for Joomla release 3.9.5:
+
+```email
+From: Ilagnayeru Manickam <mig.joomla@gmail.com>
+To: translations@lists.joomla.org
+Subject: [Joomla Translation Team] Be Prepared for Joomla! 3.9.5
+
+Good Afternoon!
+
+Be known that Joomla! 3.9.5 RC has been released (https://github.com/joomla/joomla-cms/releases/tag/3.9.5-rc).  Joomla! 3.9.5 stable version is expected to be released on April 9, 2019 ([https://github.com/joomla/joomla-cms/milestones).
+.
+.
+.
+Thanks.
+
+- Ilagnayeru (MIG) Manickam
+  Joomla! Translations Coordination Team
+```   
+
+Now that you have pulled the latest Joomla source code repo in the previous step, list the available tags and select the relevant required tag, `3.9.5`: 
 
 ```bash
-PS1="${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w \[\033[33;1m\]\$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /')\[\033[01;34m\]\$\[\033[00m\] "
+$ git tag -n | grep "^3\.9\.5"
+3.9.5           Joomla! 3.9.5
+3.9.5-rc        Joomla! 3.9.5 Release Candidate
+|<----Tag---->| |<----Tag Comment---------------...
 ```
 
-For all other Linuxes:
+_NOTE:_ 
+> Do not confuse Tags with Tag Comments, or Tag Comments with Code Commit comments!
+
+* Checkout code against a tag
+
+This is similar to checking code against a branch, excepts that we need to explicity specify that this is a tag, or multiple tags, by using the `tags/`-specifier.
 
 ```bash
-PS1="\[\e]0;\u@\h \w\a\]\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w \[\033[33;1m\]$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /')\[\033[01;34m\]$\[\033[00m\] "
+$ git checkout tags/'3.9.5'
+Checking out files: 100% (9506/9506), done.
+Previous HEAD position was 6b8fd2b21f Tag Alpha 6
+HEAD is now at 1547f8e760 Prepare 3.9.5 release
 ```
 
-Also add the following utility command to your local ```~/.bashrc``` file, which shows you a quick and colourful graph of the branches with the ```gg``` command:
+Check what we have:
 
 ```bash
-alias gg="git log --graph --all --decorate --oneline"
-alias gs="git status"
+$ git status
+HEAD detached at 3.9.5
 ```
 
-### Select the branch 
+We have now successfully checked out the right code. Generally, should you ever want to develop any new PHP code against the code that relates to this tag, it is good practice to create branch:
 
-Now that you have installed or pulled the latest Joomla source code repo, list the available branches and select the relevant branch that is required. From the 
+```bash
+$ git branch '3.9.5-dev'            # branch code
+$ git branch                        # check if branching was successful
+* (HEAD detached at 3.9.5)          # yes it was:
+  3.9.5-dev                         #  - here is the branch, but it is not the active one
+  ...
+$ git checkout '3.9.5-dev'          # Make this branch active
+Switched to branch '3.9.5-dev'
+$ git branch                        # Check if this branch is now active
+* 3.9.5-dev                         # yes, successfully switched to.
+  ...
+```
+
+However, we are not going to develop any code off the Joomla main tree, and concentrate on developing the langauge pack only.
+
+## Set up the configuration for building
+
+In the `utilities configuration.sh` file, set the following values:
+
+```bash
+# For your first release of version 3.9.5, say this:
+TRANSLATIONVERSION_XML="3.9.5.1"
+# If your lanaguage is something other than af-ZA, change this:
+TARGETLINGO="af-ZA"
+# You may have called the repo for your language something else, 
+# although it helps to stick to this convention. Change this 
+# if your lanaguage is something other than af-ZA:
+GITREPONAME="af-ZA_joomla_lang"
+# Your langauge term for the word "Author"
+LOCAL_AUTHOR="Outeur"
+# Language name - in your own language and the English exonym (
+# Note: endonym is the local name for the language: 
+#           'Kiswahili' or 'Deutsch' or 'isiZulu'.
+#       exonym is what 'outsiders' use to refer to the language: 
+#           'Swahili' or 'German' or 'Zulu'.
+LINGONAME="Afrikaans (ZA)"
+LINGOEXONYM="Afrikaans"
+
+# This is the native name for the language and needs to be in the local script
+LINGOINDONYM="Afrikaans"
+TARGETCOUNTRY="South Africa"
+# Description of the langauge on one line.
+# This in your target language: "xxxxx (country xxx) translation for Joomla!"
+PACKAGE_HEADER='Afrikaanse Vertaling vir Joomla!'
+# Your langauge term for: "xxxxx language pack in the informal form of address", or something similar
+PACKAGE_DESC="Afrikaanse Taalpaket in die vertroulike aanspreeksvorm"
+# Local language terms:
+# Your langauge term for "Language"
+LOCAL_LANGUAGE="Taal"
+# "Schema"
+LOCAL_SCHEME="Skema"
+# Your langauge term for "Author"
+LOCAL_AUTHOR="Outeur"
+# Your langauge term for "Website"
+LOCAL_WEBSITE="Webwerf"
+# Your langauge term for "Revision"
+LOCAL_VERSION="Hersiening"
+# Date
+LOCAL_DATE="Datum"
+# "Please check the project website frequently for the most recent translation"
+LOCAL_INSTALL="Laat asb. weet indien daar enige tik-foute of grammaktia-foute is - hulle sal so spoedig moontlik reggemaak word!"
+# "All rights reserved" in your language, or use the English.
+LOCAL_ALLRIGHTS="Alle regte voorbehou"
+# Right To Left = 0 for most languages
+RTL=0
+# Locales by which this lnaguage is known
+# e.g. for German: de_DE.utf8, de_DE.UTF-8, de_DE, deu_DE, de, german, german-de, de, deu, germany
+LOCALE="af_ZA.uft8, af_ZA.UTF-8, af, af_ZA, afr_ZA, af-ZA, afrikaans, afrikaans-za, afr, south africa, suid-afrika"
+# First day of the week in the locale, mostly 1 = Sunday, sometimes 2 = Monday or 6=Saturday
+FIRSTDAY=1
+
+# Name of package author or team
+AUTHORNAME="Gerrit Hoekstra"
+# Email address of author or team
+AUTHOREMAIL="gerrit@hoekstra.co.uk"
+# Installation Configuration:
+#     A flag to display on successful completion of installation
+#     This can either be a publically-accessible URL or the name of graphics file. e.g.
+#     http://joomla4africa.org/images/smallflags/South Africa.gif
+#     If it is a file then specify relative to the directory that this file is in. If it is a file,
+#     it will be UU-encoded into the installation XML file. 
+#     The Recommended size for the images is 256x256 pixels, PNG format and with background alpha-channeled.
+#     Find your flag in http://www.flags.net
+LINGOFLAG="http://www.flags.net/images/largeflags/SOAF0001.GIF"
+#     The website that hosts this translation team
+LINGOSITE="http://forge.joomla.org/gf/project/afrikaans_taal"
+```
+
+## Run the build tools
+
+
+
+## How to complete the report files
+
+
+Now comes the hard work: all the strings need to be translated from the English into _your_ language in the report file. You can break the files up into sections and distribute them among the translation team members. In the course of typing in the translated text, be careful not to break the syntax of the executable script parts in a line of text - the only part of a line that you should modify is the human-spoken English text. Be particularly careful that you don't disturb the backslashes ('`\`') and double-inverted commas ('`"`') that surround the translation text.
+
+## Running the report files
+
+Once the report files are translated, execute them as follows, which will add your translated strings to the exisitng language pack.
+```bash
+~/joomlawork/WorkFile_af-ZA_install.sh
+~/joomlawork/WorkFile_af-ZA_admin.sh
+~/joomlawork/WorkFile_af-ZA_admin.sh
+```
+
+## Building your new language pack
+
+
+
+## Test and upload
+
+
+
+If you are member of an officially-recorgnized language translation team for Joomla, you will also also have access to Joomlacode.org and to Joomla's private Langauge Translation Working Group forum https://forum.joomla.org/viewforum.php?f=11. This will allow you to upload to your completed language pack for Joomla version 3 here: http://joomlacode.org/gf/project/jtranslation3_x
 
 
 
@@ -156,8 +452,6 @@ $ git status
 On branch 3.9
 Your branch is up-to-date with 'origin/3.9'.
 ```
-
-Make this command an alias ```gs``` - see further above.
 
 * Show branch tree (in glorious technicolor). Look for the branch containing 'HEAD' - that is your currently-selected branch. 
 
@@ -176,8 +470,14 @@ Make this command an alias ```gg``` - see further above.
 
 ## Post changes
 
-|my       | => |addded to| => |committed     |
-|workspace|    |staging  |    |current branch|
+A Git repository can be thought of as 3 file storage areas, being:
+ * The Working Directory
+ * The Staging area,a.k.a. the Index
+ * The HEAD, which contains the most recently-committed changes
+
+|my       | => |addded to| => |committed to  |
+|Working  |    |Staging  |    |current branch|
+|Direcory |    |Area     |    |HEAD          |
 |:-------:|    |:-------:|    |:------------:|
 
 * Post all changes from your working directory to the staging area. Remember to save the working files first!
@@ -186,8 +486,104 @@ Make this command an alias ```gg``` - see further above.
 $ git add .
 ```
 
+* Commit all staged changes to the current branch. Add a useful comment here to explain your working. If you are using an issue management system such as Jira, start the comment with comment with the Issue Number:
+
+```bash
+$ git commit -m "TEC1024 Updated docs"
+[3.9 642042e] TEC1024 Updated docs
+ 1 file changed, 184 insertions(+), 5 deletions(-)
+```
+
+* Push changes through to the remote repository's corresponding branch. If the branch does not yet exist on the remote repo, it will be created. If you have nt configured your access credentials yet with the `git config
+
+```bash
+$ git push 
+Username for 'https://github.com': XXX
+Password for 'https://gerritonagoodday@github.com': 
+Counting objects: 3, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 4.02 KiB | 187.00 KiB/s, done.
+Total 3 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/gerritonagoodday/af-ZA_joomla_lang.git
+   7705d44..642042e  3.9 -> 3.9
+```
+
+
+## Remote Repositories
+
+The above `push` operation of the most recent changes to a remote repo introduces the concept of interacting with other source repositories. Assuming that you have been developing stuff in the absence of a version control system like Git and would like to add your collection of work into the root of a large project _somewhere else_, you can convert your work into a Git repo and then make it part of the remote. 
+
+* Convert your non-versioned work into a repo
+
+```bash
+$ git init
+Initialised empty Git repository in [my_project_directory]
+```
+
+* Add all the files in your project to your new (local) repo's staging area:
+
+```bash
+$ git add .
+```
+
+* Commit the staged files. This also makes them eligiable for pushing over to the remote repo in the next step:
+
+```bash
+$ git commit -m 'My project files'
+```
+
+The files are still not in the remote location. This is done in the next step.
+
+* Join the remote repo (of which you know the remote git-file's URL) with your repo
+
+First, check that no remote repo is already associated with this local repo:
+
+```bash
+$ git remote
+$
+```
+
+Nothing. Now connect your local repo (notionally called 'origin') to the repo on the remote server:
+
+```bash
+$ git remote add origin https://github.com/gerritonagoodday/af-ZA_joomla_lang.git
+```
+
+Check again if the _remote repo_ is associated with this _local repo_:
+
+```bash
+$ git remote
+$ origin
+```
+
+Yes, it is, and it is called 'origin', which is an _alias for the remote repo_. You can see this in more detail with the _verbose_ version of this command:
+
+```bash
+$ git remote -v
+origin  https://github.com/gerritonagoodday/af-ZA_joomla_lang.git (fetch)
+origin  https://github.com/gerritonagoodday/af-ZA_joomla_lang.git (push)
+```
+
+* Finally, push the files from origin to master
+
+```bash
+$ git push origin master
+```
+If you have not set up your user credientials to the _remote repo_, you will be prompted to do so now.
 
 ## Branches
+
+This section lists a bunch of recipes and cheats that relate to branches.
+
+* A simple approach to use branches
+
+By default, a Git repository has at least one branch, called 'master'.
+
+Branches are created to develop specific feature sets in, or to create a specific release with feature sets in. Once the development of the branch has been completed, the code can optionally be 'tagged' with the release name, and the branch can be merged back into the master branch. All branches must eventually rendevouz to the master branch. When a branch has successfully been merged into the master (branch), the branch has effectively been removed. All that remains is the optional 'tag' of the code. 
+
+Should a branch need to be revisited in order to, say, fix a minor problem for a point-release, a branch can be made from the previous release tag. The fix is made, added, commited and pushed to remote, a point-release package is built, and the branch tagged with the point-release name and is merged into the master again, and the point-release branch does not exist any more. Repeat this process as often as required.
 
 * List all current branches in repo. the one marked with a '*' is the currently-selected branch:
 
@@ -205,6 +601,8 @@ $ git checkout '3.9'
 Switched to branch '3.9'
 Your branch is up-to-date with 'origin/3.9'.
 ```
+
+Also do this to intentionlly obliterate any code changes that you have made thus far on branch '3.9', and to start afresh.
 
 * Create a new branch off the currently-selected branch '3.9':
 
@@ -226,13 +624,123 @@ $ git branch
 
 * Delete a branch
 
+Do this to remove a branch and all its work from your local repo.
+
 ```bash
 $ git branch -d '3.9.5'
+Deleted branch 3.9.5 (was 7705d44).
 ```
 
-* Merge a branch 
+* Merge a branch into current branch
 
-# Some useful reference material
+Merging code from another branch cleverly folds the files and lines of code in the files together, and also commits the changes at the same time. Of course, only commiteted code can be merged to somewhere else.
+
+```bash
+$ git merge '[other-branch]'
+```
+
+Sometimes, a merge conflict needs to be resolved through your intervention. 
+
+Note that when a branch has been merged to `master`, the branch will continue to exist. If you are ready to do so, you can delete the branch forever:
+
+```bash
+$ git branch -d '[branch-to-delete]'
+````
+
+# Tagging
+
+Branches (mostly) rendevouz back to the `master` brnach eventually after performing the necessary commits and merges. You may well decide to delete the branch, as its contents is now in the master branch. You can mark the committed code base with a tag that indicates the code release Id, or anything else that is significant in the life cycle of the code base.
+
+* Create a tag 
+
+```bash
+$ git tag '3.9.5.1'
+```
+
+What can be very helpful is to add a comment to your new tag:
+
+```bash
+$ git tag '3.9.5.1' -m 'First point release'
+```
+
+Remember to do this only after you have committed your code. 
+
+* List tags in a repository 
+
+You can list all the tags and their comments in a repo (`-l` lists them without commants). In some cases, there can be many tags, so add a filter expression to limit the result:
+
+```bash
+$ git tag -n "3.9.5*" 
+3.9.5           Joomla! 3.9.5
+3.9.5-rc        Joomla! 3.9.5 Release Candidate
+```
+
+If you need to use a RegEx to for even finer filtering:
+
+```bash
+$ git tag -n | grep "^3\.9\.5"
+3.9.5           Joomla! 3.9.5
+3.9.5-rc        Joomla! 3.9.5 Release Candidate
+```
+
+Do not confuse Tags with Tag Comments, or with Code Commit comments!
+
+* Checkout code against a tag
+
+This is similar to checking code against a brnach, excepts that we need to explicity specify that this is a tag, or multiple tags, by using the `tags/`-specifier.
+
+```bash
+$ git checkout tags/'3.9.5'
+Checking out files: 100% (9506/9506), done.
+Previous HEAD position was 6b8fd2b21f Tag Alpha 6
+HEAD is now at 1547f8e760 Prepare 3.9.5 release
+```
+
+Check what we have:
+
+```bash
+$ git status
+HEAD detached at 3.9.5
+```
+
+Successfully checked out the right code. Should you want to develop and new code against the code that relates to this tag, it is good practice to create branch:
+
+```bash
+$ git branch '3.9.5-dev'            # branch code
+$ git branch                        # check if branching was successful
+* (HEAD detached at 3.9.5)          # yes it was:
+  3.9.5-dev                         #  - here is the branch, but it is not the active one
+  ...
+$ git checkout '3.9.5-dev'          # Make this branch active
+Switched to branch '3.9.5-dev'
+$ git branch                        # Check if this branch is now active
+* 3.9.5-dev                         # yes, successfully switched to.
+  ...
+```
+
+# Further information
+
+## Avoiding confusion: always know your current branch!
+
+You can avoid a lot of confusion and possible mishaps of getting code in branches mixed up by always displaying the currently-selected branch on the command line. This is shown by default if you installed the Linux Git features on Windows. On the Linux terminal, you need to modify the PS1 variable in your local ```~/.bashrc``` file to show the current branch. For Debian-based Linux distros (around line 68), change the PS1 assignment to this:
+
+```bash
+PS1="${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w \[\033[33;1m\]\$(git status 2>/dev/null | head -n1 | cut -d' ' -f3- | sed -e 's/\(.*\)/(\1) /')\[\033[01;34m\]\$\[\033[00m\] "
+```
+
+For all other Linuxes:
+
+```bash
+PS1="\[\e]0;\u@\h \w\a\]\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w \[\033[33;1m\]$(git status 2>/dev/null | head -n1 | cut -d' ' -f3- | sed -e 's/\(.*\)/(\1) /')\[\033[01;34m\]$\[\033[00m\] "
+```
+
+Also add the following utility command to your local ```~/.bashrc``` file, which shows you a quick and colourful graph of the branches with the ```gg``` command:
+
+```bash
+alias gg="git log --graph --all --decorate --oneline"
+```
+
+## Some useful reference material
 
 1. This is a good introduction to Git for a zero-knowledge start:
 
