@@ -230,7 +230,6 @@ If you have need to work on this repo as a different user on this user because y
 ~/ $ git config --local user.password "XXXXX"
 ```
 
-<<<<<<< HEAD
 ## Get the latest Joomla CMS source code
 
 You will need to have the Joomla source code of the release that you are creating a language pack for. The language pack build process (more on this later) unpacks the Joomla installation and uses the default English (en-GB) language strings as a reference, against which the a report is generated of missing language strings so that your language can be brought into alignment with the source reference. If the Joomla installation package has already been published as a .zip or a .tar.gz file, you can use this as your source reference when you run the build process, however you can also use the source code out of the Joomla Git repository as a reference. The only difference s here are that the Git repo also contains test cases in a ```test``` directory, which will be ignored in the build process, and that you need to set the repo to the correct branch before running the build process. So, let's begin by getting the latest Joomla source code from its Git repo:
@@ -737,25 +736,10 @@ PS1="\[\e]0;\u@\h \w\a\]\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w \[\03
 
 Also add the following utility command to your local ```~/.bashrc``` file, which shows you a quick and colourful graph of the branches with the ```gg``` command:
 
-=======
-## Hier gaat ons!
-
-
-
-# Useful Tips & Tools
-
-* Read this free eBook Pro Git by Scott Chacon, Ben Straub, Version 2.1.100, 2018-12-10
-* Set your command prompt to:
-```bash
-export PS1="\[\e]0;\u@\h \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w \[\033[33;1m\]\$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1) /')\[\033[01;34m\]\$\[\033[00m\] "
-```
-* Set this alias up to see your Git activities using the ```gg```-command:
->>>>>>> master
 ```bash
 alias gg="git log --graph --all --decorate --oneline"
 ```
 
-<<<<<<< HEAD
 ## Some useful reference material
 
 1. This is a good introduction to Git for a zero-knowledge start:
@@ -768,5 +752,3 @@ alt="Git & GitHub Crash Course For Beginners" width="240" height="180" border="1
 <a href="https://www.gitkraken.com/download" target="_blank"><img src="https://pbs.twimg.com/profile_images/714866842419011584/LRrR48qp_400x400.jpg" alt="GitKraken" width="240" height="180" border="10" /></a>
 
 
-=======
->>>>>>> master
