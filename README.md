@@ -631,7 +631,7 @@ $ git branch -d '3.9.5'
 Deleted branch 3.9.5 (was 7705d44).
 ```
 
-* Merge a branch into current branch
+## Merge  branches
 
 Merging code from another branch cleverly folds the files and lines of code in the files together, and also commits the changes at the same time. Of course, only commiteted code can be merged to somewhere else.
 
@@ -639,17 +639,50 @@ Merging code from another branch cleverly folds the files and lines of code in t
 $ git merge '[other-branch]'
 ```
 
-Sometimes, a merge conflict needs to be resolved through your intervention. 
+_NOTE:_
+>1. You need to 'be in the branch' that is being merged to. Use the `git checkout '[branch-name]'` for this.
+>2. The code is automatically commited after a merge. No need to do a `git commit` after a successful merge.
+>3. Sometimes, a merge conflict arrises and needs to be resolved through your manual intervention. See the next section.
 
-Note that when a branch has been merged to `master`, the branch will continue to exist. If you are ready to do so, you can delete the branch forever:
+When a branch has been merged to `master`, the branch will continue to exist. If you are ready to do so, you can delete the branch forever:
 
 ```bash
 $ git branch -d '[branch-to-delete]'
-````
+```
 
-# Tagging
+## Dealing with Merge Conflicts
 
-Branches (mostly) rendevouz back to the `master` brnach eventually after performing the necessary commits and merges. You may well decide to delete the branch, as its contents is now in the master branch. You can mark the committed code base with a tag that indicates the code release Id, or anything else that is significant in the life cycle of the code base.
+Git attempts to automatically merge code from branches. Where there is any doubt on how a merge of code should be done, it raises a _merge conflict_ and invokes a merge tool that the user can use to correctly resolve the conflict. Luckily, the merging operation is mostly a straight-forward process and does not require user intervention. 
+
+Because it can get complicated to resolve conflicting code during a merge on the command line, a number of graphical tools are available to make the operation clearer. The tool of choice here is `meld`. It is totally awesome. If you do not already have it installed, install it like this:
+
+```bash
+$ sudo apt install meld
+```
+You also need to configure Git to automatically invoke `meld` when the need arrrises to resolve merge conflicts:
+
+Set the graphical merginging tool up
+```bash
+$ git config merge.tool meld
+```
+
+Let's assume that you are merging branch '3.9.5' to branch 'master' and this happens:
+
+...TODO...
+
+Run the merge tool:
+
+```bash
+$ git mergetool
+```
+
+
+
+
+
+## Tagging
+
+Branches (mostly) rendevouz back to the `master` branch eventually after performing the necessary commits and merges. You may well decide to delete the branch, as its contents is now in the master branch. You can mark the committed code base with a tag that indicates the code release Id, or anything else that is significant in the life cycle of the code base.
 
 * Create a tag 
 
@@ -717,6 +750,7 @@ $ git branch                        # Check if this branch is now active
 * 3.9.5-dev                         # yes, successfully switched to.
   ...
 ```
+
 
 # Further information
 

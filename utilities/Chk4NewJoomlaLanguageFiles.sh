@@ -312,6 +312,10 @@ INFO "[$LINENO] === BEGIN [PID $$] $PROGNAME ==="
 ReadConfiguration
 CreateWorkspace
 
+GIT=/usr/bin/git
+[[ ! -a $GIT ]] && DIE "[$LINENO] $GIT does not exist"
+[[ ! -x $GIT ]] && DIE "[$LINENO] $GIT is not executable"
+
 # Check input
 while [[ $1 = -* ]]; do
   ARG=$(echo $1|cut -d'=' -f1)
@@ -367,46 +371,71 @@ fi
 SOURCELINGO1=$(echo $SOURCELINGO | sed -e 's/-..//')
 TARGETLINGO1=$(echo $TARGETLINGO | sed -e 's/-..//')
 
-INFO "[$LINENO] Checking target subversion directory layout"
+INFO "[$LINENO] Checking / fixing target subversion directory layout"
 
-[[ ! -d "$local_sandbox_dir/installation/language/${TARGETLINGO}" ]]  && mkdir -p "$local_sandbox_dir/installation/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/installation/installer" ]]                && mkdir -p "$local_sandbox_dir/installation/installer"
-[[ ! -d "$local_sandbox_dir/installation/sql/mysql" ]]                && mkdir -p "$local_sandbox_dir/installation/sql/mysql"
-[[ ! -d "$local_sandbox_dir/administrator/language/${TARGETLINGO}" ]] && mkdir -p "$local_sandbox_dir/administrator/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/administrator/language/overrides" ]]      && mkdir -p "$local_sandbox_dir/administrator/language/overrides"
-[[ ! -d "$local_sandbox_dir/administrator/help/${TARGETLINGO}" ]]     && mkdir -p "$local_sandbox_dir/administrator/help/${TARGETLINGO}"
+# These are the current directories that contain langauge files,
+# check them on new major releases.
+# find . -type f -name "en-GB*.ini" | sed -e 's/en-GB\..*//' | sort -u
+#./administrator/language/en-GB/
+#./administrator/modules/mod_multilangstatus/language/en-GB/
+#./administrator/modules/mod_stats_admin/language/
+#./administrator/modules/mod_version/language/en-GB/
+#./administrator/templates/hathor/language/en-GB/
+#./administrator/templates/isis/language/en-GB/
+#./installation/language/en-GB/
+#./language/en-GB/
+#./libraries/cms/html/language/en-GB/
+#./libraries/src/Filesystem/Meta/language/en-GB/
+#./libraries/vendor/joomla/filesystem/meta/language/en-GB/
+# ./plugins/system/languagecode/language/en-GB/
+#./templates/beez3/language/en-GB/
+#./templates/protostar/language/en-GB/
+
+
+# Create any missing directories:
+[[ ! -d "$local_sandbox_dir/administrator/language/${TARGETLINGO}" ]]                 && mkdir -p "$local_sandbox_dir/administrator/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/administrator/language/overrides" ]]                      && mkdir -p "$local_sandbox_dir/administrator/language/overrides"
+[[ ! -d "$local_sandbox_dir/administrator/help/${TARGETLINGO}" ]]                     && mkdir -p "$local_sandbox_dir/administrator/help/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/administrator/modules/mod_multilangstatus/language/${TARGETLINGO}" ]] && mkdir -p "$local_sandbox_dir/administrator/modules/mod_multilangstatus/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/administrator/modules/mod_stats_admin/language/${TARGETLINGO}" ]] && mkdir -p "$local_sandbox_dir/administrator/modules/mod_stats_admin/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/administrator/modules/mod_version/language/${TARGETLINGO}" ]] && mkdir -p "$local_sandbox_dir/administrator/modules/mod_version/language/${TARGETLINGO}"
 [[ ! -d "$local_sandbox_dir/administrator/templates/hathor/language/${TARGETLINGO}" ]] && mkdir -p "$local_sandbox_dir/administrator/templates/hathor/language/${TARGETLINGO}" 
 [[ ! -d "$local_sandbox_dir/administrator/templates/bluestork/language/${TARGETLINGO}" ]] && mkdir -p "$local_sandbox_dir/administrator/templates/bluestork/language/${TARGETLINGO}" 
-[[ ! -d "$local_sandbox_dir/administrator/modules/mod_stats_admin/language/${TARGETLINGO}" ]] && mkdir -p "$local_sandbox_dir/administrator/modules/mod_stats_admin/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/administrator/modules/mod_multilangstatus/language/${TARGETLINGO}" ]] && mkdir -p "$local_sandbox_dir/administrator/modules/mod_multilangstatus/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/language/${TARGETLINGO}" ]]               && mkdir -p "$local_sandbox_dir/langauge/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/language/overrides" ]]                    && mkdir -p "$local_sandbox_dir/langauge/overrides"
-[[ ! -d "$local_sandbox_dir/plugins/system/languagecode/language/${TARGETLINGO}" ]] && mkdir -p "$local_sandbox_dir/plugins/system/languagecode/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/libraries/joomla/html/language/${TARGETLINGO}" ]] && mkdir -p "$local_sandbox_dir/libraries/joomla/html/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/libraries/joomla/filesystem/meta/language/${TARGETLINGO}" ]] && mkdir -p "$local_sandbox_dir/libraries/joomla/filesystem/meta/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/libraries/cms/html/language/${TARGETLINGO}" ]] && mkdir -p "$local_sandbox_dir/libraries/cms/html/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/administrator/templates/isis/language/${TARGETLINGO}" ]]  && mkdir -p "$local_sandbox_dir/administrator/templates/isis/language/${TARGETLINGO}" 
+[[ ! -d "$local_sandbox_dir/installation/language/${TARGETLINGO}" ]]                  && mkdir -p "$local_sandbox_dir/installation/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/installation/installer" ]]                                && mkdir -p "$local_sandbox_dir/installation/installer"
+[[ ! -d "$local_sandbox_dir/installation/sql/mysql" ]]                                && mkdir -p "$local_sandbox_dir/installation/sql/mysql"
+[[ ! -d "$local_sandbox_dir/language/${TARGETLINGO}" ]]                               && mkdir -p "$local_sandbox_dir/langauge/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/language/overrides" ]]                                    && mkdir -p "$local_sandbox_dir/langauge/overrides"
+[[ ! -d "$local_sandbox_dir/libraries/cms/html/language/${TARGETLINGO}" ]]            && mkdir -p "$local_sandbox_dir/libraries/cms/html/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/libraries/src/Filesystem/Meta/language/${TARGETLINGO}" ]] && mkdir -p "$local_sandbox_dir/libraries/src/Filesystem/Meta/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/libraries/vendor/joomla/filesystem/meta/language/${TARGETLINGO}" ]] && mkdir -p "$local_sandbox_dir/libraries/vendor/joomla/filesystem/meta/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/plugins/system/languagecode/language/${TARGETLINGO}" ]]   && mkdir -p "$local_sandbox_dir/plugins/system/languagecode/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/templates/beez3/language/${TARGETLINGO}" ]]               && mkdir -p "$local_sandbox_dir/templates/beez3/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/templates/protostar/language/${TARGETLINGO}" ]]           && mkdir -p "$local_sandbox_dir/templates/beeprotostarz3/language/${TARGETLINGO}"
 
-
-[[ ! -d "$local_sandbox_dir/installation/language/${TARGETLINGO}" ]]  && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/installation/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/installation/installer" ]]                && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/installation/installer"
-[[ ! -d "$local_sandbox_dir/installation/sql/mysql" ]]                && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/installation/sql/mysql"
-[[ ! -d "$local_sandbox_dir/administrator/language/${TARGETLINGO}" ]] && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/administrator/language/overrides" ]]      && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/language/overrides"
-[[ ! -d "$local_sandbox_dir/administrator/help/${TARGETLINGO}" ]]     && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/help/${TARGETLINGO}"
+# Check if directories are there:
+[[ ! -d "$local_sandbox_dir/administrator/language/${TARGETLINGO}" ]]                 && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/administrator/language/overrides" ]]                      && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/language/overrides"
+[[ ! -d "$local_sandbox_dir/administrator/help/${TARGETLINGO}" ]]                     && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/help/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/administrator/modules/mod_multilangstatus/language/${TARGETLINGO}" ]] && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/modules/mod_multilangstatus/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/administrator/modules/mod_stats_admin/language/${TARGETLINGO}" ]] && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/modules/mod_stats_admin/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/administrator/modules/mod_version/language/${TARGETLINGO}" ]] && && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/modules/mod_version/language/${TARGETLINGO}"
 [[ ! -d "$local_sandbox_dir/administrator/templates/hathor/language/${TARGETLINGO}" ]] && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/templates/hathor/language/${TARGETLINGO}" 
 [[ ! -d "$local_sandbox_dir/administrator/templates/bluestork/language/${TARGETLINGO}" ]] &&  DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/templates/bluestork/language/${TARGETLINGO}" 
-[[ ! -d "$local_sandbox_dir/administrator/modules/mod_stats_admin/language/${TARGETLINGO}" ]] && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/modules/mod_stats_admin/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/administrator/modules/mod_multilangstatus/language/${TARGETLINGO}" ]] && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/modules/mod_multilangstatus/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/language/${TARGETLINGO}" ]]               && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/langauge/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/language/overrides" ]]                    && DIE "Unexpected directory layout - Expected:  $local_sandbox_dir/langauge/overrides"
-[[ ! -d "$local_sandbox_dir/plugins/system/languagecode/language/${TARGETLINGO}" ]] && DIE "Unexpected subversion directory layout - Expected: $local_sandbox_dir/plugins/system/languagecode/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/libraries/joomla/html/language/${TARGETLINGO}" ]] && DIE "Unexpected subversion directory layout - Expected: $local_sandbox_dir/libraries/joomla/html/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/libraries/joomla/filesystem/meta/language/${TARGETLINGO}" ]]  && DIE "Unexpected subversion directory layout - Expected: $local_sandbox_dir/libraries/joomla/filesystem/meta/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/libraries/cms/html/language/${TARGETLINGO}" ]] && DIE "Unexpected subversion directory layout - Expected: $local_sandbox_dir/libraries/cms/html/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/administrator/templates/isis/language/${TARGETLINGO}" ]]  && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/templates/isis/language/${TARGETLINGO}" 
+[[ ! -d "$local_sandbox_dir/installation/language/${TARGETLINGO}" ]]                  && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/installation/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/installation/installer" ]]                                && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/installation/installer"
+[[ ! -d "$local_sandbox_dir/installation/sql/mysql" ]]                                && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/installation/sql/mysql"
+[[ ! -d "$local_sandbox_dir/language/${TARGETLINGO}" ]]                               && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/langauge/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/language/overrides" ]]                                    && DIE "Unexpected directory layout - Expected:  $local_sandbox_dir/langauge/overrides"
+[[ ! -d "$local_sandbox_dir/libraries/cms/html/language/${TARGETLINGO}" ]]            && DIE "Unexpected subversion directory layout - Expected: $local_sandbox_dir/libraries/cms/html/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/libraries/src/Filesystem/Meta/language/${TARGETLINGO}" ]] && DIE "Unexpected subversion directory layout - Expected: $local_sandbox_dir/libraries/src/Filesystem/Meta/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/libraries/vendor/joomla/filesystem/meta/language/${TARGETLINGO}" ]] && DIE "Unexpected subversion directory layout - Expected: $local_sandbox_dir/libraries/vendor/joomla/filesystem/meta/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/plugins/system/languagecode/language/${TARGETLINGO}" ]]   && DIE "Unexpected subversion directory layout - Expected: $local_sandbox_dir/plugins/system/languagecode/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/templates/beez3/language/${TARGETLINGO}" ]]               && DIE "Unexpected subversion directory layout - Expected: $local_sandbox_dir/templates/beez3/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/templates/protostar/language/${TARGETLINGO}" ]]           && DIE "Unexpected subversion directory layout - Expected: $local_sandbox_dir/templates/beeprotostarz3/language/${TARGETLINGO}"
 
-GIT=/usr/bin/git
-[[ ! -a $GIT ]] && DIE "[$LINENO] $GIT does not exist"
-[[ ! -x $GIT ]] && DIE "[$LINENO] $GIT is not executable"
 
 # Default parameters
 if [[ -n $dictionary ]]; then
@@ -430,8 +459,8 @@ UnpackSourcePackage
 # and the Target lingo distribution
 function DiffFileReport {
   INFO "[$LINENO] Comparing number of .ini files:"
-  find ${local_sandbox_dir} -type f -name "*.ini" | grep ${TARGETLINGO} | grep -v "^;" | sed -e "s|${local_sandbox_dir}||" -e "s|${TARGETLINGO}|LINGO|g" -e 's|^/||' | sort > ${WORKFOLDER}/${TARGETLINGO}_files
-  find ${joomla_source_dir}   -type f -name "*.ini" | grep ${SOURCELINGO} | grep -v "^;" | sed -e "s|${joomla_source_dir}||"   -e "s|${SOURCELINGO}|LINGO|g" -e 's|^/||' | sort > ${WORKFOLDER}/${SOURCELINGO}_files
+  find ${local_sandbox_dir} -type f -name "*.ini" | grep ${TARGETLINGO} | sed -e "s|${local_sandbox_dir}||" -e "s|${TARGETLINGO}|LINGO|g" -e 's|^/||' | sort > ${WORKFOLDER}/${TARGETLINGO}_files
+  find ${joomla_source_dir} -type f -name "*.ini" | grep ${SOURCELINGO} | sed -e "s|${joomla_source_dir}||" -e "s|${SOURCELINGO}|LINGO|g" -e 's|^/||' | sort > ${WORKFOLDER}/${SOURCELINGO}_files
 
   SOURCELINGOFILES=`cat ${WORKFOLDER}/${SOURCELINGO}_files | wc -l`
   TARGETLINGOFILES=`cat ${WORKFOLDER}/${TARGETLINGO}_files | wc -l`
