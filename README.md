@@ -631,6 +631,31 @@ $ git branch -d '3.9.5'
 Deleted branch 3.9.5 (was 7705d44).
 ```
 
+* Push a branch to your remote repo
+
+One way to make your work in your local branch visible to the public is to commit your branch and to push it to the remote repo. Chance are that the branch does not yet exist on the remote repo, so will need to force the creation of the branch on the remote repo:
+
+```bash
+$ git push --set-upstream origin 3.9.5
+Username for 'https://github.com': XXXX
+Password for 'https://XXXX@github.com': 
+...
+...
+To https://github.com/gerritonagoodday/af-ZA_joomla_lang.git
+ * [new branch]      3.9.5 -> 3.9.5
+Branch '3.9.5' set up to track remote branch '3.9.5' from 'origin'.
+```
+
+_NOTE:_
+>Remeber to add and commit your changes first before pushing to remote.
+
+Once you have create the branch on the remote repo, you can push as per normal:
+
+```bash
+$ git push
+Everything up-to-date
+```
+
 ## Merge  branches
 
 Merging code from another branch cleverly folds the files and lines of code in the files together, and also commits the changes at the same time. Of course, only commiteted code can be merged to somewhere else.
