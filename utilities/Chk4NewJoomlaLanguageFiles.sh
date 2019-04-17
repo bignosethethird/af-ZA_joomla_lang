@@ -2,7 +2,7 @@
 
 # What this script does:
 # ~~~~~~~~~~~~~~~~~~~~~
-# This script compares your langauge .ini files with those from a chosen
+# This script compares your language .ini files with those from a chosen
 # Joomla Release. This identifies .ini files in your translation project
 # that have  either been removed or added to the Joomla project.
 # It also identifies new and legacy strings in your translation project's
@@ -173,14 +173,6 @@ function cleanup {
 }
 for sig in KILL TERM INT EXIT; do trap "cleanup $sig" "$sig" ; done
 
-
-# From http://www.commandlinefu.com/commands/view/5034/google-translate
-# (Don't ask for explanatory details, but it works just like it is)
-# Example: translate "Hello, where are we now" en af
-# Prints:  Hallo, waar is ons nou?
-# Note: Google assumes "Terms of Service Abuse", so does not work any more.
-function translate { curl -s "http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&q=`perl -MURI::Escape -e 'print uri_escape($ARGV[0]);' "$1"`&langpair=`if [ "$3" != "" ]; then echo $2; fi;`%7C`if [ "$3" == "" ]; then echo $2; else echo $3; fi;`" | sed 's/{"responseData": {"translatedText":"\([^"]*\)".*}, .*}/\1\n/'; }
-
 #============================================================================#
 # Build Functions
 #============================================================================#
@@ -200,8 +192,6 @@ function CreateWorkspace {
   [[ "${parentdir##*/}" != "$GITREPONAME" ]] && DIE "[$LINENO] This utility needs to be run from the sandbox $GITREPONAME/utilities"
   # Local subversion sandbox in workfolder to pull latest code cut down to
   local_sandbox_dir="$parentdir"
-  INFO "[$LINENO] OK"
-
   rm -fr $WORKFOLDER/admin 2>/dev/null
   mkdir -p $WORKFOLDER/admin
   rm -fr $WORKFOLDER/site 2>/dev/null
@@ -210,7 +200,7 @@ function CreateWorkspace {
 
 function usage {
   printf "
-Compares your langauge .ini files with those from a chosen Joomla Release and
+Compares your language .ini files with those from a chosen Joomla Release and
 generates a report and work package of work that needs to be done to bring your
 current translation package in line with the latest package.
 
@@ -303,6 +293,38 @@ function UnpackSourcePackage {
   esac
 }
 
+# Uses Google Translate Version 2.0
+# Example: google_translate "Hello, where are we now?" en af
+# Prints:  Hallo, waar is ons nou?
+# For this to work:
+# You need to be a Google Cloud Platform user 
+# Install the Google Cloud SDK
+# Got to https://cloud.google.com/translate/docs/quickstart
+# Set up a Google Cloud Platform project if you don't already have one that you can piggy-back off in the GCP console
+# Download private as a JSON file and keep in a place where it will not be deleted, like ${HOME}/.gcp/[projectname]-[key].json
+# export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/.gcp/[projectname]-[key].json"
+# Add this line above to your ~/.bashrc file. Use ${HOME}, not '~'.
+# Test it with this command: 
+# gcloud auth application-default print-access-token
+# It should return a long key string.
+google_translate () 
+{ 
+  key=$(gcloud auth application-default print-access-token)
+
+  # TODO
+  # Break string into pieces delimited %.. or 
+
+  
+
+
+  curl -s -X POST -H "Content-Type: application/json" -H "Authorization: Bearer "$key --data "{
+  'q': '${1}',
+  'source': '${2}',
+  'target': '${3}',
+  'format': 'text'
+}" "https://translation.googleapis.com/language/translate/v2" | jq '.data.translations[0].translatedText' | sed -e 's/^"//g' -e 's/"$//g'
+}
+
 #============================================================================#
 # Main program
 #============================================================================#
@@ -373,7 +395,7 @@ TARGETLINGO1=$(echo $TARGETLINGO | sed -e 's/-..//')
 
 INFO "[$LINENO] Checking / fixing target subversion directory layout"
 
-# These are the current directories that contain langauge files,
+# These are the current directories that contain language files,
 # check them on new major releases.
 # find . -type f -name "en-GB*.ini" | sed -e 's/en-GB\..*//' | sort -u
 #./administrator/language/en-GB/
@@ -405,8 +427,8 @@ INFO "[$LINENO] Checking / fixing target subversion directory layout"
 [[ ! -d "$local_sandbox_dir/installation/language/${TARGETLINGO}" ]]                  && mkdir -p "$local_sandbox_dir/installation/language/${TARGETLINGO}"
 [[ ! -d "$local_sandbox_dir/installation/installer" ]]                                && mkdir -p "$local_sandbox_dir/installation/installer"
 [[ ! -d "$local_sandbox_dir/installation/sql/mysql" ]]                                && mkdir -p "$local_sandbox_dir/installation/sql/mysql"
-[[ ! -d "$local_sandbox_dir/language/${TARGETLINGO}" ]]                               && mkdir -p "$local_sandbox_dir/langauge/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/language/overrides" ]]                                    && mkdir -p "$local_sandbox_dir/langauge/overrides"
+[[ ! -d "$local_sandbox_dir/language/${TARGETLINGO}" ]]                               && mkdir -p "$local_sandbox_dir/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/language/overrides" ]]                                    && mkdir -p "$local_sandbox_dir/language/overrides"
 [[ ! -d "$local_sandbox_dir/libraries/cms/html/language/${TARGETLINGO}" ]]            && mkdir -p "$local_sandbox_dir/libraries/cms/html/language/${TARGETLINGO}"
 [[ ! -d "$local_sandbox_dir/libraries/src/Filesystem/Meta/language/${TARGETLINGO}" ]] && mkdir -p "$local_sandbox_dir/libraries/src/Filesystem/Meta/language/${TARGETLINGO}"
 [[ ! -d "$local_sandbox_dir/libraries/vendor/joomla/filesystem/meta/language/${TARGETLINGO}" ]] && mkdir -p "$local_sandbox_dir/libraries/vendor/joomla/filesystem/meta/language/${TARGETLINGO}"
@@ -415,26 +437,26 @@ INFO "[$LINENO] Checking / fixing target subversion directory layout"
 [[ ! -d "$local_sandbox_dir/templates/protostar/language/${TARGETLINGO}" ]]           && mkdir -p "$local_sandbox_dir/templates/protostar/language/${TARGETLINGO}"
 
 # Check if directories are there:
-[[ ! -d "$local_sandbox_dir/administrator/language/${TARGETLINGO}" ]]                 && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/administrator/language/overrides" ]]                      && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/language/overrides"
-[[ ! -d "$local_sandbox_dir/administrator/help/${TARGETLINGO}" ]]                     && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/help/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/administrator/modules/mod_multilangstatus/language/${TARGETLINGO}" ]] && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/modules/mod_multilangstatus/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/administrator/modules/mod_stats_admin/language/${TARGETLINGO}" ]] && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/modules/mod_stats_admin/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/administrator/modules/mod_version/language/${TARGETLINGO}" ]] && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/modules/mod_version/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/administrator/templates/hathor/language/${TARGETLINGO}" ]] && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/templates/hathor/language/${TARGETLINGO}" 
-[[ ! -d "$local_sandbox_dir/administrator/templates/bluestork/language/${TARGETLINGO}" ]] &&  DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/templates/bluestork/language/${TARGETLINGO}" 
-[[ ! -d "$local_sandbox_dir/administrator/templates/isis/language/${TARGETLINGO}" ]]  && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/administrator/templates/isis/language/${TARGETLINGO}" 
-[[ ! -d "$local_sandbox_dir/installation/language/${TARGETLINGO}" ]]                  && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/installation/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/installation/installer" ]]                                && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/installation/installer"
-[[ ! -d "$local_sandbox_dir/installation/sql/mysql" ]]                                && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/installation/sql/mysql"
-[[ ! -d "$local_sandbox_dir/language/${TARGETLINGO}" ]]                               && DIE "Unexpected directory layout - Expected: $local_sandbox_dir/langauge/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/language/overrides" ]]                                    && DIE "Unexpected directory layout - Expected:  $local_sandbox_dir/langauge/overrides"
-[[ ! -d "$local_sandbox_dir/libraries/cms/html/language/${TARGETLINGO}" ]]            && DIE "Unexpected subversion directory layout - Expected: $local_sandbox_dir/libraries/cms/html/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/libraries/src/Filesystem/Meta/language/${TARGETLINGO}" ]] && DIE "Unexpected subversion directory layout - Expected: $local_sandbox_dir/libraries/src/Filesystem/Meta/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/libraries/vendor/joomla/filesystem/meta/language/${TARGETLINGO}" ]] && DIE "Unexpected subversion directory layout - Expected: $local_sandbox_dir/libraries/vendor/joomla/filesystem/meta/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/plugins/system/languagecode/language/${TARGETLINGO}" ]]   && DIE "Unexpected subversion directory layout - Expected: $local_sandbox_dir/plugins/system/languagecode/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/templates/beez3/language/${TARGETLINGO}" ]]               && DIE "Unexpected subversion directory layout - Expected: $local_sandbox_dir/templates/beez3/language/${TARGETLINGO}"
-[[ ! -d "$local_sandbox_dir/templates/protostar/language/${TARGETLINGO}" ]]           && DIE "Unexpected subversion directory layout - Expected: $local_sandbox_dir/templates/protostar/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/administrator/language/${TARGETLINGO}" ]]                 && DIE "[$LINENO] Unexpected directory layout - Expected: $local_sandbox_dir/administrator/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/administrator/language/overrides" ]]                      && DIE "[$LINENO] Unexpected directory layout - Expected: $local_sandbox_dir/administrator/language/overrides"
+[[ ! -d "$local_sandbox_dir/administrator/help/${TARGETLINGO}" ]]                     && DIE "[$LINENO] Unexpected directory layout - Expected: $local_sandbox_dir/administrator/help/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/administrator/modules/mod_multilangstatus/language/${TARGETLINGO}" ]] && DIE "[$LINENO] Unexpected directory layout - Expected: $local_sandbox_dir/administrator/modules/mod_multilangstatus/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/administrator/modules/mod_stats_admin/language/${TARGETLINGO}" ]] && DIE "[$LINENO] Unexpected directory layout - Expected: $local_sandbox_dir/administrator/modules/mod_stats_admin/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/administrator/modules/mod_version/language/${TARGETLINGO}" ]] && DIE "[$LINENO] Unexpected directory layout - Expected: $local_sandbox_dir/administrator/modules/mod_version/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/administrator/templates/hathor/language/${TARGETLINGO}" ]] && DIE "[$LINENO] Unexpected directory layout - Expected: $local_sandbox_dir/administrator/templates/hathor/language/${TARGETLINGO}" 
+[[ ! -d "$local_sandbox_dir/administrator/templates/bluestork/language/${TARGETLINGO}" ]] &&  DIE "[$LINENO] Unexpected directory layout - Expected: $local_sandbox_dir/administrator/templates/bluestork/language/${TARGETLINGO}" 
+[[ ! -d "$local_sandbox_dir/administrator/templates/isis/language/${TARGETLINGO}" ]]  && DIE "[$LINENO] Unexpected directory layout - Expected: $local_sandbox_dir/administrator/templates/isis/language/${TARGETLINGO}" 
+[[ ! -d "$local_sandbox_dir/installation/language/${TARGETLINGO}" ]]                  && DIE "[$LINENO] Unexpected directory layout - Expected: $local_sandbox_dir/installation/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/installation/installer" ]]                                && DIE "[$LINENO] Unexpected directory layout - Expected: $local_sandbox_dir/installation/installer"
+[[ ! -d "$local_sandbox_dir/installation/sql/mysql" ]]                                && DIE "[$LINENO] Unexpected directory layout - Expected: $local_sandbox_dir/installation/sql/mysql"
+[[ ! -d "$local_sandbox_dir/language/${TARGETLINGO}" ]]                               && DIE "[$LINENO] Unexpected directory layout - Expected: $local_sandbox_dir/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/language/overrides" ]]                                    && DIE "[$LINENO] Unexpected directory layout - Expected:  $local_sandbox_dir/language/overrides"
+[[ ! -d "$local_sandbox_dir/libraries/cms/html/language/${TARGETLINGO}" ]]            && DIE "[$LINENO] Unexpected subversion directory layout - Expected: $local_sandbox_dir/libraries/cms/html/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/libraries/src/Filesystem/Meta/language/${TARGETLINGO}" ]] && DIE "[$LINENO] Unexpected subversion directory layout - Expected: $local_sandbox_dir/libraries/src/Filesystem/Meta/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/libraries/vendor/joomla/filesystem/meta/language/${TARGETLINGO}" ]] && DIE "[$LINENO] Unexpected subversion directory layout - Expected: $local_sandbox_dir/libraries/vendor/joomla/filesystem/meta/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/plugins/system/languagecode/language/${TARGETLINGO}" ]]   && DIE "[$LINENO] Unexpected subversion directory layout - Expected: $local_sandbox_dir/plugins/system/languagecode/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/templates/beez3/language/${TARGETLINGO}" ]]               && DIE "[$LINENO] Unexpected subversion directory layout - Expected: $local_sandbox_dir/templates/beez3/language/${TARGETLINGO}"
+[[ ! -d "$local_sandbox_dir/templates/protostar/language/${TARGETLINGO}" ]]           && DIE "[$LINENO] Unexpected subversion directory layout - Expected: $local_sandbox_dir/templates/protostar/language/${TARGETLINGO}"
 
 
 # Default parameters
@@ -663,47 +685,24 @@ function DiffContentReport {
       while read LINE; do
         # Look up source String To Be Translated in Source Language file & Doulbe-Escape quotation marks while we are at it...
         # Does not work for strings, e.g. containing embedded HTML: <strong class="...
-        # TODO
-        # EMbedded ! need to be escaped
-        # Split admin, main and install
-        # Identify most important bits
-        # Reduce number of goole api calls
 
         # STBT contains: XXXXXX="Source Language String"
         STBT=`grep -e "^${LINE}=" ${ASOURCELINGO[$i]} | head -1 | sed -e 's|\s*$||' -e 's|=\s*"|=\\\\"|' -e 's|"\s*$|\\\\"|' 2>/dev/null`
         # Use echo since there may be embedded %s in the strings
         [[ $VERBOSE -eq 1 ]] && echo "$STBT"
-        #echo "echo \"${STBT}\" >> ${ATARGETLINGO[$i]}" >> $PATCHFILE
-        echo "echo \"${STBT}\"\\" >> $PATCHFILE
-        echo "     >> ${ATARGETLINGO[$i]}" >> $PATCHFILE
 
-        # SOURCESTRING contains "Source Language String"
-        SOURCESTRING=$(echo $STBT | sed -e "s|^$LINE.*=||")
-        # GOOGLE TRANSOURCELINGOATION
-        if [[ -n $GOOGLELOOKUP ]]; then
-          if [[ -z $GOOGLE_IS_ON_STRIKE ]]; then
-            # Look up using google translator for suggestions:
-            # Get Text Only String
-            SUGGESTION=$(translate "$SOURCESTRING" $SOURCELINGO1 $TARGETLINGO1)
-            SUGGESTION=$(echo $SUGGESTION | sed -e 's|\\u0026quot;||g')
-
-            if [[ $SUGGESTION =~ "\"responseStatus\": 403" ]]; then
-              # If Google thinks it is being abused, then it stops serving translations
-              printf "# Google will not do any more translations - try again later.\n" >> $PATCHFILE
-              INFO "Google will not do any more translations - try again later"
-              GOOGLE_IS_ON_STRIKE="very unhappy"
-            else
-              if [[ $SUGGESTION =~ "\"responseStatus\": 400" ]]; then
-                printf "# GOOGLE LOOKUP FAILED: Could not find a Google translation.\n" >> $PATCHFILE
-              else
-                printf "# GOOGLE LOOKUP: $SUGGESTION\n" >> $PATCHFILE
-                # Give Google time to recover
-                sleep 1
-              fi
-            fi
-          fi
+        if [[ -n $GOOGLELOOKUP ]]; then          
+          string_id=$(echo ${STBT} | cut -d'=' -f1)
+          google_querystring=$(echo ${STBT} | cut -d'=' -f2- | sed -e 's/^\\"//' -e 's/\\"$//')
+          echo "#${string_id}=\"${google_querystring}\"" >> $PATCHFILE
+          google_translation=$(google_translate "$google_querystring" $SOURCELINGO1 $TARGETLINGO1)
+          [[ "$google_translation" -eq "nill" ]] && DIE "[$LINENO] Google Translation API failed. Check your key."
+          [[ $VERBOSE -eq 1 ]] && echo "$google_translation"
+          echo "echo ${string_id}=\"${google_translation}\"\\" >> $PATCHFILE
+        else
+          echo "echo \"${STBT}\"\\" >> $PATCHFILE
         fi
-
+        echo "     >> ${ATARGETLINGO[$i]}" >> $PATCHFILE
 
         if [[ -n $lexicon ]]; then
           # lexicon LOOKUPSTBTARGETLINGOex=
