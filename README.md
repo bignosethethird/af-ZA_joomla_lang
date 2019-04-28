@@ -1,3 +1,59 @@
+# Suite of Language Tranlation Utilities for Joomla
+
+First: What is Joomla? Find out [here](https://www.joomla.org/)!
+
+Currently Joomla support around 50 spoken languages. Every revision of Joomla requires some text to be translated 
+from the origin language, English, to be translated into all 50 languages. Most translation teams have developed 
+their own set of tools, an here is another set of such tools. The tool set differs in that it is totally command-line
+driven and uses the collaboration abilities of Git to spread the work load across team members.
+
+## Table of Contents
+
+- [Suite of Language Tranlation Utilities for Joomla](#suite_of_language_tranlation_utilities_for_joomla)
+  - [Table of Contents](#table_of_contents)
+- [Instructions](#instructions)
+  - [Naming conventions](#naming_conventions)
+  - [How much work is involved in creating a language pack?](#how_much_work_is_involved_in_creating a language pack?)
+  - [How does the language pack build process work?](#how_does_the_language_pack_build_process work?)
+  - [What are these translation report files?](#what_are_these_translation_report_files?)
+- [Install the necessary tools](#install_the_necessary_tools)
+  - [Install Git](#install_git)
+  - [Create an account for yourself on Github](#create_an_account_for_yourself_on_github)
+  - [Configure yourself in Git](#configure_yourself_in_git)
+  - [Clone this Git repository](#clone_this_git_repository)
+  - [Special case: Create a new language pack](#special_case:_create_a_new_language_pack)
+  - [Local vs Global configuration](#local_vs_global_configuration)
+  - [Get the latest Joomla CMS source code](#get_the_latest_joomla_cms_source_code)
+    - [Select the relevant release](#select_the_relevant_release)
+  - [Set up the configuration for building](#set_up_the_configuration_for_building)
+  - [Run the build tools](#run_the_build_tools)
+    - [Working with Google Translate](#working_with_google_translate)
+  - [How to complete the report files](#how_to_complete_the_report_files)
+  - [Running the report files](#running_the_report_files)
+  - [Building your new language pack](#building_your_new_language_pack)
+  - [Test and upload](#test_and_upload)
+- [Git Cheat Sheet](#git_cheat_sheet)
+  - [Where on earth am I?](#where_on_earth_am_i?)
+  - [Renaming files](#renaming_files)
+  - [Post changes](#post_changes)
+  - [Remote Repositories](#remote_repositories)
+  - [Branches](#branches)
+  - [Merge branches](#merge_branches)
+  - [Dealing with Merge Conflicts](#dealing_with_merge_conflicts)
+  - [Tagging](#tagging)
+- [Further information](#further_information)
+  - [Avoiding confusion: always know your current branch!](#avoiding_confusion:_always_know_your_current_branch!)
+  - [Some useful reference material](#some_useful_reference_material)
+
+_NOTE:_
+
+>You can update this TOC as follows:
+```bash
+grep "^#" README.md | sed -e 's/#/  /g' -e 's/   \(\s*\)\(.*\)/\1- [\2](#\L\2)/' \
+-e 's/\(.*(#[a-z:_]*\) /\1_/g' -e 's/\(.*(#[a-z:_]*\) /\1_/g' -e 's/\(.*(#[a-z:_]*\) /\1_/g' \
+-e 's/\(.*(#[a-z:_]*\) /\1_/g' -e 's/\(.*(#[a-z:_]*\) /\1_/g' -e 's/\(.*(#[a-z:_]*\) /\1_/g' 
+```
+
 # Instructions
 
 The instructions are for any Joomla language pack that uses this tool-set for managing and building language packs for Joomla. Since the first langauae to use this pack was Afrikaans (a-ZA) and it is the first language in the alphabet, we use this for as an example thoughout. 
@@ -140,7 +196,7 @@ Any required new files will be created in your local project directory. Your fil
 
 4. New Text strings in the *front-end* section that need to be translated. This file is called `WorkFile_af-ZA_site.sh`. 
 
-# Install the necessary tools 
+# Install the necessary tools
 
 First you need to install and configure the tools required. You will need:
 
@@ -184,7 +240,7 @@ user.name=yourusername
 user.password=XXXXX
 ```
 
-## Clone this Git repository (a.k.a. repo)
+## Clone this Git repository
 
 Create an area where you want to work with all your Git repos, such as `$HOME/git`:
 
@@ -220,7 +276,7 @@ This step is only required if you want to create a new Joomla language pack. Let
 
 Set the configuraton values in `configuration.sh` and continue with the following steps. If you are looking for a quick prototype language pack with about 75% translation accuracy mixed in with utter nonsense (you have been warned), select the 'Google Translate' option below.
 
-## Local vs Global configuration:
+## Local vs Global configuration
 
 If you have need to work on this repo as a different user on this user because you are already have multiple Git accounts elsewhere, use the ```--local```-bit 
 
@@ -342,78 +398,95 @@ However, we are not going to develop any code off the Joomla main tree, and conc
 
 In the `utilities configuration.sh` file, set the following values:
 
-```bash
-# For your first release of version 3.9.5, say this:
-TRANSLATIONVERSION_XML="3.9.5.1"
-# If your lanaguage is something other than af-ZA, change this:
-TARGETLINGO="af-ZA"
-# You may have called the repo for your language something else, 
-# although it helps to stick to this convention. Change this 
-# if your lanaguage is something other than af-ZA:
-GITREPONAME="af-ZA_joomla_lang"
-# Your langauge term for the word "Author"
-LOCAL_AUTHOR="Outeur"
-# Language name - in your own language and the English exonym (
-# Note: endonym is the local name for the language: 
-#           'Kiswahili' or 'Deutsch' or 'isiZulu'.
-#       exonym is what 'outsiders' use to refer to the language: 
-#           'Swahili' or 'German' or 'Zulu'.
-LINGONAME="Afrikaans (ZA)"
-LINGOEXONYM="Afrikaans"
+   ```bash
+   # For your first release of version 3.9.5, say this:
+   TRANSLATIONVERSION_XML="3.9.5.1"
+   # If your lanaguage is something other than af-ZA, change this:
+   TARGETLINGO="af-ZA"
+   # You may have called the repo for your language something else, 
+   # although it helps to stick to this convention. Change this 
+   # if your lanaguage is something other than af-ZA:
+   GITREPONAME="af-ZA_joomla_lang"
+   # Your langauge term for the word "Author"
+   LOCAL_AUTHOR="Outeur"
+   # Language name - in your own language and the English exonym (
+   # Note: endonym is the local name for the language: 
+   #           'Kiswahili' or 'Deutsch' or 'isiZulu'.
+   #       exonym is what 'outsiders' use to refer to the language: 
+   #           'Swahili' or 'German' or 'Zulu'.
+   LINGONAME="Afrikaans (ZA)"
+   LINGOEXONYM="Afrikaans"
 
-# This is the native name for the language and needs to be in the local script
-LINGOINDONYM="Afrikaans"
-TARGETCOUNTRY="South Africa"
-# Description of the langauge on one line.
-# This in your target language: "xxxxx (country xxx) translation for Joomla!"
-PACKAGE_HEADER='Afrikaanse Vertaling vir Joomla!'
-# Your langauge term for: "xxxxx language pack in the informal form of address", or something similar
-PACKAGE_DESC="Afrikaanse Taalpaket in die vertroulike aanspreeksvorm"
-# Local language terms:
-# Your langauge term for "Language"
-LOCAL_LANGUAGE="Taal"
-# "Schema"
-LOCAL_SCHEME="Skema"
-# Your langauge term for "Author"
-LOCAL_AUTHOR="Outeur"
-# Your langauge term for "Website"
-LOCAL_WEBSITE="Webwerf"
-# Your langauge term for "Revision"
-LOCAL_VERSION="Hersiening"
-# Date
-LOCAL_DATE="Datum"
-# "Please check the project website frequently for the most recent translation"
-LOCAL_INSTALL="Laat asb. weet indien daar enige tik-foute of grammaktia-foute is - hulle sal so spoedig moontlik reggemaak word!"
-# "All rights reserved" in your language, or use the English.
-LOCAL_ALLRIGHTS="Alle regte voorbehou"
-# Right To Left = 0 for most languages
-RTL=0
-# Locales by which this lnaguage is known
-# e.g. for German: de_DE.utf8, de_DE.UTF-8, de_DE, deu_DE, de, german, german-de, de, deu, germany
-LOCALE="af_ZA.uft8, af_ZA.UTF-8, af, af_ZA, afr_ZA, af-ZA, afrikaans, afrikaans-za, afr, south africa, suid-afrika"
-# First day of the week in the locale, mostly 1 = Sunday, sometimes 2 = Monday or 6=Saturday
-FIRSTDAY=1
+   # This is the native name for the language and needs to be in the local script
+   LINGOINDONYM="Afrikaans"
+   TARGETCOUNTRY="South Africa"
+   # Description of the langauge on one line.
+   # This in your target language: "xxxxx (country xxx) translation for Joomla!"
+   PACKAGE_HEADER='Afrikaanse Vertaling vir Joomla!'
+   # Your langauge term for: "xxxxx language pack in the informal form of address", or something similar
+   PACKAGE_DESC="Afrikaanse Taalpaket in die vertroulike aanspreeksvorm"
+   # Local language terms:
+   # Your langauge term for "Language"
+   LOCAL_LANGUAGE="Taal"
+   # "Schema"
+   LOCAL_SCHEME="Skema"
+   # Your langauge term for "Author"
+   LOCAL_AUTHOR="Outeur"
+   # Your langauge term for "Website"
+   LOCAL_WEBSITE="Webwerf"
+   # Your langauge term for "Revision"
+   LOCAL_VERSION="Hersiening"
+   # Date
+   LOCAL_DATE="Datum"
+   # "Please check the project website frequently for the most recent translation"
+   LOCAL_INSTALL="Laat asb. weet indien daar enige tik-foute of grammaktia-foute is - hulle sal so spoedig moontlik reggemaak word!"
+   # "All rights reserved" in your language, or use the English.
+   LOCAL_ALLRIGHTS="Alle regte voorbehou"
+   # Right To Left = 0 for most languages
+   RTL=0
+   # Locales by which this lnaguage is known
+   # e.g. for German: de_DE.utf8, de_DE.UTF-8, de_DE, deu_DE, de, german, german-de, de, deu, germany
+   LOCALE="af_ZA.uft8, af_ZA.UTF-8, af, af_ZA, afr_ZA, af-ZA, afrikaans, afrikaans-za, afr, south africa, suid-afrika"
+   # First day of the week in the locale, mostly 1 = Sunday, sometimes 2 = Monday or 6=Saturday
+   FIRSTDAY=1
 
-# Name of package author or team
-AUTHORNAME="Gerrit Hoekstra"
-# Email address of author or team
-AUTHOREMAIL="gerrit@hoekstra.co.uk"
-# Installation Configuration:
-#     A flag to display on successful completion of installation
-#     This can either be a publically-accessible URL or the name of graphics file. e.g.
-#     http://joomla4africa.org/images/smallflags/South Africa.gif
-#     If it is a file then specify relative to the directory that this file is in. If it is a file,
-#     it will be UU-encoded into the installation XML file. 
-#     The Recommended size for the images is 256x256 pixels, PNG format and with background alpha-channeled.
-#     Find your flag in http://www.flags.net
-LINGOFLAG="http://www.flags.net/images/largeflags/SOAF0001.GIF"
-#     The website that hosts this translation team
-LINGOSITE="http://forge.joomla.org/gf/project/afrikaans_taal"
-```
+   # Name of package author or team
+   AUTHORNAME="Gerrit Hoekstra"
+   # Email address of author or team
+   AUTHOREMAIL="gerrit@hoekstra.co.uk"
+   # Installation Configuration:
+   #     A flag to display on successful completion of installation
+   #     This can either be a publically-accessible URL or the name of graphics file. e.g.
+   #     http://joomla4africa.org/images/smallflags/South Africa.gif
+   #     If it is a file then specify relative to the directory that this file is in. If it is a file,
+   #     it will be UU-encoded into the installation XML file. 
+   #     The Recommended size for the images is 256x256 pixels, PNG format and with background alpha-channeled.
+   #     Find your flag in http://www.flags.net
+   LINGOFLAG="http://www.flags.net/images/largeflags/SOAF0001.GIF"
+   #     The website that hosts this translation team
+   LINGOSITE="http://forge.joomla.org/gf/project/afrikaans_taal"
+   ```
 
 ## Run the build tools
 
+TODO
 
+### Working with Google Translate
+
+if you specificy the ```-g``` option when running ```Chk4NewJoomlaLanguageFiles```, the program 
+```google_translate.pl``` will be used to invoke the Google Translate API. 
+See [https://github.com/gerritonagoodday/google_translate](https://github.com/gerritonagoodday/google_translate)
+on follow the instructions for setting yourself up as Google Cloud API user.
+This API is not yet perfect and in particular can really mess things up where parts of a string have been marked as "notranslate",
+with the aim that Google leaves things as is there. When things get messed up, the string "notranslate" ends up
+in the translated text and other bit go wrong too, so this must be manually dealt with in the generated work file. 
+
+If you are in a hurry and want to remove these failures, say, when building an incomplete new language package prototype,
+you can remove these from the work files as follows:
+
+```bash
+sed '/notranslate/,+1 d' -i WorkFile_am-ET_install.sh
+```
 
 ## How to complete the report files
 
@@ -467,6 +540,24 @@ $ git log --graph --all --decorate --oneline
 ```
 
 Make this command an alias ```gg``` - see further above.
+
+## Renaming files
+
+You can rename a file with the 'move' command:
+
+```bash
+$ git mv old_filename new_filename
+```
+
+Confirm that was successful:
+
+```bash
+$ git status
+   renamed: old_filename -> new_filename
+```
+
+_NOTE:_
+>Remember to commit file name changes.
 
 ## Post changes
 
@@ -656,7 +747,7 @@ $ git push
 Everything up-to-date
 ```
 
-## Merge  branches
+## Merge branches
 
 Merging code from another branch cleverly folds the files and lines of code in the files together, and also commits the changes at the same time. Of course, only commiteted code can be merged to somewhere else.
 
