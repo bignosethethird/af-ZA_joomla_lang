@@ -145,6 +145,6 @@ AUTHOREMAIL="gerrit@hoekstra.co.uk"
 #     Find your flag in http://www.flags.net
 LINGOFLAG="http://www.flags.net/images/largeflags/SOAF0001.GIF"
 #     The website that hosts this translation team
-LINGOSITE="http://forge.joomla.org/gf/project/afrikaans_taal"
+LINGOSITE="https://github.com/gerritonagoodday/af-ZA_joomla_lang"
 
 UPDATE_URL="http://update.joomla.org/language/translationlist_3.xml"
