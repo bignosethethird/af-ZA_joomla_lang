@@ -147,3 +147,4 @@ LINGOFLAG="http://www.flags.net/images/largeflags/SOAF0001.GIF"
 #     The website that hosts this translation team
 LINGOSITE="http://forge.joomla.org/gf/project/afrikaans_taal"
 
+UPDATE_URL="http://update.joomla.org/language/translationlist_3.xml"
