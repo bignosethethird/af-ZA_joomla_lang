@@ -1,0 +1,53 @@
+[2019.05.05 16:56:21][xx-XX][INFO ][181] === BEGIN [PID 22348] 
+[2019.05.05 16:56:21][xx-XX][INFO ][184] Checking configuration file
+[2019.05.05 16:56:21][xx-XX][INFO ][187] Reading configuration file configuration.sh
+[2019.05.05 16:56:21][af-ZA][INFO ][209] Check sandbox directory is where this is launched from
+[2019.05.05 16:56:21][af-ZA][INFO ][225] Get Snapshots from branch 3.9.5v1
+[2019.05.05 16:56:21][af-ZA][INFO ][258] Copying Source Files from af-ZA_joomla_lang/administrator into admin
+[2019.05.05 16:56:22][af-ZA][INFO ][262] Copying Source Files from af-ZA_joomla_lang/language into site
+[2019.05.05 16:56:22][af-ZA][INFO ][266] Copying Source Files from af-ZA_joomla_lang/libraries into site
+[2019.05.05 16:56:22][af-ZA][INFO ][268] Copying Source Files from af-ZA_joomla_lang/plugins into site
+[2019.05.05 16:56:22][af-ZA][INFO ][270] Copying Source Files from af-ZA_joomla_lang/templates into site
+[2019.05.05 16:56:22][af-ZA][INFO ][551] Make file /home/gerrit/joomlawork/admin/index.html
+[2019.05.05 16:56:22][af-ZA][INFO ][553] Make file /home/gerrit/joomlawork/site/index.html
+[2019.05.05 16:56:22][af-ZA][INFO ][555] Make file /home/gerrit/joomlawork/site/af-ZA.xml
+[2019.05.05 16:56:22][af-ZA][INFO ][290] Create /home/gerrit/joomlawork/site/af-ZA.xml XML File for 'site' language pack
+[2019.05.05 16:56:22][af-ZA][DEBUG][291] MkXMLInstallHeader site - filename: /home/gerrit/joomlawork/site/af-ZA.xml 
+[2019.05.05 16:56:22][af-ZA][INFO ][557] Make file /home/gerrit/joomlawork/admin/af-ZA.xml
+[2019.05.05 16:56:22][af-ZA][INFO ][290] Create /home/gerrit/joomlawork/admin/af-ZA.xml XML File for 'admin' language pack
+[2019.05.05 16:56:22][af-ZA][DEBUG][291] MkXMLInstallHeader admin - filename: /home/gerrit/joomlawork/admin/af-ZA.xml 
+[2019.05.05 16:56:22][af-ZA][INFO ][560] Make file /home/gerrit/joomlawork/admin/install.xml
+[2019.05.05 16:56:22][af-ZA][INFO ][330] Create /home/gerrit/joomlawork/admin/install.xml XML header for 'admin' language pack
+[2019.05.05 16:56:22][af-ZA][DEBUG][331] MkXMLInstallHeader admin - filename: /home/gerrit/joomlawork/admin/install.xml 
+[2019.05.05 16:56:22][af-ZA][INFO ][371] Create /home/gerrit/joomlawork/admin/install.xml long description for 'admin' language pack
+[2019.05.05 16:56:22][af-ZA][DEBUG][372] MkXMLInstallDescription admin - filename: /home/gerrit/joomlawork/admin/install.xml 
+[2019.05.05 16:56:22][af-ZA][INFO ][459] Create file list in /home/gerrit/joomlawork/admin/install.xml file for 'admin' language pack
+[2019.05.05 16:56:22][af-ZA][DEBUG][460] MkXMLInstallFileList admin - filename: /home/gerrit/joomlawork/admin/install.xml 
+[2019.05.05 16:56:22][af-ZA][INFO ][519] Create /home/gerrit/joomlawork/admin/install.xml header for 'admin' language pack
+[2019.05.05 16:56:22][af-ZA][DEBUG][520] MkXMLInstallFileFooter admin - filename: /home/gerrit/joomlawork/admin/install.xml 
+[2019.05.05 16:56:22][af-ZA][INFO ][566] Make file /home/gerrit/joomlawork/site/install.xml
+[2019.05.05 16:56:22][af-ZA][INFO ][330] Create /home/gerrit/joomlawork/site/install.xml XML header for 'site' language pack
+[2019.05.05 16:56:22][af-ZA][DEBUG][331] MkXMLInstallHeader site - filename: /home/gerrit/joomlawork/site/install.xml 
+[2019.05.05 16:56:22][af-ZA][INFO ][371] Create /home/gerrit/joomlawork/site/install.xml long description for 'site' language pack
+[2019.05.05 16:56:22][af-ZA][DEBUG][372] MkXMLInstallDescription site - filename: /home/gerrit/joomlawork/site/install.xml 
+[2019.05.05 16:56:22][af-ZA][INFO ][459] Create file list in /home/gerrit/joomlawork/site/install.xml file for 'site' language pack
+[2019.05.05 16:56:22][af-ZA][DEBUG][460] MkXMLInstallFileList site - filename: /home/gerrit/joomlawork/site/install.xml 
+[2019.05.05 16:56:22][af-ZA][INFO ][519] Create /home/gerrit/joomlawork/site/install.xml header for 'site' language pack
+[2019.05.05 16:56:22][af-ZA][DEBUG][520] MkXMLInstallFileFooter site - filename: /home/gerrit/joomlawork/site/install.xml 
+[2019.05.05 16:56:22][af-ZA][INFO ][572] Make file /home/gerrit/joomlawork/pkg_af-ZA.xml
+[2019.05.05 16:56:22][af-ZA][INFO ][330] Create /home/gerrit/joomlawork/pkg_af-ZA.xml XML header for 'full' language pack
+[2019.05.05 16:56:22][af-ZA][DEBUG][331] MkXMLInstallHeader full - filename: /home/gerrit/joomlawork/pkg_af-ZA.xml 
+[2019.05.05 16:56:22][af-ZA][INFO ][371] Create /home/gerrit/joomlawork/pkg_af-ZA.xml long description for 'full' language pack
+[2019.05.05 16:56:22][af-ZA][DEBUG][372] MkXMLInstallDescription full - filename: /home/gerrit/joomlawork/pkg_af-ZA.xml 
+[2019.05.05 16:56:22][af-ZA][INFO ][380] Checking if /home/gerrit/git/af-ZA_joomla_lang/utilities/http://www.flags.net/images/largeflags/SOAF0001.GIF exists...
+[2019.05.05 16:56:22][af-ZA][INFO ][393] Assuming http://www.flags.net/images/largeflags/SOAF0001.GIF is a URL
+[2019.05.05 16:56:22][af-ZA][INFO ][499] Create install file list in /home/gerrit/joomlawork/pkg_af-ZA.xml file for 'full' language pack
+[2019.05.05 16:56:22][af-ZA][DEBUG][500] MkXMLInstallFileList full - filename: /home/gerrit/joomlawork/pkg_af-ZA.xml 
+[2019.05.05 16:56:22][af-ZA][INFO ][519] Create /home/gerrit/joomlawork/pkg_af-ZA.xml header for 'full' language pack
+[2019.05.05 16:56:22][af-ZA][DEBUG][520] MkXMLInstallFileFooter full - filename: /home/gerrit/joomlawork/pkg_af-ZA.xml 
+[2019.05.05 16:56:22][af-ZA][INFO ][578] Make file /home/gerrit/joomlawork/admin_af-ZA.zip
+[2019.05.05 16:56:22][af-ZA][INFO ][581] Make file site_af-ZA.zip
+[2019.05.05 16:56:22][af-ZA][INFO ][585] Make file af-ZA_joomla_lang_full_3.9.5v1.zip
+[2019.05.05 16:56:22][af-ZA][INFO ][595] The latest package snapshots are in the build sandbox in /home/gerrit/joomlawork
+[2019.05.05 16:56:22][af-ZA][INFO ][596] ============= END ============
+[2019.05.05 16:56:22][af-ZA][INFO ][167] === END [PID 22348] on signal EXIT. Cleaning up ===

@@ -11,6 +11,9 @@
  * @package		Joomla.Site
  * @since		1.6
  */
+
+defined('_JEXEC') or die('Restricted access');
+
 abstract class af_ZALocalise {
 	/**
 	 * Returns the potential suffixes for a specific number of items
