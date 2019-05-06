@@ -295,7 +295,7 @@ function MkLingoXML {
 <?xml version="1.0" encoding="utf-8"?>
 <metafile version="${JOOMLABASEVERSION}" client="${CLIENT}" method="upgrade">
   <tag>${TARGETLINGO}</tag>
-  <name>${LINGOEXONYM}</name>
+  <name>${LINGOEXONYM} (${TARGETLINGO})</name>
   <nativeName>${LINGOINDONYM}</nativeName>
   <description>${PACKAGE_DESC} - Joomla! ${JOOMLVERSION}</description>
   <version>${TRANSLATIONVERSION_XML}</version>
@@ -337,14 +337,16 @@ function MkXMLInstallHeader {
   echo '<?xml version="1.0" encoding="utf-8" ?>' > $FILENAME  
   if [[ $TYPE == "package" ]]; then
     echo "<extension version=\"${JOOMLABASEVERSION}\" type=\"${TYPE}\" method=\"upgrade\">" >> $FILENAME
-    echo "  <name>${LINGOEXONYM} (${TARGETCOUNTRY})</name>" >> $FILENAME
+    echo "  <name>${LINGOEXONYM} (${TARGETLINGO})</name>" >> $FILENAME
+    echo "  <nativename>${LINGOINDONYM}</nativename>" >> $FILENAME
     echo "  <packagename>${TARGETLINGO}</packagename>" >> $FILENAME
     echo "  <packager>${PROGNAME}</packager>" >> $FILENAME
     echo "  <packagerurl>${LINGOSITE}</packagerurl>" >> $FILENAME
     echo "  <blockChildUninstall>true</blockChildUninstall>" >> $FILENAME
   else
     echo "<extension version=\"${JOOMLABASEVERSION}\" type=\"${TYPE}\" method=\"upgrade\" client=\"${CLIENT}\" >" >> $FILENAME
-    echo "  <name>${LINGOEXONYM} (${TARGETCOUNTRY})</name>" >> $FILENAME
+    echo "  <name>${LINGOEXONYM} (${TARGETLINGO})</name>" >> $FILENAME
+    echo "  <nativename>${LINGOINDONYM}</nativename>" >> $FILENAME
   fi
 
   cat <<EOF >> $FILENAME
