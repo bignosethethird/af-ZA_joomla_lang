@@ -3,7 +3,7 @@
 # Translation version: [major].[minor].[point].[revision], used inside the XML definition, no leading zeros.
 # Only change this value when building a new version. It must be in the form x.y.z.n
 # - other variants of this version will be calculated
-TRANSLATIONVERSION_XML="3.9.5.1"
+TRANSLATIONVERSION_XML="3.9.5.3"
 
 # What it this file for?
 # ~~~~~~~~~~~~~~~~~~~~~
@@ -129,8 +129,15 @@ RTL=0
 # Locales by which this lnaguage is known
 # e.g. for German: de_DE.utf8, de_DE.UTF-8, de_DE, deu_DE, de, german, german-de, de, deu, germany
 LOCALE="af_ZA.uft8, af_ZA.UTF-8, af, af_ZA, afr_ZA, af-ZA, afrikaans, afrikaans-za, afr, south africa, suid-afrika"
-# First day of the week in the locale, mostly 1 = Sunday, sometimes 2 = Monday or 6=Saturday
+# First day of the working week in the locale, mostly 1 = Monday or 6=Saturday
 FIRSTDAY=1
+# First day of actual week, mostly 0 = Sunday (default)
+# Last day of actual week, mostly 6 = Saturday (default)
+#  - in which case, specify: "0,6"
+WEEKEND="0,6"
+# Calendar. Choose from "gregorian" (default), "persian", "japanese", "buddhist", "chinese", "indian", "islamic", "hebrew", "coptic", "ethiopic"
+CALENDAR="gregorian"
+
 # Name of package author or team
 AUTHORNAME="Gerrit Hoekstra"
 # Email address of author or team
@@ -145,5 +152,6 @@ AUTHOREMAIL="gerrit@hoekstra.co.uk"
 #     Find your flag in http://www.flags.net
 LINGOFLAG="http://www.flags.net/images/largeflags/SOAF0001.GIF"
 #     The website that hosts this translation team
-LINGOSITE="http://forge.joomla.org/gf/project/afrikaans_taal"
+LINGOSITE="https://github.com/gerritonagoodday/af-ZA_joomla_lang"
 
+UPDATE_URL="http://update.joomla.org/language/translationlist_3.xml"
