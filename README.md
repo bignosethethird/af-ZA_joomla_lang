@@ -9,46 +9,47 @@ driven and uses the collaboration abilities of Git to spread the work load acros
 
 ## Table of Contents
 
- - [Instructions](#instructions)
-  - [Naming conventions](#naming-conventions)
-  - [How much work is involved in creating a language pack?](#how-much-work-is-involved-in-creating-a-language-pack)
-  - [How does the language pack build process work?](#how-does-the-language-pack-build-process-work)
-  - [What are these translation report files?](#what-are-these-translation-report-files)
- - [Install the necessary tools](#install-the-necessary-tools)
-  - [Install Git](#install-git)
-  - [Create an account for yourself on Github](#create-an-account-for-yourself-on-github)
-  - [Configure yourself in Git](#configure-yourself-in-git)
-  - [Clone this Git repository](#clone-this-git-repository)
-  - [Special case: Create a new language pack](#special-case-create-a-new-language-pack)
-  - [Local vs Global configuration](#local-vs-global-configuration)
-  - [Get the latest Joomla CMS source code](#get-the-latest-joomla-cms-source-code)
-   - [Select the relevant release](#select-the-relevant-release)
-  - [Set up the configuration for building](#set-up-the-configuration-for-building)
-  - [Run the build tools](#run-the-build-tools)
-   - [Working with Google Translate](#working-with-google-translate)
-  - [How to complete the report files](#how-to-complete-the-report-files)
-  - [Running the report files](#running-the-report-files)
-  - [Building your new language pack](#building-your-new-language-pack)
-  - [Test and upload](#test-and-upload)
- - [Git Cheat Sheet](#git-cheat-sheet)
-  - [Where on earth am I?](#where-on-earth-am-i)
-  - [Renaming files](#renaming-files)
-  - [Post changes](#post-changes)
-  - [Remote Repositories](#remote-repositories)
-  - [Branches](#branches)
-  - [Merge branches](#merge-branches)
-  - [Dealing with Merge Conflicts](#dealing-with-merge-conflicts)
-  - [Tagging](#tagging)
- - [Further information](#further-information)
-  - [Avoiding confusion: always know your current branch!](#avoiding-confusion-always-know-your-current-branch)
-  - [Some useful reference material](#some-useful-reference-material)
+
+  - [Instructions](#instructions)
+    - [Naming conventions](#naming-conventions)
+    - [How much work is involved in creating a language pack?](#how-much-work-is-involved-in-creating-a-language-pack)
+    - [How does the language pack build process work?](#how-does-the-language-pack-build-process-work)
+    - [What are these translation report files?](#what-are-these-translation-report-files)
+  - [Install the necessary tools](#install-the-necessary-tools)
+    - [Install Git](#install-git)
+    - [Create an account for yourself on Github](#create-an-account-for-yourself-on-github)
+    - [Configure yourself in Git](#configure-yourself-in-git)
+    - [Clone this Git repository](#clone-this-git-repository)
+    - [Special case: Create a new language pack](#special-case-create-a-new-language-pack)
+    - [Local vs Global configuration](#local-vs-global-configuration)
+    - [Get the latest Joomla CMS source code](#get-the-latest-joomla-cms-source-code)
+      - [Select the relevant release](#select-the-relevant-release)
+    - [Set up the configuration for building](#set-up-the-configuration-for-building)
+    - [Run the build tools](#run-the-build-tools)
+      - [Working with Google Translate](#working-with-google-translate)
+    - [How to complete the report files](#how-to-complete-the-report-files)
+    - [Running the report files](#running-the-report-files)
+    - [Building your new language pack](#building-your-new-language-pack)
+    - [Test and upload](#test-and-upload)
+  - [Git Cheat Sheet](#git-cheat-sheet)
+    - [Where on earth am I?](#where-on-earth-am-i)
+    - [Renaming files](#renaming-files)
+    - [Post changes](#post-changes)
+    - [Remote Repositories](#remote-repositories)
+    - [Branches](#branches)
+    - [Merge branches](#merge-branches)
+    - [Dealing with Merge Conflicts](#dealing-with-merge-conflicts)
+    - [Tagging](#tagging)
+  - [Further information](#further-information)
+    - [Avoiding confusion: always know your current branch!](#avoiding-confusion-always-know-your-current-branch)
+    - [Some useful reference material](#some-useful-reference-material)
 
 
 _NOTE:_
 
 >You can update this TOC as follows:
 ```awk
- awk '/^#/ {gsub(/#/," ",$1); printf "%s- ", $1; $1=""; sub(/^ /,"");  printf "[%s]", $0; gsub(/\s+/,"-"); gsub(/[\!|\?\:]/,""); printf "(#%s)\n", tolower($0)}' README.md 
+ awk '/^#/ {gsub(/#/,"  ",$1); printf "%s- ", $1; $1=""; sub(/^ /,"");  printf "[%s]", $0; gsub(/\s+/,"-"); gsub(/[\!|\?\:]/,""); printf "(#%s)\n", tolower($0)}' README.md 
 ```
 
 # Instructions
