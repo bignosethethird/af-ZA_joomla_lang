@@ -877,14 +877,17 @@ $PATCHFILE in $workfolder and then executing it:
 
   $ cd $workfolder
   $ nano $PATCHFILE
+  ... do translations in the file and save ...
   $ ./$PATCHFILE 
 
-Do the same for the ..._site and the ..._admin files.
+Do the same for the other Workfiles.
 If you are happy with the changes, you should check the
-changes back in to subversion with the commands:
+changes back into the repository with the commands:
 
   $ cd $local_sandbox_dir
-  $ svn ci -m \"Patched to next Joomla release\"
+  $ git add . 
+  $ git commit -m \"Patched to next Joomla release\"
+  $ git push
 
 "
 
