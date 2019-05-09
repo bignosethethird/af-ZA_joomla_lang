@@ -7,16 +7,25 @@
     {
       "type": "bashdb",
       "request": "launch",
-      "name": "Bash-Debug (hardcoded script name)",
+      "name": "Bash-Debug (MkLanguagepackSnapshotBuild)",
       "cwd": "${workspaceFolder}",
-      "program": "${workspaceFolder}/utilities/MkLanguagepackSnapshotBuild.sh",
-      "args": ["${workspaceFolder}/utilities/af-ZA.conf"]
+      "program": "${workspaceFolder}/utilities/MkLanguagepackSnapshotBuild.sh"      
+    },
+    {
+      "type": "bashdb",
+      "request": "launch",
+      "name": "Bash-Debug (Chk4NewJoomlaLanguageFiles.)",
+      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}/utilitiesChk4NewJoomlaLanguageFiles.sh",
+      "args": ["-p=~/git/joomla-cms"]
     },
     {
       "type": "bashdb",
       "request": "launch",
       "name": "Bash-Debug (simplest configuration)",
-      "program": "${file}"
+      "cwd": "${workspaceFolder}",
+      "program": "${file}",
+      "args": ["-p=~/git/joomla-cms"]
     }
   ]
 }

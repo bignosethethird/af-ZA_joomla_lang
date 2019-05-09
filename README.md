@@ -447,6 +447,12 @@ In the `utilities configuration.sh` file, set the following values:
    LOCALE="af_ZA.uft8, af_ZA.UTF-8, af, af_ZA, afr_ZA, af-ZA, afrikaans, afrikaans-za, afr, south africa, suid-afrika"
    # First day of the week in the locale, mostly 1 = Sunday, sometimes 2 = Monday or 6=Saturday
    FIRSTDAY=1
+   # First day of actual week, mostly 0 = Sunday (default)
+   # Last day of actual week, mostly 6 = Saturday (default)
+   #  - in which case, specify: "0,6"
+   WEEKEND="0,6"
+   # Calendar. Choose from "gregorian" (default), "persian", "japanese", "buddhist", "chinese", "indian", "islamic", "hebrew", "coptic", "ethiopic"
+   CALENDAR="gregorian"
 
    # Name of package author or team
    AUTHORNAME="Gerrit Hoekstra"
@@ -873,13 +879,13 @@ $ git branch                        # Check if this branch is now active
 You can avoid a lot of confusion and possible mishaps of getting code in branches mixed up by always displaying the currently-selected branch on the command line. This is shown by default if you installed the Linux Git features on Windows. On the Linux terminal, you need to modify the PS1 variable in your local ```~/.bashrc``` file to show the current branch. For Debian-based Linux distros (around line 68), change the PS1 assignment to this:
 
 ```bash
-PS1="${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w \[\033[33;1m\]\$(git status 2>/dev/null | head -n1 | cut -d' ' -f3- | sed -e 's/\(.*\)/(\1) /')\[\033[01;34m\]\$\[\033[00m\] "
+PS1="${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w \[\033[33;1m\]\$(git status 2>/dev/null | head -n1 | cut -d' ' -f3- | sed -e 's/\(at \)*\(.*\)/(\2) /')\[\033[01;34m\]\$\[\033[00m\] "
 ```
 
 For all other Linuxes:
 
 ```bash
-PS1="\[\e]0;\u@\h \w\a\]\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w \[\033[33;1m\]$(git status 2>/dev/null | head -n1 | cut -d' ' -f3- | sed -e 's/\(.*\)/(\1) /')\[\033[01;34m\]$\[\033[00m\] "
+PS1="\[\e]0;\u@\h \w\a\]\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w \[\033[33;1m\]$(git status 2>/dev/null | head -n1 | cut -d' ' -f3- | sed -e 's/\(at \)*\(.*\)/(\2) /')\[\033[01;34m\]$\[\033[00m\] "
 ```
 
 Also add the following utility command to your local ```~/.bashrc``` file, which shows you a quick and colourful graph of the branches with the ```gg``` command:
