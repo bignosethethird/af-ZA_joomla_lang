@@ -1,18 +1,17 @@
-# Suite of Language Tranlation Utilities for Joomla
+# Suite of Language Translation Utilities for Joomla
 
-First: What is Joomla? Find out [here](https://www.joomla.org/)!
+First: What is Joomla? Find out at [https://www.joomla.org](https://www.joomla.org/)!
 
-Currently Joomla support around 50 spoken languages. Every revision of Joomla requires some text to be translated 
+Currently Joomla supports around 50 spoken languages. Every revision of Joomla requires some text to be translated 
 from the origin language, English, to be translated into all 50 languages. Most translation teams have developed 
-their own set of tools, an here is another set of such tools. The tool set differs in that it is totally command-line
+their own set of tools, and here is another set of such tools. The tool set differs in that it is totally command-line
 driven and uses the collaboration abilities of Git to spread the work load across team members.
 
 ## Table of Contents
 
-
+  - [How much work is involved in creating a language pack?](#how-much-work-is-involved-in-creating-a-language-pack)
   - [Instructions](#instructions)
-    - [Naming conventions](#naming-conventions)
-    - [How much work is involved in creating a language pack?](#how-much-work-is-involved-in-creating-a-language-pack)
+    - [Naming conventions](#naming-conventions)    
     - [How does the language pack build process work?](#how-does-the-language-pack-build-process-work)
     - [What are these translation report files?](#what-are-these-translation-report-files)
   - [Install the necessary tools](#install-the-necessary-tools)
@@ -52,30 +51,30 @@ _NOTE:_
  awk '/^#/ {gsub(/#/,"  ",$1); printf "%s- ", $1; $1=""; sub(/^ /,"");  printf "[%s]", $0; gsub(/\s+/,"-"); gsub(/[\!|\?\:]/,""); printf "(#%s)\n", tolower($0)}' README.md 
 ```
 
-# Instructions
 
-The instructions are for any Joomla language pack that uses this tool-set for managing and building language packs for Joomla. Since the first langauae to use this pack was Afrikaans (a-ZA) and it is the first language in the alphabet, we use this for as an example thoughout. 
+# How much work is involved in creating a language pack?
 
-## Naming conventions
+Let's look at Joomla Release 3.9.5 for example, which you would ```clone``` from [https://github.com/joomla/joomla-cms](#https://github.com/joomla/joomla-cms) and then ```checkout``` branch 3.9.5. Do this as follows (after having installed the Git-client on your machine):
 
-The name of the language pack is made up from the 2-letter ISO code of the language code (lower-case), hyphenated with the 2-letter ISO code of the country (upper case) that the regional variation is aimed at. So for Afrikaans, we have af-ZA, for English we can have en-GB, en-US, en-NZ, en-ZA, etc.
+```bash
+$ mkdir ~/git
+$ cd ~/git
+~/git $ git clone https://github.com/joomla/joomla-cms
+...
+~/git $ cd joomla-cms
+~/git/joomla-cms $ git checkout 3.9.5
+```
 
-The name of the packaged file that is installed to Joomla is `[language-specifier]_joomla_lang_full_[version-details]`, where `[version-details]` consists of the following series of numbers, along the lines of the `semantic versioning` convention: `[major-revision].[minor-revision].[point-release]v[revision]`. The version number is given by the leader of the Joomla Language Development team, which will always coincide with the version of Joomla that it is aimed at, e.g. `3.9.5`. As leader of your own translation team, you need to ensure that the GIT repository is branched to a branch that is called `3.9.5` so that the building process can use this tag value (more on branching and tagging later on). Furthermore, as a translation team leader, you are only allowed to increment the `[revision]` number (starting at 1), and then only every time that you need to publish a revision, say, when you discovered and corrected bug. 
+Use the following commands to determine the workload. The files that need to be translated from are all called ```en-GB.[descrition].ini```:
 
-For example, the language pack version would be `3.9.5v1`, and in the case of the `af-ZA` language, your language pack would be called `af-ZA_joomla_lang_full_3.9.5v1`. Since the actual file would be a ZIP file, the final file name would be hosted in Joomla Language Package repository would be called `af-ZA_joomla_lang_full_3.9.5v1.zip`.
-
-## How much work is involved in creating a language pack?
-
-Let's look at Joomla Release 3.9.5 as example. You can use the commands below to determine this for any other release of Joomla:
-
-* Number of files to translate: 405
+* Number of files to translate: *405*
 
 ```bash
 $ find  ~/git/joomla-cms -name "en-GB.*.ini" | wc -l
 405
 ```
 
-* Number of lines to translate in all these files: 9892
+* Number of lines to translate in all these files: *9892*
 
 ```bash
 $ find ~/git/joomla-cms -name "en-GB.*.ini" -exec grep '[A-Z_0-9]*="' {} > /tmp/a \;
@@ -83,14 +82,14 @@ $ wc -l /tmp/a
 9892 /tmp/a
 ```
 
-* This is how many lines are unique: 8358
+* This is how many lines are unique: *8358*
 
 ```bash
 $ sort -u /tmp/a > /tmp/b
 $ wc -l /tmp/b
 8358 /tmp/b
 ```
-* Number of words to translate: 53492
+* Number of words to translate: *53492*
 
 ```bash
 $ cut -d"=" -f2- /tmp/b | sed -e 's/"//g'  -e 's/%.//g'   -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n//g' -e 's/:/ /g' | tr [A-Z] [a-z] > /tmp/c
@@ -125,7 +124,7 @@ $ less /tmp/e
 etc...
 ```
 
-The occurances of each words form a Zipfian distribution, as you would expect the case to be with a large corpus of any given spoken langauge. You can plot this file, note the straight-ish line formed:
+The occurances of each words form a Zipfian distribution, as you would expect the case to be with a large corpus of any given spoken langauge. When you plot this file on a log-graph, you get a straight-ish line:
 
 ```bash
 $ gnuplot <<!
@@ -160,7 +159,7 @@ $ gnuplot <<!
         1                          10                        100               
 ```
 
-* Number of unique words to translate: 3004
+* Number of unique words to translate: *3004*
 
 ```bash
 $ sort -u /tmp/d > /tmp/e
@@ -169,6 +168,18 @@ $ wc -l /tmp/e
 ```
 
 Bare in mind that the context varies so a given English word such as 'file' can end up having to be translated into many different words.
+
+# Instructions
+
+The instructions are for any Joomla language pack that uses this tool-set for managing and building language packs for Joomla. Since the first langauae to use this pack was Afrikaans (a-ZA) and it is the first language in the alphabet, we use this for as an example thoughout. 
+
+## Naming conventions
+
+The name of the language pack is made up from the 2-letter ISO code of the language code (lower-case), hyphenated with the 2-letter ISO code of the country (upper case) that the regional variation is aimed at. So for Afrikaans, we have af-ZA, for English we can have en-GB, en-US, en-NZ, en-ZA, etc.
+
+The name of the packaged file that is installed to Joomla is `[language-specifier]_joomla_lang_full_[version-details]`, where `[version-details]` consists of the following series of numbers, along the lines of the `semantic versioning` convention: `[major-revision].[minor-revision].[point-release]v[revision]`. The version number is given by the leader of the Joomla Language Development team, which will always coincide with the version of Joomla that it is aimed at, e.g. `3.9.5`. As leader of your own translation team, you need to ensure that the GIT repository is branched to a branch that is called `3.9.5` so that the building process can use this tag value (more on branching and tagging later on). Furthermore, as a translation team leader, you are only allowed to increment the `[revision]` number (starting at 1), and then only every time that you need to publish a revision, say, when you discovered and corrected bug. 
+
+For example, the language pack version would be `3.9.5v1`, and in the case of the `af-ZA` language, your language pack would be called `af-ZA_joomla_lang_full_3.9.5v1`. Since the actual file would be a ZIP file, the final file name would be hosted in Joomla Language Package repository would be called `af-ZA_joomla_lang_full_3.9.5v1.zip`.
 
 ## How does the language pack build process work?
 
