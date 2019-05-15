@@ -54,7 +54,7 @@ _NOTE:_
 
 # How much work is involved in creating a language pack?
 
-Let's look at Joomla Release 3.9.5 for example, which you would ```clone``` from [https://github.com/joomla/joomla-cms](#https://github.com/joomla/joomla-cms) and then ```checkout``` branch 3.9.5. Do this as follows (after having installed the Git-client on your machine):
+Let's look at Joomla Release 3.9.5 for example, which you would *clone* from [https://github.com/joomla/joomla-cms](#https://github.com/joomla/joomla-cms) and then *checkout* branch 3.9.5. Do this as follows (after having installed the Git-client on your machine):
 
 ```bash
 $ mkdir ~/git
@@ -67,14 +67,14 @@ $ cd ~/git
 
 Use the following commands to determine the workload. The files that need to be translated from are all called ```en-GB.[name].ini```:
 
-* Number of files to translate: *405*
+* Number of files to translate: _405_
 
 ```bash
 $ find  ~/git/joomla-cms -name "en-GB.*.ini" | wc -l
 405
 ```
 
-* Number of lines to translate in all these files: *9892*
+* Number of lines to translate in all these files: _9892_
 
 ```bash
 $ find ~/git/joomla-cms -name "en-GB.*.ini" -exec grep '[A-Z_0-9]*="' {} > /tmp/a \;
@@ -82,14 +82,14 @@ $ wc -l /tmp/a
 9892 /tmp/a
 ```
 
-* This is how many lines are unique: *8358*
+* This is how many lines are unique: _8358_
 
 ```bash
 $ sort -u /tmp/a > /tmp/b
 $ wc -l /tmp/b
 8358 /tmp/b
 ```
-* Number of words to translate: *53492*
+* Number of words to translate: _53492_
 
 ```bash
 $ cut -d"=" -f2- /tmp/b | sed -e 's/"//g'  -e 's/%.//g'   -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n//g' -e 's/:/ /g' | tr [A-Z] [a-z] > /tmp/c
@@ -124,7 +124,7 @@ $ less /tmp/e
 etc...
 ```
 
-The occurances of each words form a Zipfian distribution, as you would expect the case to be with a large corpus of any given spoken langauge. When you plot this file on a log-graph, you get a straight-ish line:
+The number of occurances of each word form a Zipfian distribution, as you would expect the case to be with a large corpus of any given spoken langauge. When you plot this file on a log-graph, you get a straight-ish line:
 
 ```bash
 $ gnuplot <<!
@@ -136,30 +136,30 @@ $ gnuplot <<!
 
                                                                                
   10000 +------------------------------------------------------------------+   
-        |+                         +                          +           +|   
-        |+                                                '/tmp/f' *******+|   
-        |+                                                                +|   
+        |+                         +                          +            |   
+        |+                                                                 |   
+        |+                                                                 |   
         |                                                                  |   
-        |*****                                                            +|   
+        |*****                                                             |   
         |     **                                                           |   
-   1000 |-+     ********                                                 +-|   
-        |+              ********                                          +|   
-        |+                      *********                                 +|   
-        |+                               *****                            +|   
-        |+                                    ********                    +|   
+   1000 |-+     ********                                                   |   
+        |+              ********                                           |   
+        |+                      *********                                  |   
+        |+                               *****                             |   
+        |+                                    ********                     |   
         |                                             *******              |   
-    100 |-+                                                 *****        +-|   
-        |+                                                      *****     +|   
-        |+                                                          ****  +|   
+    100 |-+                                                 *****          |   
+        |+                                                      *****      |   
+        |+                                                          ****   |   
         |+                                                             ****|   
-        |+                                                                +|   
-        |+                                                                +|   
+        |+                                                                 |   
+        |+                                                                 |   
         |                          +                          +            |   
      10 +------------------------------------------------------------------+   
         1                          10                        100               
 ```
 
-* Number of unique words to translate: *3004*
+* Number of unique words to translate: _3004_
 
 ```bash
 $ sort -u /tmp/d > /tmp/e
