@@ -65,7 +65,7 @@ $ cd ~/git
 ~/git/joomla-cms $ git checkout 3.9.5
 ```
 
-Use the following commands to determine the workload. The files that need to be translated from are all called ```en-GB.[descrition].ini```:
+Use the following commands to determine the workload. The files that need to be translated from are all called ```en-GB.[name].ini```:
 
 * Number of files to translate: *405*
 
