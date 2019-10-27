@@ -128,6 +128,14 @@ user.name=yourusername
 user.password=XXXXX
 ```
 
+You will occasionally be prompted to enter this information:
+
+```bash
+...
+Username for 'https://github.com': XXXXX
+Password for 'https://gerritonagoodday@github.com': XXXXX
+```
+
 ### Local vs Global configuration
 
 If you have need to work on this repo as a different user on this user because you are already have multiple Git accounts elsewhere, use the ```--local```-bit 
@@ -723,7 +731,7 @@ Make this command into an alias ```gg``` - see [Cool things you can do in GIT](#
 
 ## Renaming files
 
-You can rename a file with the 'move' command:
+If the file was already established in your from a previous staging operation (`git add`), you can simply rename the file in your IDE or in the command line: `mv old_filename new_filename`. You can also explicitly rename a file with the 'git move' command:
 
 ```bash
 $ git mv old_filename new_filename
@@ -760,8 +768,8 @@ $ git add .
 * Commit all staged changes to the current branch. Add a useful comment here to explain your working. If you are using an issue management system such as Jira, start the comment with comment with the Issue Number:
 
 ```bash
-$ git commit -m "TEC1024 Updated docs"
-[3.9 642042e] TEC1024 Updated docs
+$ git commit -m "Update"
+[3.9 642042e] Update
  1 file changed, 184 insertions(+), 5 deletions(-)
 ```
 
@@ -769,8 +777,7 @@ $ git commit -m "TEC1024 Updated docs"
 
 ```bash
 $ git push 
-Username for 'https://github.com': XXX
-Password for 'https://gerritonagoodday@github.com': 
+...
 Counting objects: 3, done.
 Delta compression using up to 4 threads.
 Compressing objects: 100% (3/3), done.
@@ -907,9 +914,6 @@ One way to make your work in your local branch visible to the public is to commi
 
 ```bash
 $ git push --set-upstream origin 3.9.5
-Username for 'https://github.com': XXXX
-Password for 'https://XXXX@github.com': 
-...
 ...
 To https://github.com/gerritonagoodday/af-ZA_joomla_lang.git
  * [new branch]      3.9.5 -> 3.9.5
@@ -919,7 +923,7 @@ Branch '3.9.5' set up to track remote branch '3.9.5' from 'origin'.
 _NOTE:_
 >Remeber to add and commit your changes first before pushing to remote.
 
-Once you have create the branch on the remote repo, you can push as per normal:
+Once you have created the branch on the remote repo, you can push as per normal:
 
 ```bash
 $ git push
