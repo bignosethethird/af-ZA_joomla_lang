@@ -584,9 +584,9 @@ function DiffContentReport {
       ;;
   esac
 
-  PATCHFILE=$2
+  PATCHFILE="$2"
 
-  INFO "[$LINENO] Changes in language strings of $1 files:"
+  INFO "[$LINENO] Determine changes in language strings that belong to the $1 section..."
   find ${local_sandbox_dir}/$dir -type f -name "*.ini" | grep ${target_lingo} | grep -v "^;" | sort -u > "$tmpfile15"
   find ${joomla_source_dir}/$dir -type f -name "*.ini" | grep ${source_lingo} | grep -v "^;" | sort -u > "$tmpfile16"
 
@@ -612,7 +612,7 @@ function DiffContentReport {
     [[ $i -ge ${#a_source_filenames[*]} ]] && break
   done
 
-  INFO "[$LINENO] === Summary of required work for '${1^^}' files: === "
+  INFO "[$LINENO] === Summary of required work for the '${1^^}' section: === "
   summary_1="Number of NEW Strings in ${source_lingo} source language not in ${target_lingo} target language: $num_new_strings"
   summary_2="Number of OLD Strings in ${target_lingo} target language not in ${source_lingo} source language: $num_old_strings"
   summary_3="Total number of ${target_lingo} files that need to be modified: $num_files_different"
@@ -863,7 +863,7 @@ function DiffContentReport {
 DiffFileReport
 
 # Set up patchfile script
-PATCHFILE=${local_sandbox_dir}/utilities/WorkFile_${target_lingo}.sh
+PATCHFILE=${local_sandbox_dir}/WorkFile_${target_lingo}-${TRANSLATIONVERSION_XML}.sh
 rm $PATCHFILE 2>/dev/null
 printf "#!/bin/bash
 " > "$PATCHFILE"
@@ -872,6 +872,7 @@ DiffContentReport "site" "$PATCHFILE"
 DiffContentReport "admin" "$PATCHFILE"
 DiffContentReport "install" "$PATCHFILE"
 chmod +x "$PATCHFILE"
+git add "$PATCHFILE"
 
 INFO "[$LINENO] ============= Next step: ====================================="
 INFO "[$LINENO]
@@ -885,7 +886,6 @@ Execute the completed patch file.
 Check the changes back into the repository with the commands:
 
   $ cd $local_sandbox_dir
-  $ git add . 
   $ git commit -m \"Patched to next Joomla release\"
   $ git push
 

@@ -26,6 +26,7 @@
   - [Git Cheat Sheet](#git-cheat-sheet)
     - [Where on earth am I?](#where-on-earth-am-i)
     - [Renaming files](#renaming-files)
+    - [Deleting files](#deleting-files)
     - [Post changes](#post-changes)
     - [Remote Repositories](#remote-repositories)
     - [Branches](#branches)
@@ -539,23 +540,6 @@ HEAD detached at 3.9.5
 
 We have now successfully checked out the required reference code from the Joomla Code Base. Since we are not going to develop any code off the Joomla main tree and are going to concentrate on developing the langauge pack only, we can leave this repo until the next time release.
 
-* Step 3: 
-
-
-
-```bash
-$ git branch '3.9.5-dev'            # branch code
-$ git branch                        # check if branching was successful
-* (HEAD detached at 3.9.5)          # yes it was:
-  3.9.5-dev                         #  - here is the branch, but it is not the active one
-  ...
-$ git checkout '3.9.5-dev'          # Make this branch active
-Switched to branch '3.9.5-dev'
-$ git branch                        # Check if this branch is now active
-* 3.9.5-dev                         # yes, successfully switched to.
-  ...
-```
-
 * Step 3: Get your language pack repo
 
 Get the latest version of your language pack repo. Note that this is a different repo to the Joomla Core code base repo in [https://github.com/joomla/joomla-cms](#https://github.com/joomla/joomla-cms), this one is, for example, at [https://github.com/gerritonagoodday/af-ZA_joomla_lang](#https://github.com/gerritonagoodday/af-ZA_joomla_lang). Do a clone:
@@ -582,78 +566,19 @@ If not, check out the master branch first:
 ~/git/af-ZA_joomla_lang $ git checkout master
 ```
 
-* Step 4: Create a branch in your local remote repo and set up the configuration
+* Step 4: Create a branch in your local remote repo 
 
 Create a new branch in the remote repo, named according to the Joomla release that you are creating this package for, e.g. "3.9.5", pull the repo, and check-out the branch. This is your working area. 
 
-
-
+```bash
+~/git/af-ZA_joomla_lang $ git branch 3.9.5
+~/git/af-ZA_joomla_lang $ git checkout 3.9.5
+Switched to branch '3.9.5'
+```
 
 * Step 5: Set up the package configuration file
 
-
-
-
-* Step 6: Produce a work file of what strings need to be translated
-
-You, as team lead: Run the `utilities/Chk4NewLanguageStrings.sh` utility to create the work file called `utilities/Workfile_[isolang-isocountry].sh`. This work file is actually a BASH-script with spaces left for where the translations need to be inserted. If it is just a point release, this work file may be only a few pages long. Do not execute this BASH-script yet. If there are any new files that need to be added to the package, they will be created, name accordingly, and added to the current branch in your local repo (you did check out the correct branch, right?). Do a commit and a push to get all this work to the remote repo. Any new files that had to be created for this new released will now also exist in the branch, albeit empty files.
-
-* Step 4: Split the report out amoung the translation team members 
-
-Team lead: Chunk the work file in `utilities/Workfile_[isolang-isocountry].sh` up by line numbers and agree who in the team will translate what chunk and who will review each chunk. Everyone must start their offort off by doing a pull and then a check-out of the relevant branch, e.g. "3.9.5". Everyone is now ready to help translating.
-
-* Step 5: Do the translations and merge the resulting workfile back into the repo
-
-Every translation team member translates / reviews their allocated chunk of the work file and then merges it back into the repo. GIT is very good at resolving the changes to a single file made by multiple users. 
-
-* Step 6: Run the work file script and commit and push all the files
-
-The team lead does a final pull of the work file, a final integrity check, and then executes the work file (which is a BASH shell script after all).
-This can only be done by the team lead, since the work file will be based on the lead's particular work directory setup. 
-This results in changes to many files and these all need to be added, committed and pushed to the remote repo. 
-
-* Step 7: Build the package using the package build script 
-
-Team lead: Run the `MkLanguagePack.sh` script, which will produce a language pack file ready for you to install into Joomla. 
-
-* Step 8: Test the language pack in Joomla
-
-Make sure that the language pack installs in Joomla with no errors. Turn on Joomla Debugging for Language, and see if there are any errors while running through the features that were affected by the new translation strings. Now would be a good time to tag the local repo with the release number and to push this to the remote repo too.
-
-* Step 9: Tag the translation in the remote repo
-
-The translation work for this release is now done. 
-You are now ready to release the new langauge pack when the next version of Joomla is released. If your language is an officially-supported language in Joomla, will Joomla administrators automatically be notified once they have upgraded their version of Joomla and the new language pack version is available. It can be installed with a single click from the Administrator's panel. For this to happen, you need to publish your language pack to the project "Joomla!®3.x Accredited Translations" on http://forge.joomla.org/gf/project/jtranslation3_x/, under the section "Releases" for your language. 
-
-
-## What are these translation work files?
-
-The report files are in fact a series of BASH script files and are a useful way splitting the work between many team members.
-
-When all the strings in it have been translated, it is simply executed, which will put the translated strings in the the correct files. The work file is executed like this:
-
-```bash
-./utilities/WorkFile_af-ZA.sh
-...
-```
-
-## Special case: Create a new language pack
-
-This step is only required if you want to create a new Joomla language pack. Let's assume you want to create a language pack to Amharic / Ge'ez for Ethiopia ('am-ET'). You will only need the `utilities` directory from the 'af-ZA' project and will need to chancge a few values in the configuration.sh file, which is very well documented:
-
-```bash
-~/git $ mkdir am-ET_joomla_lang
-~/git/am-ET_joomla_lang $ cp -r ../af-ZA_joomla_lang/utilities .
-```
-
-Set the configuraton values in `configuration.sh` and continue with the following steps. If you are looking for a quick prototype language pack with about 75% translation accuracy mixed in with utter nonsense (you have been warned), select the 'Google Translate' option below.
-
-# Get the latest Joomla CMS source code
-
-
-## Set up the configuration for building
-
-In the `utilities/configuration.sh` file, set the following values:
+In the `utilities/configuration.sh` file, set the following values. The comments in the file should be self-explanitary:
 
    ```bash
    # For your first release of version 3.9.5, say this:
@@ -673,7 +598,6 @@ In the `utilities/configuration.sh` file, set the following values:
    #           'Swahili' or 'German' or 'Zulu'.
    LINGONAME="Afrikaans (ZA)"
    LINGOEXONYM="Afrikaans"
-
    # This is the native name for the language and needs to be in the local script
    LINGOINDONYM="Afrikaans"
    TARGETCOUNTRY="South Africa"
@@ -725,6 +649,128 @@ In the `utilities/configuration.sh` file, set the following values:
    #     The website that hosts this translation team
    LINGOSITE="http://forge.joomla.org/gf/project/afrikaans_taal"
    ```
+
+* Step 6: Produce a work file of what strings need to be translated
+
+You, as team lead: Run the `utilities/Chk4NewLanguageStrings.sh` utility:
+
+```bash
+~/git/af-ZA_joomla_lang $ cd utilities
+~/git/af-ZA_joomla_lang/utilities $ ./Chk4NewLanguageStrings.sh -p=~/git/joomla-cms
+[2019.10.28 11:55:35][][INFO ][332] === BEGIN [PID 29222] Chk4NewLanguageStrings.sh ===
+[2019.10.28 11:55:35][][INFO ][210] Checking configuration file
+[2019.10.28 11:55:35][][INFO ][213] Reading configuration file configuration.sh
+[2019.10.28 11:55:35][][INFO ][218] Checking sandbox directory is where this is launched from
+[2019.10.28 11:55:36][af-ZA][INFO ][401] Checking / fixing target subversion directory layout
+[2019.10.28 11:55:36][af-ZA][INFO ][288] Using unpacked installation from directory /home/gerrit/git/joomla-cms
+[2019.10.28 11:55:36][af-ZA][INFO ][488] Comparing number of .ini files:
+[2019.10.28 11:55:36][af-ZA][INFO ][495] - Number of en-GB files: 407
+[2019.10.28 11:55:36][af-ZA][INFO ][496] - Number of af-ZA files: 407
+[2019.10.28 11:55:36][af-ZA][INFO ][498] Files in the en-GB source translation that don''t yet exit in the af-ZA translation:
+[2019.10.28 11:55:36][af-ZA][INFO ][503]  - Total 0 file(s)
+[2019.10.28 11:55:36][af-ZA][INFO ][505] Files in the af-ZA target translation that don''t exit in the en-GB translation any more:
+[2019.10.28 11:55:36][af-ZA][INFO ][510]  - Total 0 file(s)
+[2019.10.28 11:55:36][af-ZA][INFO ][589] Determine changes in language strings that belong to the site section...
+[2019.10.28 11:55:38][af-ZA][INFO ][615] === Summary of required work for the ''SITE'' section: === 
+[2019.10.28 11:55:38][af-ZA][INFO ][619] Number of NEW Strings in en-GB source language not in af-ZA target language: 35
+[2019.10.28 11:55:38][af-ZA][INFO ][620] Number of OLD Strings in af-ZA target language not in en-GB source language: 0
+[2019.10.28 11:55:38][af-ZA][INFO ][621] Total number of af-ZA files that need to be modified: 3
+[2019.10.28 11:55:39][af-ZA][INFO ][589] Determine changes in language strings that belong to the admin section...
+[2019.10.28 11:55:45][af-ZA][INFO ][615] === Summary of required work for the ''ADMIN'' section: === 
+[2019.10.28 11:55:45][af-ZA][INFO ][619] Number of NEW Strings in en-GB source language not in af-ZA target language: 17
+[2019.10.28 11:55:45][af-ZA][INFO ][620] Number of OLD Strings in af-ZA target language not in en-GB source language: 5
+[2019.10.28 11:55:45][af-ZA][INFO ][621] Total number of af-ZA files that need to be modified: 5
+[2019.10.28 11:55:49][af-ZA][INFO ][589] Determine changes in language strings that belong to the install section...
+[2019.10.28 11:55:49][af-ZA][INFO ][615] === Summary of required work for the ''INSTALL'' section: === 
+[2019.10.28 11:55:49][af-ZA][INFO ][619] Number of NEW Strings in en-GB source language not in af-ZA target language: 1
+[2019.10.28 11:55:49][af-ZA][INFO ][620] Number of OLD Strings in af-ZA target language not in en-GB source language: 0
+[2019.10.28 11:55:49][af-ZA][INFO ][621] Total number of af-ZA files that need to be modified: 1
+[2019.10.28 11:55:49][af-ZA][INFO ][877] ============= Next step: =====================================
+[2019.10.28 11:55:49][af-ZA][INFO ][892]
+
+Do all the translations by editing the patch file /home/gerrit/git/af-ZA_joomla_lang/WorkFile_af-ZA-x.x.x.x.sh.
+If a team worked on it, issue a pull-request to your team members and get them to check their merged mwork in.
+Do a pull to get the complete patch file.
+
+Execute the completed patch file. 
+
+Check the changes back into the repository with the commands:
+
+  $ cd /home/gerrit/git/af-ZA_joomla_lang
+  $ git commit -m "Patched to next Joomla release"
+  $ git push
+
+
+[2019.10.28 11:55:49][af-ZA][INFO ][184] === END [PID 29222] on signal EXIT. Cleaning up ===
+```
+
+This will create the work file called `Workfile_[isolang-isocountry]-[x.x.x.x].sh`. This work file is actually a BASH-script with spaces left for where the translations need to be inserted. If it is just a point release, this work file may be only a few pages long. Do not execute this BASH-script yet. If there are any new files that need to be added to the package, they will be created, named accordingly, and added to the current branch in your local repo (you did check out the correct branch, right?) 
+
+* Step 7: Prepare to distribute the workload: Push the changes to the remote repo
+
+Do a commit and a push to get all this work to the remote repo, from which the other team members can access it with a `pull` operation. Any new files that had to be created for this new released will now also exist in the branch, albeit empty files that only contain headers.
+
+```bash
+~/git/af-ZA_joomla_lang $ git commit -m "ready for team to translate"
+
+
+
+* Step 8: Split the report out amoung the translation team members 
+
+Team lead: Chunk the work file in `/Workfile_[isolang-isocountry]-[x.x.x.x].sh` up by line numbers and agree who in the team will translate what chunk and who will review each chunk. Everyone must start their offort off by doing a pull and then a check-out of the relevant branch, e.g. "3.9.5". Everyone is now ready to help translating.
+
+* Step 9: Do the translations and merge the resulting workfile back into the repo
+
+Every translation team member translates / reviews their allocated chunk of the work file and then merges it back into the repo. GIT is very good at resolving the changes to a single file made by multiple users. 
+
+* Step 10: Run the work file script and commit and push all the files
+
+The team lead does a final pull of the work file, a final integrity check, and then executes the work file (which is a BASH shell script after all).
+This can only be done by the team lead, since the work file will be based on the lead's particular work directory setup. 
+This results in changes to many files and these all need to be added, committed and pushed to the remote repo. 
+
+* Step 11: Build the package using the package build script 
+
+Team lead: Run the `MkLanguagePack.sh` script, which will produce a language pack file ready for you to install into Joomla. 
+
+* Step 12: Test the language pack in Joomla
+
+Make sure that the language pack installs in Joomla with no errors. Turn on Joomla Debugging for Language, and see if there are any errors while running through the features that were affected by the new translation strings. Now would be a good time to tag the local repo with the release number and to push this to the remote repo too.
+
+* Step 13: Tag the translation in the remote repo
+
+The translation work for this release is now done. 
+You are now ready to release the new langauge pack when the next version of Joomla is released. If your language is an officially-supported language in Joomla, will Joomla administrators automatically be notified once they have upgraded their version of Joomla and the new language pack version is available. It can be installed with a single click from the Administrator's panel. For this to happen, you need to publish your language pack to the project "Joomla!®3.x Accredited Translations" on http://forge.joomla.org/gf/project/jtranslation3_x/, under the section "Releases" for your language. 
+
+
+## What are these translation work files?
+
+The report files are in fact a series of BASH script files and are a useful way splitting the work between many team members.
+
+When all the strings in it have been translated, it is simply executed, which will put the translated strings in the the correct files. The work file is executed like this:
+
+```bash
+./utilities/WorkFile_af-ZA.sh
+...
+```
+
+## Special case: Create a new language pack
+
+This step is only required if you want to create a new Joomla language pack. Let's assume you want to create a language pack to Amharic / Ge'ez for Ethiopia ('am-ET'). You will only need the `utilities` directory from the 'af-ZA' project and will need to chancge a few values in the configuration.sh file, which is very well documented:
+
+```bash
+~/git $ mkdir am-ET_joomla_lang
+~/git/am-ET_joomla_lang $ cp -r ../af-ZA_joomla_lang/utilities .
+```
+
+Set the configuraton values in `configuration.sh` and continue with the following steps. If you are looking for a quick prototype language pack with about 75% translation accuracy mixed in with utter nonsense (you have been warned), select the 'Google Translate' option below.
+
+# Get the latest Joomla CMS source code
+
+
+## Set up the configuration for building
+
+
 
 
 ## Working with Google Translate
@@ -788,6 +834,21 @@ $ git status
 
 _NOTE:_
 >Remember to commit file name changes.
+
+
+## Deleting files
+
+If the file was already established in your from a previous staging operation (`git add`), you can't simply delete the file in your IDE or in the command line: `rm filename`, you must explicitly delete a file with the 'git rm' command:
+
+```bash
+$ git rm filename
+```
+
+If the file was also previously committed, you need to commit this deletion:
+
+```bash
+$ git commit -m "cleanup" filename
+```
 
 ## Post changes
 
