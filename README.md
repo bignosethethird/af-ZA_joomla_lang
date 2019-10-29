@@ -361,7 +361,7 @@ Bare in mind that the context varies so a given English word such as 'file' can 
 
 * Top occurances of words
 
-This is for interest only, and may give you some insight in how to speed the translation process up. The most frequently-occurring work is the indicative article, 'the':
+This is for interest only, and may give you some insight in how to speed the translation process up. The most frequently-occurring word is the indicative article, 'the':
 
 ```bash
 $ find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | sed -e 's/"//g'  -e 's/%.//g'   -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' -e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | sort -nr | head -20
@@ -708,20 +708,79 @@ This will create the work file called `Workfile_[isolang-isocountry]-[x.x.x.x].s
 
 * Step 7: Prepare to distribute the workload: Push the changes to the remote repo
 
-Do a commit and a push to get all this work to the remote repo, from which the other team members can access it with a `pull` operation. Any new files that had to be created for this new released will now also exist in the branch, albeit empty files that only contain headers.
+Do a commit and a push to get all this work to the remote repo, from which the other team members can access it with a `pull` operation to their own local repo. Any new files that had to be created for this new released will now also exist in the branch, albeit empty files that only contain headers:
 
 ```bash
 ~/git/af-ZA_joomla_lang $ git commit -m "ready for team to translate"
+[3.9.5 6408b5c] ready for team to translate
+ xxx files changed, xxx insertions(+), xxx deletions(-)
+```
 
+Now push this branch 3.9.5 that you have created locally, to the remote repo:
 
+```bash
+~/git/af-ZA_joomla_lang $ git push -u origin 3.9.5
+Username for 'https://github.com': xxxx
+Password for 'https://gerritonagoodday@github.com': xxxxx 
+Counting objects: 9, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (9/9), done.
+Writing objects: 100% (9/9), 4.92 KiB | 839.00 KiB/s, done.
+Total 9 (delta 6), reused 0 (delta 0)
+remote: Resolving deltas: 100% (6/6), completed with 5 local objects.
+remote: 
+remote: Create a pull request for '3.9.5' on GitHub by visiting:
+remote:      https://github.com/gerritonagoodday/af-ZA_joomla_lang/pull/new/3.9.5
+remote: 
+To https://github.com/gerritonagoodday/af-ZA_joomla_lang.git
+ * [new branch]      3.9.5 -> 3.9.5
+Branch '3.9.5' set up to track remote branch '3.9.5' from 'origin'.
+```
+
+The `-u` parameter is important, and means that any future commits from this local branch will go to the corresponding remote branch, without having to specify this in the push operation.
+
+You can check if the remote repo has this branch by listing the remote branches. Use the `-r` parameter to indicate that you are listing branches on the __remote__ repo:
+
+```bash
+~/git/af-ZA_joomla_lang $ git  branch -r
+  origin/3.9.5
+  origin/4.0
+  origin/HEAD -> origin/master
+  origin/master
+```
 
 * Step 8: Split the report out amoung the translation team members 
 
-Team lead: Chunk the work file in `/Workfile_[isolang-isocountry]-[x.x.x.x].sh` up by line numbers and agree who in the team will translate what chunk and who will review each chunk. Everyone must start their offort off by doing a pull and then a check-out of the relevant branch, e.g. "3.9.5". Everyone is now ready to help translating.
+Team lead: Allocate chunks of the work file `Workfile_[isolang-isocountry]-[x.x.x.x].sh` by line numbers or "jobs" and agree who in the team will translate what chunk and who will review each chunk. Usefully, the sections in the file are divided up into "jobs", with each "job" corresponding to an affected file. There is ont need to physically split the file, in fact, this would be counter-productive. Everyone must start their effort off by doing a clone or a pull and then a check-out of the relevant branch, e.g. "3.9.5" to get their copy of the (entire) work file:
+
+So, to recap for team members:
+
+```bash
+~/git/ $ git clone
+~/git/ $ cd af-ZA_joomla_lang
+```
+
+or, if you previously obtined a copy of the repo:
+
+```bash
+$ cd ~/git/af-ZA_joomla_lang
+~/git/af-ZA_joomla_lang $ git pull
+```
+
+Then check out the branch:
+
+```bash
+~/git/af-ZA_joomla_lang $ git checkout 3.9.5
+
+```
+
+Once the team member has done this, the translation effort can begin.
 
 * Step 9: Do the translations and merge the resulting workfile back into the repo
 
 Every translation team member translates / reviews their allocated chunk of the work file and then merges it back into the repo. GIT is very good at resolving the changes to a single file made by multiple users. 
+
+__TODO: Merge like this:__
 
 * Step 10: Run the work file script and commit and push all the files
 
@@ -729,15 +788,85 @@ The team lead does a final pull of the work file, a final integrity check, and t
 This can only be done by the team lead, since the work file will be based on the lead's particular work directory setup. 
 This results in changes to many files and these all need to be added, committed and pushed to the remote repo. 
 
-* Step 11: Build the package using the package build script 
 
-Team lead: Run the `MkLanguagePack.sh` script, which will produce a language pack file ready for you to install into Joomla. 
+In the role of team lead, you do not need to do any merging as the translators will have done this when merging their efforts with that of the others. Run the workfile like this:
 
-* Step 12: Test the language pack in Joomla
+```bash
+ ~/git/af-ZA_joomla_lang $ ./WorkFile_af-ZA-3.9.5.1.sh 
+```
+
+
+Check if the changes made correspond to the file referred to in the work file:
+
+```bash
+~/git/af-ZA_joomla_lang $ git status
+On branch 3.9.5
+Your branch is up-to-date with 'origin/3.9.5'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+        modified:   WorkFile_af-ZA-3.9.4.1.sh
+        modified:   administrator/language/af-ZA/af-ZA.com_content.ini
+        modified:   administrator/language/af-ZA/af-ZA.com_fields.ini
+        modified:   administrator/language/af-ZA/af-ZA.com_joomlaupdate.ini
+        modified:   administrator/language/af-ZA/af-ZA.ini
+        modified:   administrator/language/af-ZA/af-ZA.lib_joomla.ini
+        modified:   installation/language/af-ZA/af-ZA.ini
+        modified:   language/af-ZA/af-ZA.finder_cli.ini
+        modified:   language/af-ZA/af-ZA.ini
+        modified:   language/af-ZA/af-ZA.lib_joomla.ini
+
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+Now commit the changes and push the branch back to remote:
+
+
+```bash
+~/git/af-ZA_joomla_lang $ git add .
+~/git/af-ZA_joomla_lang $ git commit -m "Translations applied to relevant language files"
+~/git/af-ZA_joomla_lang $ git push
+'''
+
+
+
+* Step 11: Test the language files for integrity
+
+Team lead: Run the `Chk4BrokenLanguageStrings.sh` script, which will perform a series of integrity checks and produce a list of any found defects:
+
+```bash
+~/git/af-ZA_joomla_lang $ cd utilities 
+~/git/af-ZA_joomla_lang/utilities $ ./Chk4BrokenLanguageStrings.sh
+....
+```
+
+If any defects are found, they need to be fixed and this integrity test needs to be run again, until all errors are gone. Update the local and the remote branch with any corrected changes:
+
+
+```bash
+~/git/af-ZA_joomla_lang/utilities $ cd ..
+~/git/af-ZA_joomla_lang $ git add .
+~/git/af-ZA_joomla_lang $ git commit -m "last changes"
+~/git/af-ZA_joomla_lang $ git push
+```
+
+* Step 12: Build the package using the package build script 
+
+Team lead: Run the `MkLanguagePack.sh` script, which will produce a language pack file ready for you to install into Joomla.
+
+```bash
+~/git/af-ZA_joomla_lang $ cd utilities
+~/git/af-ZA_joomla_lang/utilities $ ./MkLanguagePack.sh
+....
+```
+
+* Step 13: Test the language pack in Joomla
 
 Make sure that the language pack installs in Joomla with no errors. Turn on Joomla Debugging for Language, and see if there are any errors while running through the features that were affected by the new translation strings. Now would be a good time to tag the local repo with the release number and to push this to the remote repo too.
 
-* Step 13: Tag the translation in the remote repo
+* Step 14: Tag the translation in the remote repo
 
 The translation work for this release is now done. 
 You are now ready to release the new langauge pack when the next version of Joomla is released. If your language is an officially-supported language in Joomla, will Joomla administrators automatically be notified once they have upgraded their version of Joomla and the new language pack version is available. It can be installed with a single click from the Administrator's panel. For this to happen, you need to publish your language pack to the project "Joomla!®3.x Accredited Translations" on http://forge.joomla.org/gf/project/jtranslation3_x/, under the section "Releases" for your language. 
@@ -765,17 +894,22 @@ This step is only required if you want to create a new Joomla language pack. Let
 
 Set the configuraton values in `configuration.sh` and continue with the following steps. If you are looking for a quick prototype language pack with about 75% translation accuracy mixed in with utter nonsense (you have been warned), select the 'Google Translate' option below.
 
-# Get the latest Joomla CMS source code
+## Tips when Translating
 
+__Things to remember:___
+> All string identifiers are in upper case.
+> Each strings is just one line - even if a long line wraps around your screen.
+> Each string begins and ends with double inverted commas. Any embedded inverted commas in a string need to be escaped.
 
-## Set up the configuration for building
+See the section __Top occurances of words__ on what the most frequently-occurring words are. You could potentially translate all these words in whole-word mode (__important!__) and perform a series of case-sensitive search-and-repleace across the entire work file before deseminating the file to team members. Experienced translators don't mind multiple jumbled-up languages. You could save a significant amount of typing like this. You can also try this technique with short phrases.
 
+Have an agreed set of technical terms ready for your translation. Many technical terms are new and may not yet be established in your particular language. You could apply the search-and-replace techniqie here too. Either way, be consistent in the choice of terminology. Create a dictionary like the one in https://github.com/gerritonagoodday/af-ZA_joomla_lang/wiki/woordeboek-dictionary. 
 
-
+Use HTML-codes for diacritic characters, e.g. &ecirc; = `&ecirc;`, &auml; = `&auml;`, etc...  to avoid any code mangling when some hapless soul opens and saves a language file with a rubbish editor. Learn the HTML-codes off by heart.
 
 ## Working with Google Translate
 
-if you specificy the `-g` option when running `Chk4NewLanguageStrings.sh`, the program 
+If you specificy the `-g` option when running `Chk4NewLanguageStrings.sh`, the program 
 `google_translate.pl` will be used to invoke the Google Translate API. 
 See [https://github.com/gerritonagoodday/google_translate](https://github.com/gerritonagoodday/google_translate)
 on follow the instructions for setting yourself up as Google Cloud API user.
@@ -982,7 +1116,7 @@ Switched to branch '3.9'
 Your branch is up-to-date with 'origin/3.9'.
 ```
 
-Also do this to intentionlly obliterate any code changes that you have made thus far on branch '3.9', and to start afresh.
+Also do this to intentionlly obliterate any code changes that you have made thus far on branch '3.9' and have not committed and pushed to remote, and to start afresh.
 
 * Create a new branch off the currently-selected branch '3.9':
 

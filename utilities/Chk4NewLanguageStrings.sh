@@ -125,6 +125,7 @@ tmpfile16=$(mktemp /tmp/joomla.16.XXXX)
 
 YEAR=$(date +"%Y")
 CWD=$PWD
+jobcount=1
 
 # Set up logging - this is important if we run this as a cron job
 progname=${0##*/}
@@ -668,7 +669,6 @@ function DiffContentReport {
     echo $summary_3 | sed -e 's/^/# /g'; } >> "$PATCHFILE"  
 
   i=0
-  jobcount=1
   while : ; do
     DEBUG "[$LINENO] Checking strings in file ${a_source_filenames[$i]}"
     cut -f1 -d= -s "${a_source_filenames[$i]}" | grep -v "^#" | grep -v "^$" | sort -u > "$tmpfile13"

@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # ==========================================================================
-# This script is a summary of the work required to bring the af-ZA language
+# This script is a summary van die work required to bring the af-ZA language
 # pack up to the latest Joomla patch level. It was created using the 
 # Chk4NewLanguageStrings.sh utility 
 # https://github.com/gerritonagoodday/af-ZA_joomla_lang/tree/master/utilities
-# This utility works for all languages, as long as the directory structure is in the
+# This utility works vir all languages, as long as the directory structure is in the
 # prescribed Joomla structure and you have a very recent update of your translation 
 # project on hand - presumably from a Subversion repository. 
 # More details are shown when the Chk4NewLanguageStrings.sh 
@@ -39,89 +39,89 @@
 
 # Job 1: Add the following translated string(s) to the file:
 # /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.finder_cli.ini
-echo "FINDER_CLI_BATCH_CONTINUING=\" * Continuing processing of batch ...\""\
+echo "FINDER_CLI_BATCH_CONTINUING=\" * Vervolg verwerking van bondelproses ...\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.finder_cli.ini
-echo "FINDER_CLI_BATCH_PAUSING=\" * Pausing processing for %s seconds ...\""\
+echo "FINDER_CLI_BATCH_PAUSING=\" * Pouseer verwerking vir %s sekondes ...\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.finder_cli.ini
-echo "FINDER_CLI_SKIPPING_PAUSE_LOW_BATCH_PROCESSING_TIME=\" * Skipping pause, as previous batch had a very low processing time (%ss < %ss)\""\
+echo "FINDER_CLI_SKIPPING_PAUSE_LOW_BATCH_PROCESSING_TIME=\" * Spring oor die pouse omdat die vorige bondelproses nie lang geduur het nie (%ss < %ss)\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.finder_cli.ini
 
 # Job 2: Add the following translated string(s) to the file:
 # /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JASSOCIATIONS_ASC=\"Associations ascending\""\
+echo "JASSOCIATIONS_ASC=\"Assosiasies opdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JASSOCIATIONS_DESC=\"Associations descending\""\
+echo "JASSOCIATIONS_DESC=\"Assosiasies afdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JAUTHOR_ASC=\"Author ascending\""\
+echo "JAUTHOR_ASC=\"Outeur opdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JAUTHOR_DESC=\"Author descending\""\
+echo "JAUTHOR_DESC=\"Outeur afdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JCATEGORY_ASC=\"Category ascending\""\
+echo "JCATEGORY_ASC=\"Kategorie opdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JCATEGORY_DESC=\"Category descending\""\
+echo "JCATEGORY_DESC=\"Kategorie afdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JDATE_ASC=\"Date ascending\""\
+echo "JDATE_ASC=\"Datum opdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JDATE_DESC=\"Date descending\""\
+echo "JDATE_DESC=\"Datum afdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JFEATURED_ASC=\"Featured ascending\""\
+echo "JFEATURED_ASC=\"Uitgelig, opdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JFEATURED_DESC=\"Featured descending\""\
+echo "JFEATURED_DESC=\"Uitgelig, afdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JGLOBAL_FIELD_GROUPS=\"Field Groups\""\
+echo "JGLOBAL_FIELD_GROUPS=\"Veld Groepe\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JGLOBAL_HITS_ASC=\"Hits ascending\""\
+echo "JGLOBAL_HITS_ASC=\"Treffers opdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JGLOBAL_HITS_DESC=\"Hits descending\""\
+echo "JGLOBAL_HITS_DESC=\"Treffers afdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
 echo "JGLOBAL_LIST_ALIAS=\"(<span>Alias</span>: %s)\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JGLOBAL_LIST_ALIAS_NOTE=\"(<span>Alias</span>: %s, <span>Note</span>: %s)\""\
+echo "JGLOBAL_LIST_ALIAS_NOTE=\"(<span>Alias</span>: %s, <span>Nota</span>: %s)\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JGLOBAL_SORT_BY=\"Sort Table By:\""\
+echo "JGLOBAL_SORT_BY=\"Rangskik Tabel volgens:\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JGLOBAL_TITLE_ASC=\"Title ascending\""\
+echo "JGLOBAL_TITLE_ASC=\"Titel opdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JGLOBAL_TITLE_DESC=\"Title descending\""\
+echo "JGLOBAL_TITLE_DESC=\"Titel afdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JGLOBAL_TYPE_OR_SELECT_SOME_TAGS=\"Type or select some tags\""\
+echo "JGLOBAL_TYPE_OR_SELECT_SOME_TAGS=\"Tik of kies 'n paar etikette\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JGRID_HEADING_ACCESS_ASC=\"Access ascending\""\
+echo "JGRID_HEADING_ACCESS_ASC=\"Toegang opdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JGRID_HEADING_ACCESS_DESC=\"Access descending\""\
+echo "JGRID_HEADING_ACCESS_DESC=\"Toegang afdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JGRID_HEADING_ID_ASC=\"ID ascending\""\
+echo "JGRID_HEADING_ID_ASC=\"ID opdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JGRID_HEADING_ID_DESC=\"ID descending\""\
+echo "JGRID_HEADING_ID_DESC=\"ID afdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JGRID_HEADING_LANGUAGE_ASC=\"Language ascending\""\
+echo "JGRID_HEADING_LANGUAGE_ASC=\"Taal opdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JGRID_HEADING_LANGUAGE_DESC=\"Language descending\""\
+echo "JGRID_HEADING_LANGUAGE_DESC=\"Taal afdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JGRID_HEADING_ORDERING_ASC=\"Ordering ascending\""\
+echo "JGRID_HEADING_ORDERING_ASC=\"Orde opdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JGRID_HEADING_ORDERING_DESC=\"Ordering descending\""\
+echo "JGRID_HEADING_ORDERING_DESC=\"Orde afdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JSTATUS_ASC=\"Status ascending\""\
+echo "JSTATUS_ASC=\"Status opdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
-echo "JSTATUS_DESC=\"Status descending\""\
+echo "JSTATUS_DESC=\"Status afdalend\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.ini
 
 # Job 3: Add the following translated string(s) to the file:
 # /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.lib_joomla.ini
-echo "JLIB_LOGIN_AUTHORISATION=\"Your access has been authorised.\""\
+echo "JLIB_LOGIN_AUTHORISATION=\"Jou toegang is bemagtig.\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.lib_joomla.ini
-echo "JLIB_LOGIN_DENIED=\"Your access has been denied.\""\
+echo "JLIB_LOGIN_DENIED=\"Jou toegang is geweier.\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.lib_joomla.ini
-echo "JLIB_LOGIN_EXPIRED=\"Your authentication has expired.\""\
+echo "JLIB_LOGIN_EXPIRED=\"Jou bemagtiging het verstryk.\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/language/af-ZA/af-ZA.lib_joomla.ini
 
 # ==========================================================================
-# This script is a summary of the work required to bring the af-ZA language
+# This script is a summary van die work required to bring the af-ZA language
 # pack up to the latest Joomla patch level. It was created using the 
 # Chk4NewLanguageStrings.sh utility 
 # https://github.com/gerritonagoodday/af-ZA_joomla_lang/tree/master/utilities
-# This utility works for all languages, as long as the directory structure is in the
+# This utility works vir all languages, as long as the directory structure is in the
 # prescribed Joomla structure and you have a very recent update of your translation 
 # project on hand - presumably from a Subversion repository. 
 # More details are shown when the Chk4NewLanguageStrings.sh 
@@ -155,20 +155,20 @@ echo "JLIB_LOGIN_EXPIRED=\"Your authentication has expired.\""\
 
 # Job 1: Add the following translated string(s) to the file:
 # /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_content.ini
-echo "COM_CONTENT_CREATE_ARTICLE_ERROR=\"When default category is enabled, a category should be selected.\""\
+echo "COM_CONTENT_CREATE_ARTICLE_ERROR=\"Wanneer die verstek kategorie ontsper is, behoort 'n kategorie gekies word.\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_content.ini
 
 # Job 2: Add the following translated string(s) to the file:
 # /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_fields.ini
-echo "COM_FIELDS_FIELD_EDITABLE_IN_ADMIN=\"Administrator\""\
+echo "COM_FIELDS_FIELD_EDITABLE_IN_ADMIN=\"Administrateur\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_fields.ini
-echo "COM_FIELDS_FIELD_EDITABLE_IN_BOTH=\"Both\""\
+echo "COM_FIELDS_FIELD_EDITABLE_IN_BOTH=\"Albei\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_fields.ini
-echo "COM_FIELDS_FIELD_EDITABLE_IN_DESC=\"On which part of the site should the field be editable?\""\
+echo "COM_FIELDS_FIELD_EDITABLE_IN_DESC=\"Op watter deel van die werf moet die veld redigeerbaar wees?\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_fields.ini
-echo "COM_FIELDS_FIELD_EDITABLE_IN_LABEL=\"Editable In\""\
+echo "COM_FIELDS_FIELD_EDITABLE_IN_LABEL=\"Redigeerbar in\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_fields.ini
-echo "COM_FIELDS_FIELD_EDITABLE_IN_SITE=\"Site\""\
+echo "COM_FIELDS_FIELD_EDITABLE_IN_SITE=\"Werf\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_fields.ini
 
 # Job 3: Remove the following string(s) from the file:
@@ -186,41 +186,41 @@ sed -e "/COM_FIELDS_FIELD_SHOW_ON_SITE\s*=/d" -i /home/gerrit/git/af-ZA_joomla_l
 
 # Job 4: Add the following translated string(s) to the file:
 # /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_joomlaupdate.ini
-echo "COM_JOOMLAUPDATE_MINIMUM_STABILITY_ALPHA=\"Alpha\""\
+echo "COM_JOOMLAUPDATE_MINIMUM_STABILITY_ALPHA=\"Alfa\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_joomlaupdate.ini
 echo "COM_JOOMLAUPDATE_MINIMUM_STABILITY_BETA=\"Beta\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_joomlaupdate.ini
-echo "COM_JOOMLAUPDATE_MINIMUM_STABILITY_DESC=\"The minimum stability of the extension updates you would like to see. Development is the least stable, Stable is production quality. If an extension doesn't specify a level it is assumed to be Stable.\""\
+echo "COM_JOOMLAUPDATE_MINIMUM_STABILITY_DESC=\"Die minimum stabiliteit van die ekstensie opdateerings wat jy graag sal wil sien. Ontwikkeling is die mees onstabiel, Stabiel is produksie kwaliteit. As 'n ekstensie nie 'n stabiliteit aandui nie, dan word dit as Stabiel beskou.\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_joomlaupdate.ini
-echo "COM_JOOMLAUPDATE_MINIMUM_STABILITY_DEV=\"Development\""\
+echo "COM_JOOMLAUPDATE_MINIMUM_STABILITY_DEV=\"Ontwikkeling\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_joomlaupdate.ini
-echo "COM_JOOMLAUPDATE_MINIMUM_STABILITY_LABEL=\"Minimum Stability\""\
+echo "COM_JOOMLAUPDATE_MINIMUM_STABILITY_LABEL=\"Minimum Stabiliteit\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_joomlaupdate.ini
-echo "COM_JOOMLAUPDATE_MINIMUM_STABILITY_RC=\"Release Candidate\""\
+echo "COM_JOOMLAUPDATE_MINIMUM_STABILITY_RC=\"Uitgawe Kandidaat\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_joomlaupdate.ini
-echo "COM_JOOMLAUPDATE_MINIMUM_STABILITY_STABLE=\"Stable\""\
+echo "COM_JOOMLAUPDATE_MINIMUM_STABILITY_STABLE=\"Stabiel\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_joomlaupdate.ini
 
 # Job 5: Add the following translated string(s) to the file:
 # /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.ini
-echo "JGLOBAL_TYPE_OR_SELECT_SOME_TAGS=\"Type or select some tags\""\
+echo "JGLOBAL_TYPE_OR_SELECT_SOME_TAGS=\"Tik of kies 'n paar etikette\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.ini
 
 # Job 6: Add the following translated string(s) to the file:
 # /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.lib_joomla.ini
-echo "JLIB_LOGIN_AUTHORISATION=\"Your access has been authorised.\""\
+echo "JLIB_LOGIN_AUTHORISATION=\"Jou toegang is bemagtig.\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.lib_joomla.ini
-echo "JLIB_LOGIN_DENIED=\"Your access has been denied.\""\
+echo "JLIB_LOGIN_DENIED=\"Jou toegang is geweier.\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.lib_joomla.ini
-echo "JLIB_LOGIN_EXPIRED=\"Your authentication has expired.\""\
+echo "JLIB_LOGIN_EXPIRED=\"Jou bemagtiging het verstryk.\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.lib_joomla.ini
 
 # ==========================================================================
-# This script is a summary of the work required to bring the af-ZA language
+# This script is a summary van die work required to bring the af-ZA language
 # pack up to the latest Joomla patch level. It was created using the 
 # Chk4NewLanguageStrings.sh utility 
 # https://github.com/gerritonagoodday/af-ZA_joomla_lang/tree/master/utilities
-# This utility works for all languages, as long as the directory structure is in the
+# This utility works vir all languages, as long as the directory structure is in the
 # prescribed Joomla structure and you have a very recent update of your translation 
 # project on hand - presumably from a Subversion repository. 
 # More details are shown when the Chk4NewLanguageStrings.sh 
@@ -254,5 +254,5 @@ echo "JLIB_LOGIN_EXPIRED=\"Your authentication has expired.\""\
 
 # Job 1: Add the following translated string(s) to the file:
 # /home/gerrit/git/af-ZA_joomla_lang/installation/language/af-ZA/af-ZA.ini
-echo "INSTL_DEFAULTLANGUAGE_COULD_NOT_INSTALL_MULTILANG=\"Joomla was unable to install the multilingual sample data as only one language is installed. To activate the multilingual feature, you need to install more languages, press the 'Previous' button and choose the desired languages from the list.\""\
+echo "INSTL_DEFAULTLANGUAGE_COULD_NOT_INSTALL_MULTILANG=\"Joomla kon veeltalike voorbeeld-data installeer nie omdat net een taal geinstaller is. Om die veeltalige funksie te ontsper moet  jy meer tale installeer, kliek dan op die 'Vorige' knoppie en kies die gewensde tale van die lys.\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/installation/language/af-ZA/af-ZA.ini
