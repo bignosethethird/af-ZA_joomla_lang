@@ -4,7 +4,7 @@
 # Only change this value when building a new version. It must be in the form x.y.z.n
 # x, y and z are given and correspond to the Joomla Version that you are building to.
 # n, however, starts at 1 and increments on every release that you and your team make.
-# All other variants of this version will be calculated
+# All other variants of this representation will be calculated
 export TRANSLATIONVERSION_XML="3.9.12.1"
 
 # What it this file for?

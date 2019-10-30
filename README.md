@@ -555,8 +555,9 @@ Check if you are on the `master` branch - look for the `*`:
 
 ```bash
 ~/git/af-ZA_joomla_lang $ git branch
-  3.9.3
-  3.9.4
+  3.9.3v1
+  3.9.4v1
+  3.9.4v2
 * master
 ```
 
@@ -568,12 +569,12 @@ If not, check out the master branch first:
 
 * Step 4: Create a branch in your local remote repo 
 
-Create a new branch in the remote repo, named according to the Joomla release that you are creating this package for, e.g. "3.9.5", pull the repo, and check-out the branch. This is your working area. 
+Create a new branch in the remote repo, named according to the Joomla release that you are creating this package for and also the release version (starting at 1), e.g. "3.9.5v1", pull the repo, and check-out the branch. This is your working area. 
 
 ```bash
-~/git/af-ZA_joomla_lang $ git branch 3.9.5
-~/git/af-ZA_joomla_lang $ git checkout 3.9.5
-Switched to branch '3.9.5'
+~/git/af-ZA_joomla_lang $ git branch 3.9.5v1
+~/git/af-ZA_joomla_lang $ git checkout 3.9.5v1
+Switched to branch '3.9.5v1'
 ```
 
 * Step 5: Set up the package configuration file
@@ -712,14 +713,14 @@ Do a commit and a push to get all this work to the remote repo, from which the o
 
 ```bash
 ~/git/af-ZA_joomla_lang $ git commit -m "ready for team to translate"
-[3.9.5 6408b5c] ready for team to translate
+[3.9.5v1 6408b5c] ready for team to translate
  xxx files changed, xxx insertions(+), xxx deletions(-)
 ```
 
-Now push this branch 3.9.5 that you have created locally, to the remote repo:
+Now push this branch 3.9.5v1 that you have created locally, to the remote repo:
 
 ```bash
-~/git/af-ZA_joomla_lang $ git push -u origin 3.9.5
+~/git/af-ZA_joomla_lang $ git push -u origin 3.9.5v1
 Username for 'https://github.com': xxxx
 Password for 'https://gerritonagoodday@github.com': xxxxx 
 Counting objects: 9, done.
@@ -729,11 +730,11 @@ Writing objects: 100% (9/9), 4.92 KiB | 839.00 KiB/s, done.
 Total 9 (delta 6), reused 0 (delta 0)
 remote: Resolving deltas: 100% (6/6), completed with 5 local objects.
 remote: 
-remote: Create a pull request for '3.9.5' on GitHub by visiting:
-remote:      https://github.com/gerritonagoodday/af-ZA_joomla_lang/pull/new/3.9.5
+remote: Create a pull request for '3.9.5v1' on GitHub by visiting:
+remote:      https://github.com/gerritonagoodday/af-ZA_joomla_lang/pull/new/3.9.5v1
 remote: 
 To https://github.com/gerritonagoodday/af-ZA_joomla_lang.git
- * [new branch]      3.9.5 -> 3.9.5
+ * [new branch]      3.9.5v1 -> 3.9.5v1
 Branch '3.9.5' set up to track remote branch '3.9.5' from 'origin'.
 ```
 
@@ -743,7 +744,7 @@ You can check if the remote repo has this branch by listing the remote branches.
 
 ```bash
 ~/git/af-ZA_joomla_lang $ git  branch -r
-  origin/3.9.5
+  origin/3.9.5v1
   origin/4.0
   origin/HEAD -> origin/master
   origin/master
@@ -770,7 +771,7 @@ $ cd ~/git/af-ZA_joomla_lang
 Then check out the branch:
 
 ```bash
-~/git/af-ZA_joomla_lang $ git checkout 3.9.5
+~/git/af-ZA_joomla_lang $ git checkout 3.9.5v1
 
 ```
 
@@ -807,7 +808,7 @@ Changes not staged for commit:
   (use "git add <file>..." to update what will be committed)
   (use "git checkout -- <file>..." to discard changes in working directory)
 
-        modified:   WorkFile_af-ZA-3.9.4.1.sh
+        modified:   WorkFile_af-ZA-3.9.5.1.sh
         modified:   administrator/language/af-ZA/af-ZA.com_content.ini
         modified:   administrator/language/af-ZA/af-ZA.com_fields.ini
         modified:   administrator/language/af-ZA/af-ZA.com_joomlaupdate.ini
@@ -828,9 +829,7 @@ Now commit the changes and push the branch back to remote:
 ~/git/af-ZA_joomla_lang $ git add .
 ~/git/af-ZA_joomla_lang $ git commit -m "Translations applied to relevant language files"
 ~/git/af-ZA_joomla_lang $ git push
-'''
-
-
+```
 
 * Step 11: Test the language files for integrity
 
@@ -849,6 +848,8 @@ If any defects are found, they need to be fixed and this integrity test needs to
 ~/git/af-ZA_joomla_lang/utilities $ cd ..
 ~/git/af-ZA_joomla_lang $ git add .
 ~/git/af-ZA_joomla_lang $ git commit -m "last changes"
+[3.9.5 f7a644d] Translations applied to relevant language files
+ 10 files changed, 257 insertions(+), 75 deletions(-)
 ~/git/af-ZA_joomla_lang $ git push
 ```
 
@@ -1091,7 +1092,7 @@ If you have not set up your user credientials to the _remote repo_, you will be 
 
 This section lists a bunch of recipes and cheats that relate to branches.
 
-* A simple approach to use branches
+### A simple approach to use branches
 
 By default, a Git repository has at least one branch, called 'master'.
 
@@ -1099,7 +1100,9 @@ Branches are created to develop specific feature sets in, or to create a specifi
 
 Should a branch need to be revisited in order to, say, fix a minor problem for a point-release, a branch can be made from the previous release tag. The fix is made, added, commited and pushed to remote, a point-release package is built, and the branch tagged with the point-release name and is merged into the master again, and the point-release branch does not exist any more. Repeat this process as often as required.
 
-* List all current branches in repo. the one marked with a '*' is the currently-selected branch:
+### List all branches in your local repo. 
+
+The one marked with a '*' is the currently-selected branch:
 
 ```bash
 $ git branch
@@ -1108,53 +1111,78 @@ $ git branch
   master
 ```
 
-* Select an existig branch, i.e. checkout a branch:
+### List all branches in your remote repo. 
+
+There is no concept of a "currently-selected branch" on the remote repo:
 
 ```bash
-$ git checkout '3.9'
-Switched to branch '3.9'
-Your branch is up-to-date with 'origin/3.9'.
+$ git branch -r
+  origin/3.9.5v1
+  origin/3.9.5v3
+  origin/3.9.6v1
+  origin/4.0
+  origin/HEAD -> origin/master
+  origin/master
+```
+
+### Select an existig branch, i.e. checkout a branch:
+
+```bash
+$ git checkout '3.9.5v1'
+Switched to branch '3.9.5v1'
+Your branch is up-to-date with 'origin/3.9.5v1'.
 ```
 
 Also do this to intentionlly obliterate any code changes that you have made thus far on branch '3.9' and have not committed and pushed to remote, and to start afresh.
 
-* Create a new branch off the currently-selected branch '3.9':
+### Create a new branch off the currently-selected branch:
 
-```$ git branch [new_branch_name]```
+```bash
+$ git branch [new_branch_name]
+```
 
 For example:
 
-```$ git branch '3.9.5'```
+```$ git branch '3.9.5v1'```
 
 Check the result - a new brnach was created but you are still on the last selected branch:
 
 ```bash
 $ git branch
-* 3.9
-  3.9.5
+* 3.9.5v1
   4.0
   master
 ```
 
-* Delete a branch
+### Delete a branch from the local repo
 
-Do this to remove a branch and all its work from your local repo.
+Do this to remove a branch and all its work from your local repo:
 
 ```bash
 $ git branch -d '3.9.5'
 Deleted branch 3.9.5 (was 7705d44).
 ```
 
-* Push a branch to your remote repo
+### Delete a branch from the remote repo
 
-One way to make your work in your local branch visible to the public is to commit your branch and to push it to the remote repo. Chance are that the branch does not yet exist on the remote repo, so will need to force the creation of the branch on the remote repo:
+Do this to remove a branch and all its work from your remote repo:
 
 ```bash
-$ git push --set-upstream origin 3.9.5
+$ git push origin -d '3.9.5'
+To https://github.com/gerritonagoodday/af-ZA_joomla_lang.git
+ - [deleted]         3.9.5
+```
+
+### Push a branch to your remote repo
+
+One way to make your work in your local branch visible to the public is to commit your branch and to push it to the remote repo. Chance are that the branch does not yet exist on the remote repo, so you will need to force the creation of the branch on the remote repo:
+
+```bash
+$ git push --set-upstream origin 3.9.5v1
 ...
 To https://github.com/gerritonagoodday/af-ZA_joomla_lang.git
- * [new branch]      3.9.5 -> 3.9.5
-Branch '3.9.5' set up to track remote branch '3.9.5' from 'origin'.
+ * [new branch]      3.9.5v1 -> 3.9.5v1
+Branch '3.9.5v1' set up to track remote branch '3.9.5v1' from 'origin'.
 ```
 
 _NOTE:_
@@ -1167,7 +1195,19 @@ $ git push
 Everything up-to-date
 ```
 
-## Merge branches
+### Rename a branch
+
+```bash
+$ git branch -m [old_name] [new_name]
+```
+
+Make this name change effective on the remote repo by adding a new branch (because you can't rename a branch on remote unless you are actually on the git server):
+
+```bash
+$ git push origin [new_name]
+```
+
+### Merge branches
 
 Merging code from another branch cleverly folds the files and lines of code in the files together, and also commits the changes at the same time. Of course, only commiteted code can be merged to somewhere else.
 

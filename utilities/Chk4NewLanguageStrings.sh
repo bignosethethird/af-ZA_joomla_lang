@@ -399,7 +399,7 @@ source_lingo_1=${source_lingo/-[A-Z]*/}
 target_lingo_1=${target_lingo/-[A-Z]*/}
 
 
-INFO "[$LINENO] Checking / fixing target subversion directory layout"
+INFO "[$LINENO] Checking / fixing target directory layout"
 
 # These are the current directories that contain language files,
 # check them on new major releases.

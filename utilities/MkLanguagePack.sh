@@ -222,34 +222,41 @@ function CreateWorkspace {
 
 # Current Working Directory is $workfolder = joomlawork
 function GetLastSnapshots {
-  INFO "[$LINENO] Get Snapshots from branch $TRANSLATIONVERSION"
   # Get the content of the snapshot folder
   [[ -z $TRANSLATIONVERSION ]] && DIE "[$LINENO] TRANSLATIONVERSION is not specified"
   echo ${TRANSLATIONVERSION} | grep v > /dev/null
-  [[ $? -ne 0 ]]  && DIE "[$LINENO] TRANSLATIONVERSION dies not contain the version specifier. It must be in the form x.y.zvn"  
+  [[ $? -ne 0 ]]  && DIE "[$LINENO] TRANSLATIONVERSION does not contain the version specifier. It must be in the form x.y.zvn"  
   [[ -z ${TRANSLATIONVERSION#*v} ]] && DIE "[$LINENO] TRANSLATIONVERSION dies not contain the version number after the 'v'. It must be in the form x.y.zvn"
-  
+
+  INFO "[$LINENO] Get branch $TRANSLATIONVERSION"
   cd ..  
   git branch --list | grep $TRANSLATIONVERSION > /dev/null
   retcode=$?
   cd -
   if [[ $retcode -ne 0 ]]; then
-    INFO "[$LINENO] There is no branch in git named $TRANSLATIONVERSION"
+    WARN "[$LINENO] There is no branch in git named '$TRANSLATIONVERSION'"
+    INFO "[$LINENO] trying to get the tag '$TRANSLATIONVERSION"
     cd ..
     git tag --list | grep $TRANSLATIONVERSION > /dev/null
     retcode=$?
     cd -
     if [[ $retcode -ne 0 ]]; then
-      INFO "[$LINENO] There is no tag in git name $TRANSLATIONVERSION"
+      WARN "[$LINENO] There is no tag in git name $TRANSLATIONVERSION"
       DIE "[$LINENO] There is neither branch nor tag in git named $TRANSLATIONVERSION"
+    else
+      cd ..
+      git checkout tags/'${TRANSLATIONVERSION}' > /dev/null
+      retcode=$?
+      cd -
+      [[ $retcode -ne 0 ]] && DIE "[$LINENO] There was a problem checking out the tag '${TRANSLATIONVERSION}'"
     fi
+  else
+    cd ..
+    git checkout $TRANSLATIONVERSION
+    retcode=$?
+    cd -
+    [[ $retcode -ne 0 ]] && DIE "[$LINENO] There was a problem with checking out the branch '$TRANSLATIONVERSION'"
   fi
-
-  cd ..
-  git checkout $TRANSLATIONVERSION
-  retcode=$?
-  cd -
-  [[ $retcode -ne 0 ]] && DIE "[$LINENO] There was a problem with checking out git branch / tag name $TRANSLATIONVERSION"
 }
 
 # Collate translated files into snapshot build folders 'site' and 'admin'
