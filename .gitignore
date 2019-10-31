@@ -1,4 +1,4 @@
-utilities/MkLanguagepackSnapshotBuild.log
+utilities/*.log
 .build
-.images
+# .images
 

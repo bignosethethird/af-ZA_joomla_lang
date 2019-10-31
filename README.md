@@ -1,8 +1,10 @@
 # Suite of Language Translation Utilities for Joomla
 
+![Latest version available!](/.images/announcement.png)
+
 ## Table of Contents
 
-  - [Welcome](#welcome)
+- [Welcome](#welcome)
     - [How do language strings work in Joomla CMS?](#how-do-language-strings-work-in-joomla-cms)
     - [Introduction to GIT](#introduction-to-git)
       - [Install Git](#install-git)
@@ -24,6 +26,7 @@
       - [Step 7: Prepare to distribute the workload: Push the changes to the remote repo](#step-7-prepare-to-distribute-the-workload-push-the-changes-to-the-remote-repo)
       - [Step 8: Split the report out amoung the translation team members](#step-8-split-the-report-out-amoung-the-translation-team-members)
       - [Step 9: Do the translations and merge the resulting workfile back into the repo](#step-9-do-the-translations-and-merge-the-resulting-workfile-back-into-the-repo)
+      - [Step 10: Run the work file script and commit and push all the files](#step-10-run-the-work-file-script-and-commit-and-push-all-the-files)
       - [Step 11: Test the language files for integrity](#step-11-test-the-language-files-for-integrity)
       - [Step 12: Build the package using the package build script](#step-12-build-the-package-using-the-package-build-script)
       - [Step 13: Test the language pack in Joomla](#step-13-test-the-language-pack-in-joomla)
@@ -152,7 +155,7 @@ Username for 'https://github.com': XXXXX
 Password for 'https://gerritonagoodday@github.com': XXXXX
 ```
 
-### First 
+### First operations in GIT
 
 Let's look at Joomla Release 3.9.5 for example: You would first need to *clone* the entire repository (a.k.a. "repo") from [https://github.com/joomla/joomla-cms](#https://github.com/joomla/joomla-cms). This will bring down all the branches end basically the entire history of the project. Do this as follows . A new directory, ```joomla-cms```, will be created off the the ```git```-directory:
 
@@ -212,7 +215,7 @@ HEAD is now at 1547f8e760 Prepare 3.9.5 release
 There! You now have all the code that is used for the 3.9.5 release of Joomla. The code for the other releases is hidden in the various .git directories and you can always do a checkout of the other releases if you need to peak into these. 
 
 
-## Cool things you can do in GIT
+### Cool things you can do in GIT
 
 Now that you have a working copy of the Joomla Core code, here are some interesting things you do though Git:
 
@@ -799,9 +802,51 @@ Once the team member has done this, the translation effort can begin.
 
 Every translation team member translates / reviews their allocated chunk of the work file and then merges it back into the repo. GIT is very good at resolving the changes to a single file made by multiple users. 
 
-__TODO: Merge like this:__
+To merge the branch that you were working on into the 'master' branch, you need to go into the 'master' branch. Remember that you can only enter another branch if you have either committed all changes or have stashed any changes under keepsafe-name for later unstashing and use. If you don't do this, you will loose all your current changes. This may in rare cases be actually desired.
 
-* Step 10: Run the work file script and commit and push all the files
+```bash
+$ git checkout master
+switched to branch 'master'
+Your branch is up-to-date with 'origin/master'.
+```
+
+Now do the merge in your local repo:
+
+```bash
+$ git merge '3.9.5v1'
+Updating ed0cb7b..e945c5e
+Fast-forward
+ WorkFile_af-ZA-3.9.12.1.sh                              | 258 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ administrator/language/af-ZA/af-ZA.com_content.ini      |   1 +
+ administrator/language/af-ZA/af-ZA.com_fields.ini       |  10 +--
+ administrator/language/af-ZA/af-ZA.com_joomlaupdate.ini |   7 ++
+ administrator/language/af-ZA/af-ZA.ini                  |   1 +
+ administrator/language/af-ZA/af-ZA.lib_joomla.ini       |   3 +
+ installation/language/af-ZA/af-ZA.ini                   |   1 +
+ language/af-ZA/af-ZA.finder_cli.ini                     |   3 +
+ language/af-ZA/af-ZA.ini                                |  29 ++++++++
+ language/af-ZA/af-ZA.lib_joomla.ini                     |   3 +
+ utilities/configuration.sh                              |   4 +-
+ 10 files changed, 949 insertions(+), 133 deletions(-)
+ create mode 100755 WorkFile_af-ZA-3.9.12.1.sh
+```
+
+_NOTE:_
+>1. You need to 'be in the branch' that is being merged to. Use the `git checkout '[branch-name]'` for this.
+>2. The code is automatically commited after a merge. No need to do a `git commit` after a successful merge.
+>3. Sometimes, a merge conflict arrises and needs to be resolved through your manual intervention. See the next section.
+
+Your merge efforts will not be visible on the remote repo until you do a push of your master branch :
+
+```bash
+$ git push origin master
+Total 0 (delta 0), reused 0 (delta 0)
+To https://github.com/gerritonagoodday/af-ZA_joomla_lang.git
+   ed0cb7b..e945c5e  master -> master
+```
+
+
+### Step 10: Run the work file script and commit and push all the files
 
 The team lead does a final pull of the work file, a final integrity check, and then executes the work file (which is a BASH shell script after all).
 This can only be done by the team lead, since the work file will be based on the lead's particular work directory setup. 
@@ -1272,7 +1317,7 @@ To merge the branch that you were working on into the 'master' branch, you need 
 
 ```bash
 $ git checkout master
-witched to branch 'master'
+switched to branch 'master'
 Your branch is up-to-date with 'origin/master'.
 ```
 
