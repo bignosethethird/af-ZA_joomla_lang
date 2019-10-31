@@ -1,28 +1,38 @@
 # Suite of Language Translation Utilities for Joomla
 
 ## Table of Contents
-  
+
   - [Welcome](#welcome)
     - [How do language strings work in Joomla CMS?](#how-do-language-strings-work-in-joomla-cms)
     - [Introduction to GIT](#introduction-to-git)
-      - [Install Git](#install-git)    
+      - [Install Git](#install-git)
       - [Create an account for yourself on Github](#create-an-account-for-yourself-on-github)
-      - [Configure yourself in Git](#configure-yourself-in-git)      
-      - [Local vs Global configuration](#local-vs-global-configuration)
+      - [First](#first)
     - [Cool things you can do in GIT](#cool-things-you-can-do-in-git)
     - [How much work is involved in creating a language pack?](#how-much-work-is-involved-in-creating-a-language-pack)
     - [How much work will I continually need to invest to maintain a language pack?](#how-much-work-will-i-continually-need-to-invest-to-maintain-a-language-pack)
   - [Instructions](#instructions)
-    - [Naming conventions](#naming-conventions)    
+    - [Naming conventions](#naming-conventions)
     - [How does the language pack build process work?](#how-does-the-language-pack-build-process-work)
-    - [What are these translation report files?](#what-are-these-translation-report-files)
-  - [Install the necessary tools](#install-the-necessary-tools)        
-    - [Clone this Git repository](#clone-this-git-repository)
-    - [Special case: Create a new language pack](#special-case-create-a-new-language-pack)    
-  - [Get the latest Joomla CMS source code](#get-the-latest-joomla-cms-source-code)
-    - [Select the relevant release](#select-the-relevant-release)
-    - [Set up the configuration for building](#set-up-the-configuration-for-building)    
-    - [Working with Google Translate](#working-with-google-translate)    
+      - [Step 0: Get you reference Joomla Core code base](#step-0-get-you-reference-joomla-core-code-base)
+      - [Step 1: Select the relevant release](#step-1-select-the-relevant-release)
+      - [Step 2: Check out code against a tag from the reference Joomla Code Base](#step-2-check-out-code-against-a-tag-from-the-reference-joomla-code-base)
+      - [Step 3: Get your language pack repo](#step-3-get-your-language-pack-repo)
+      - [Step 4: Create a branch in your local remote repo](#step-4-create-a-branch-in-your-local-remote-repo)
+      - [Step 5: Set up the package configuration file](#step-5-set-up-the-package-configuration-file)
+      - [Step 6: Produce a work file of what strings need to be translated](#step-6-produce-a-work-file-of-what-strings-need-to-be-translated)
+      - [Step 7: Prepare to distribute the workload: Push the changes to the remote repo](#step-7-prepare-to-distribute-the-workload-push-the-changes-to-the-remote-repo)
+      - [Step 8: Split the report out amoung the translation team members](#step-8-split-the-report-out-amoung-the-translation-team-members)
+      - [Step 9: Do the translations and merge the resulting workfile back into the repo](#step-9-do-the-translations-and-merge-the-resulting-workfile-back-into-the-repo)
+      - [Step 11: Test the language files for integrity](#step-11-test-the-language-files-for-integrity)
+      - [Step 12: Build the package using the package build script](#step-12-build-the-package-using-the-package-build-script)
+      - [Step 13: Test the language pack in Joomla](#step-13-test-the-language-pack-in-joomla)
+      - [Step 14: Tag the translation in the local and then the remote repo](#step-14-tag-the-translation-in-the-local-and-then-the-remote-repo)
+      - [Step 15: Release the translation package](#step-15-release-the-translation-package)
+    - [What is this translation work file?](#what-is-this-translation-work-file)
+    - [Special case: Create a new language pack](#special-case-create-a-new-language-pack)
+    - [Tips when Translating](#tips-when-translating)
+    - [Working with Google Translate](#working-with-google-translate)
   - [Git Cheat Sheet](#git-cheat-sheet)
     - [Where on earth am I?](#where-on-earth-am-i)
     - [Renaming files](#renaming-files)
@@ -30,18 +40,26 @@
     - [Post changes](#post-changes)
     - [Remote Repositories](#remote-repositories)
     - [Branches](#branches)
-    - [Merge branches](#merge-branches)
+      - [A simple approach to use branches](#a-simple-approach-to-use-branches)
+      - [List all branches in your local repo.](#list-all-branches-in-your-local-repo.)
+      - [List all branches in your remote repo.](#list-all-branches-in-your-remote-repo.)
+      - [Select an existig branch, i.e. checkout a branch:](#select-an-existig-branch,-i.e.-checkout-a-branch)
+      - [Create a new branch off the currently-selected branch:](#create-a-new-branch-off-the-currently-selected-branch)
+      - [Delete a branch from the local repo](#delete-a-branch-from-the-local-repo)
+      - [Delete a branch from the remote repo](#delete-a-branch-from-the-remote-repo)
+      - [Push a branch to your remote repo](#push-a-branch-to-your-remote-repo)
+      - [Rename a branch](#rename-a-branch)
+      - [Merge branches](#merge-branches)
     - [Dealing with Merge Conflicts](#dealing-with-merge-conflicts)
     - [Tagging](#tagging)
   - [Further information](#further-information)
     - [Some useful reference material](#some-useful-reference-material)
 
-
 _NOTE:_
 
 >You can update this TOC as follows:
 ```awk
- awk '/^#/ {gsub(/#/,"  ",$1); printf "%s- ", $1; $1=""; sub(/^ /,"");  printf "[%s]", $0; gsub(/\s+/,"-"); gsub(/[\!|\?\:]/,""); printf "(#%s)\n", tolower($0)}' README.md 
+awk '/^#/ {gsub(/#/,"  ",$1); printf "%s- ", $1; $1=""; sub(/^ /,"");  printf "[%s]", $0; gsub(/\s+/,"-"); gsub(/[\!|\?\:]/,""); printf "(#%s)\n", tolower($0)}' README.md 
 ```
 
 # Welcome
@@ -444,7 +462,7 @@ Needless to say, Joomla grows and changes all the time, resulting in new languag
 Here is a detailed step-wise explansion for this process:
 
 
-* Step 0: Get you reference Joomla Core code base
+### Step 0: Get you reference Joomla Core code base
 
 You will need to have the Joomla source code of the release that you are creating a language pack for. The language pack build process (more on this later) unpacks the Joomla installation and uses the default English (en-GB) language strings as a reference, against which the a report is generated of missing language strings so that your language can be brought into alignment with the source reference. If the Joomla installation package has already been published as a .zip or a .tar.gz file, you can use this as your source reference when you run the build process, however you can also use the source code out of the Joomla Git repository as a reference. The only difference s here are that the Git repo also contains test cases in a ```test``` directory, which will be ignored in the build process, and that you need to set the repo to the correct branch before running the build process. So, let's begin by getting the latest Joomla source code from its Git repo:
 
@@ -484,7 +502,7 @@ etc...
 
 Ignore the last comments and instructions - these are meant for actual Joomla PHP developers.
 
-* Step 1: Select the relevant release
+### Step 1: Select the relevant release
 
 From the Joomla Translation leader, you will get an instruction to complete the language pack for Joomla release x.x.x:
 
@@ -504,7 +522,7 @@ Thanks.
   Joomla! Translations Coordination Team
 ```   
 
-* Step 2: Check out code against a tag from the reference Joomla Code Base
+### Step 2: Check out code against a tag from the reference Joomla Code Base
 
 Now that you have pulled the latest Joomla source code repo in the previous step, list the available tags and select the relevant required tag, for instance `3.9.5`: 
 
@@ -540,7 +558,7 @@ HEAD detached at 3.9.5
 
 We have now successfully checked out the required reference code from the Joomla Code Base. Since we are not going to develop any code off the Joomla main tree and are going to concentrate on developing the langauge pack only, we can leave this repo until the next time release.
 
-* Step 3: Get your language pack repo
+### Step 3: Get your language pack repo
 
 Get the latest version of your language pack repo. Note that this is a different repo to the Joomla Core code base repo in [https://github.com/joomla/joomla-cms](#https://github.com/joomla/joomla-cms), this one is, for example, at [https://github.com/gerritonagoodday/af-ZA_joomla_lang](#https://github.com/gerritonagoodday/af-ZA_joomla_lang). Do a clone:
 
@@ -567,7 +585,7 @@ If not, check out the master branch first:
 ~/git/af-ZA_joomla_lang $ git checkout master
 ```
 
-* Step 4: Create a branch in your local remote repo 
+### Step 4: Create a branch in your local remote repo 
 
 Create a new branch in the remote repo, named according to the Joomla release that you are creating this package for and also the release version (starting at 1), e.g. "3.9.5v1", pull the repo, and check-out the branch. This is your working area. 
 
@@ -577,7 +595,7 @@ Create a new branch in the remote repo, named according to the Joomla release th
 Switched to branch '3.9.5v1'
 ```
 
-* Step 5: Set up the package configuration file
+### Step 5: Set up the package configuration file
 
 In the `utilities/configuration.sh` file, set the following values. The comments in the file should be self-explanitary:
 
@@ -651,7 +669,7 @@ In the `utilities/configuration.sh` file, set the following values. The comments
    LINGOSITE="http://forge.joomla.org/gf/project/afrikaans_taal"
    ```
 
-* Step 6: Produce a work file of what strings need to be translated
+### Step 6: Produce a work file of what strings need to be translated
 
 You, as team lead: Run the `utilities/Chk4NewLanguageStrings.sh` utility:
 
@@ -707,7 +725,7 @@ Check the changes back into the repository with the commands:
 
 This will create the work file called `Workfile_[isolang-isocountry]-[x.x.x.x].sh`. This work file is actually a BASH-script with spaces left for where the translations need to be inserted. If it is just a point release, this work file may be only a few pages long. Do not execute this BASH-script yet. If there are any new files that need to be added to the package, they will be created, named accordingly, and added to the current branch in your local repo (you did check out the correct branch, right?) 
 
-* Step 7: Prepare to distribute the workload: Push the changes to the remote repo
+### Step 7: Prepare to distribute the workload: Push the changes to the remote repo
 
 Do a commit and a push to get all this work to the remote repo, from which the other team members can access it with a `pull` operation to their own local repo. Any new files that had to be created for this new released will now also exist in the branch, albeit empty files that only contain headers:
 
@@ -738,7 +756,7 @@ To https://github.com/gerritonagoodday/af-ZA_joomla_lang.git
 Branch '3.9.5' set up to track remote branch '3.9.5' from 'origin'.
 ```
 
-The `-u` parameter is important, and means that any future commits from this local branch will go to the corresponding remote branch, without having to specify this in the push operation.
+The `-u` parameter is important, and means that any future commits from this local branch will go to the corresponding remote branch, without having to specify this in future push operations.
 
 You can check if the remote repo has this branch by listing the remote branches. Use the `-r` parameter to indicate that you are listing branches on the __remote__ repo:
 
@@ -750,7 +768,7 @@ You can check if the remote repo has this branch by listing the remote branches.
   origin/master
 ```
 
-* Step 8: Split the report out amoung the translation team members 
+### Step 8: Split the report out amoung the translation team members 
 
 Team lead: Allocate chunks of the work file `Workfile_[isolang-isocountry]-[x.x.x.x].sh` by line numbers or "jobs" and agree who in the team will translate what chunk and who will review each chunk. Usefully, the sections in the file are divided up into "jobs", with each "job" corresponding to an affected file. There is ont need to physically split the file, in fact, this would be counter-productive. Everyone must start their effort off by doing a clone or a pull and then a check-out of the relevant branch, e.g. "3.9.5" to get their copy of the (entire) work file:
 
@@ -777,7 +795,7 @@ Then check out the branch:
 
 Once the team member has done this, the translation effort can begin.
 
-* Step 9: Do the translations and merge the resulting workfile back into the repo
+### Step 9: Do the translations and merge the resulting workfile back into the repo
 
 Every translation team member translates / reviews their allocated chunk of the work file and then merges it back into the repo. GIT is very good at resolving the changes to a single file made by multiple users. 
 
@@ -795,14 +813,13 @@ In the role of team lead, you do not need to do any merging as the translators w
 ```bash
  ~/git/af-ZA_joomla_lang $ ./WorkFile_af-ZA-3.9.5.1.sh 
 ```
-
-
-Check if the changes made correspond to the file referred to in the work file:
+If there are no errors, then the work file script run successfully.
+Check if the changes made correspond to the file referred to in the work file. You should see all the language file that were altered:
 
 ```bash
 ~/git/af-ZA_joomla_lang $ git status
-On branch 3.9.5
-Your branch is up-to-date with 'origin/3.9.5'.
+On branch 3.9.5v1
+Your branch is up-to-date with 'origin/3.9.5v1'.
 
 Changes not staged for commit:
   (use "git add <file>..." to update what will be committed)
@@ -822,8 +839,8 @@ Changes not staged for commit:
 no changes added to commit (use "git add" and/or "git commit -a")
 ```
 
-Now commit the changes and push the branch back to remote:
-
+Now commit the changes and push the branch back to remote. Since you are by default still referring to the remote branch "3.9.5v1", there is no need to specify the '3.9.5v1'-bit again:
+ 
 
 ```bash
 ~/git/af-ZA_joomla_lang $ git add .
@@ -831,7 +848,7 @@ Now commit the changes and push the branch back to remote:
 ~/git/af-ZA_joomla_lang $ git push
 ```
 
-* Step 11: Test the language files for integrity
+### Step 11: Test the language files for integrity
 
 Team lead: Run the `Chk4BrokenLanguageStrings.sh` script, which will perform a series of integrity checks and produce a list of any found defects:
 
@@ -841,8 +858,8 @@ Team lead: Run the `Chk4BrokenLanguageStrings.sh` script, which will perform a s
 ....
 ```
 
-If any defects are found, they need to be fixed and this integrity test needs to be run again, until all errors are gone. Update the local and the remote branch with any corrected changes:
-
+If any defects are found, they need to be fixed and this integrity test needs to be run again, until all errors are gone. 
+Update the local and the remote branch again with any corrected changes. To recap, this s how:
 
 ```bash
 ~/git/af-ZA_joomla_lang/utilities $ cd ..
@@ -853,36 +870,76 @@ If any defects are found, they need to be fixed and this integrity test needs to
 ~/git/af-ZA_joomla_lang $ git push
 ```
 
-* Step 12: Build the package using the package build script 
+### Step 12: Build the package using the package build script 
 
 Team lead: Run the `MkLanguagePack.sh` script, which will produce a language pack file ready for you to install into Joomla.
 
 ```bash
 ~/git/af-ZA_joomla_lang $ cd utilities
 ~/git/af-ZA_joomla_lang/utilities $ ./MkLanguagePack.sh
-....
+...
 ```
 
-* Step 13: Test the language pack in Joomla
+### Step 13: Test the language pack in Joomla
 
 Make sure that the language pack installs in Joomla with no errors. Turn on Joomla Debugging for Language, and see if there are any errors while running through the features that were affected by the new translation strings. Now would be a good time to tag the local repo with the release number and to push this to the remote repo too.
 
-* Step 14: Tag the translation in the remote repo
-
-The translation work for this release is now done. 
-You are now ready to release the new langauge pack when the next version of Joomla is released. If your language is an officially-supported language in Joomla, will Joomla administrators automatically be notified once they have upgraded their version of Joomla and the new language pack version is available. It can be installed with a single click from the Administrator's panel. For this to happen, you need to publish your language pack to the project "Joomla!®3.x Accredited Translations" on http://forge.joomla.org/gf/project/jtranslation3_x/, under the section "Releases" for your language. 
-
-
-## What are these translation work files?
-
-The report files are in fact a series of BASH script files and are a useful way splitting the work between many team members.
-
-When all the strings in it have been translated, it is simply executed, which will put the translated strings in the the correct files. The work file is executed like this:
+### Step 14: Tag the translation in the local and then the remote repo
 
 ```bash
-./utilities/WorkFile_af-ZA.sh
-...
+~/git/af-ZA_joomla_lang $ git tag '3.9.5v1' -m "Package built and tested"
 ```
+
+It is not possible to tag the remote repo as such, but you can push the tag in the local repo to the remote repo.
+
+```bash
+~/git/af-ZA_joomla_lang $ git push origin  --tags
+Counting objects: 1, done.
+Writing objects: 100% (1/1), 178 bytes | 178.00 KiB/s, done.
+Total 1 (delta 0), reused 0 (delta 0)
+To https://github.com/gerritonagoodday/af-ZA_joomla_lang.git
+ * [new tag]         3.9.5v1 -> 3.9.5v1
+```
+
+### Step 15: Release the translation package
+
+The translation work for this release is now done. 
+
+You are now ready to release the new langauge pack when the next version of Joomla is released. If your language is an officially-supported language in Joomla, will Joomla administrators automatically be notified once they have upgraded their version of Joomla and the new language pack version is available. It can be installed with a single click from the Administrator's panel. For this to happen, you need to publish your language pack to the project "Joomla!®3.x Accredited Translations" on http://forge.joomla.org/gf/project/jtranslation3_x/, under the section "Releases" for your language. Andto be able to do this, you need to sign up as an official translation team with Joomla Langiage at http://lists.joomla.org/mailman/listinfo/translations_lists.joomla.org. 
+
+
+## What is this translation work file?
+
+The work file is in fact a BASH script files and is a useful way of splitting the work between many team members.
+
+When all the strings in it have been translated, the file is simply executed, which will distribute the translated strings to the correct files. The work file is executed like this:
+
+```bash
+./utilities/WorkFile_af-ZA-3.9.5v1.sh
+```
+
+The file consists of statements like these:
+
+* To add a new string
+
+Example:
+
+```bash
+echo "COM_FIELDS_FIELD_EDITABLE_IN_ADMIN=\"Administrator\""\
+     >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_fields.ini
+```
+
+All you need to do is translate the string between the \"...\" markers. Don't touch the other escape-characters.
+
+* To remove an old string
+
+Example:
+
+```bash
+sed -e "/COM_FIELDS_FIELD_SHOW_ON_ADMIN\s*=/d" -i /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_fields.ini
+```
+
+No need to do anythnig with these, just make sure they don't get lost.
 
 ## Special case: Create a new language pack
 
@@ -1209,16 +1266,50 @@ $ git push origin [new_name]
 
 ### Merge branches
 
-Merging code from another branch cleverly folds the files and lines of code in the files together, and also commits the changes at the same time. Of course, only commiteted code can be merged to somewhere else.
+Merging code __from__ another branch into your currently-checked-out branch cleverly folds the files and lines of code in the files together, and also commits the changes at the same time. Of course, only commiteted code can be merged to somewhere else. 
+
+To merge the branch that you were working on into the 'master' branch, you need to go into the 'master' branch. Remember that you can only enter another branch if you have either committed all changes or have stashed any changes under keepsafe-name for later unstashing and use. If you don't do this, you will loose all your current changes. This may in rare cases be actually desired.
 
 ```bash
-$ git merge '[other-branch]'
+$ git checkout master
+witched to branch 'master'
+Your branch is up-to-date with 'origin/master'.
+```
+
+Now do the merge in your local repo:
+
+```bash
+$ git merge '3.9.5v1'
+Updating ed0cb7b..e945c5e
+Fast-forward
+ WorkFile_af-ZA-3.9.12.1.sh                              | 258 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ administrator/language/af-ZA/af-ZA.com_content.ini      |   1 +
+ administrator/language/af-ZA/af-ZA.com_fields.ini       |  10 +--
+ administrator/language/af-ZA/af-ZA.com_joomlaupdate.ini |   7 ++
+ administrator/language/af-ZA/af-ZA.ini                  |   1 +
+ administrator/language/af-ZA/af-ZA.lib_joomla.ini       |   3 +
+ installation/language/af-ZA/af-ZA.ini                   |   1 +
+ language/af-ZA/af-ZA.finder_cli.ini                     |   3 +
+ language/af-ZA/af-ZA.ini                                |  29 ++++++++
+ language/af-ZA/af-ZA.lib_joomla.ini                     |   3 +
+ utilities/configuration.sh                              |   4 +-
+ 10 files changed, 949 insertions(+), 133 deletions(-)
+ create mode 100755 WorkFile_af-ZA-3.9.12.1.sh
 ```
 
 _NOTE:_
 >1. You need to 'be in the branch' that is being merged to. Use the `git checkout '[branch-name]'` for this.
 >2. The code is automatically commited after a merge. No need to do a `git commit` after a successful merge.
 >3. Sometimes, a merge conflict arrises and needs to be resolved through your manual intervention. See the next section.
+
+Your merge efforts will not be visible on the remote repo until you do a push of your master branch :
+
+```bash
+$ git push origin master
+Total 0 (delta 0), reused 0 (delta 0)
+To https://github.com/gerritonagoodday/af-ZA_joomla_lang.git
+   ed0cb7b..e945c5e  master -> master
+```
 
 When a branch has been merged to `master`, the branch will continue to exist. If you are ready to do so, you can delete the branch forever:
 
@@ -1259,13 +1350,13 @@ Branches (mostly) rendevouz back to the `master` branch eventually after perform
 * Create a tag 
 
 ```bash
-$ git tag '3.9.5.1'
+$ git tag '3.9.5v1'
 ```
 
 What can be very helpful is to add a comment to your new tag:
 
 ```bash
-$ git tag '3.9.5.1' -m 'First point release'
+$ git tag '3.9.5v1' -m 'First point release'
 ```
 
 Remember to do this only after you have committed your code. 
