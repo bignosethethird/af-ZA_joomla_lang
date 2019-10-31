@@ -1,6 +1,6 @@
 # Suite of Language Translation Utilities for Joomla
 
-![Latest version available!](../.images/announcement.png)
+![Latest version available!](blob/.images/announcement.png)
 
 ## Table of Contents
 
