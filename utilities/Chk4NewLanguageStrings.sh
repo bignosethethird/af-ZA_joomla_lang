@@ -623,7 +623,7 @@ function DiffContentReport {
 
   if [[ $num_files_different -eq 0 ]]; then
     INFO "[$LINENO] No changes required for $1 installation"    
-    echo "# No changes required for $1 installation" > $PATCHFILE
+    echo "# No changes required for $1 installation" >> $PATCHFILE
     return 0
   fi
 
