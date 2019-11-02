@@ -1392,7 +1392,7 @@ $ git mergetool
 
 Branches (mostly) rendevouz back to the `master` branch eventually after performing the necessary commits and merges. You may well decide to delete the branch, as its contents is now in the master branch. You can mark the committed code base with a tag that indicates the code release Id, or anything else that is significant in the life cycle of the code base.
 
-* Create a tag 
+### Create a tag 
 
 ```bash
 $ git tag '3.9.5v1'
@@ -1406,7 +1406,7 @@ $ git tag '3.9.5v1' -m 'First point release'
 
 Remember to do this only after you have committed your code. 
 
-* List tags in a repository 
+### List tags in a repository 
 
 You can list all the tags and their comments in a repo (`-l` lists them without commants). In some cases, there can be many tags, so add a filter expression to limit the result:
 
@@ -1426,7 +1426,7 @@ $ git tag -n | grep "^3\.9\.5"
 
 Do not confuse Tags with Tag Comments, or with Code Commit comments!
 
-* Checkout code against a tag
+### Checkout code against a tag
 
 This is similar to checking code against a brnach, excepts that we need to explicity specify that this is a tag, or multiple tags, by using the `tags/`-specifier.
 
@@ -1457,6 +1457,96 @@ Switched to branch '3.9.5-dev'
 $ git branch                        # Check if this branch is now active
 * 3.9.5-dev                         # yes, successfully switched to.
   ...
+```
+
+
+## Escaping from Calamity
+
+Here are a few methods that you can use to recover back to a known point 
+
+### See what has not yet been staged or committed
+
+The files must already be in the repo (added at least) since the last commit:
+
+```bash
+~/git $ git diff [filename]
+
+```
+
+Or to see all the file changes since the last commit:
+
+```bash
+~/git $ git diff
+
+```
+
+To see the difference between 2 commits, use the commit hashes when doing a `git log`:
+
+```bash
+~/git $ git diff [hash1] [hash2]
+
+```
+
+### Restoring to the last staging point
+
+```bash
+~/git $ git checkout [filename]
+
+```
+
+### Change the last commit message
+
+```bash
+~/git $ git --amend -m "new commit comment"
+
+```
+
+Only do this if you have not push your changes to the remote repo yet.
+
+### Reset your local repo to a know commit point
+
+First view the commits and select the hash of the commit that you want to resume to:
+
+```bash
+~/git $ git log
+commit 2f59adbca8889d128d0676493babdc8c902923ca (HEAD -> master, origin/master, origin/HEAD)
+Author: gerritonagoodday 
+Date:   Thu Oct 31 20:11:26 2019 +0100
+
+    [a comment]
+
+commit 714c718f44178bb134cdaab9f8700ea02cb93a41
+Author: gerritonagoodday 
+Date:   Thu Oct 31 20:07:33 2019 +0100
+
+    [another comment]
+
+```
+
+Now hard-reset to the desired point. All your changes from that point on will be lost (first 6 characteres will do):
+
+```bash
+~/git $ git reset --hard 2f59ad
+```
+
+Do a final check - you should be in a known state:
+
+```bash
+~/git $ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+
+nothing to commit, working tree clean
+```
+
+The GIT Garbagae collection will completely remove all the deleted work after 30 days.
+
+### Remove all untracked files
+
+This will remove all files that have not been staged or committed yet:
+
+```bash
+~/git $ git clean -df
 ```
 
 
