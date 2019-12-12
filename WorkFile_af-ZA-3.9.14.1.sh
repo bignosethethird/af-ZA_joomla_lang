@@ -40,23 +40,23 @@
 
 # Job 1: Add the following translated string(s) to the file:
 # /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_actionlogs.ini
-echo "COM_ACTIONLOGS_FILTER_SEARCH_DESC=\"Search in username. Prefix with ID: to search for an actionlog ID. Prefix with ITEM_ID: to search for an actionlog item ID.\""\
+echo "COM_ACTIONLOGS_FILTER_SEARCH_DESC=\"Deursoek gebruikername. Voeg die voorvoegsel 'ID:' vooraan om die aksiestaaf te deursoek. Gebruik die voorvoegsel 'ITEM_ID:' om vir 'n aksiestaaf item-ID te soek.\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_actionlogs.ini
 
 # Job 2: Add the following translated string(s) to the file:
 # /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_fields.ini
-echo "COM_FIELDS_FIELDS_FILTER_SEARCH_DESC=\"Search in field name, title or note. Prefix with ID: to search for a field ID. Prefix with AUTHOR: to search for a field author.\""\
+echo "COM_FIELDS_FIELDS_FILTER_SEARCH_DESC=\"Deursoek veld naam, titels of nota's. Gebruik die voorvoegsel 'ID:' vooraan om vir die veld ID te soek. Gebruik die voorvoegsel 'AUTHOR:' om vir die veld outeur te soek.\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_fields.ini
-echo "COM_FIELDS_GROUPS_FILTER_SEARCH_DESC=\"Search in field group title. Prefix with ID: to search for a field group ID.\""\
+echo "COM_FIELDS_GROUPS_FILTER_SEARCH_DESC=\"Deursoek veld-groep titels. Gebruik die voorvoegsel 'ID:' vooraan om vir die veld-groep  ID te soek.\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_fields.ini
 
 # Job 3: Add the following translated string(s) to the file:
 # /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_installer.ini
-echo "COM_INSTALLER_MSG_ERROR_CANT_CONNECT_TO_UPDATESERVER=\"Can't connect to %s\""\
+echo "COM_INSTALLER_MSG_ERROR_CANT_CONNECT_TO_UPDATESERVER=\"Kan nie met %s verbind nie\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.com_installer.ini
 
 # Job 4: Add the following translated string(s) to the file:
 # /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.plg_quickicon_phpversioncheck.ini
-echo "PLG_QUICKICON_PHPVERSIONCHECK_UNSUPPORTED_JOOMLA_OUTDATED=\"We have detected that your server is using PHP %1$s which is obsolete and no longer receives official security updates by its developers. Furthermore, we cannot recommend a newer PHP version because you are using an outdated Joomla! version. We recommend updating Joomla! and then following further PHP upgrade instructions.\""\
+echo "PLG_QUICKICON_PHPVERSIONCHECK_UNSUPPORTED_JOOMLA_OUTDATED=\"Joomla het vasgestel dat jou bediener PHP %1$s gebruik, wat nou verval het en nie meer amptelike ondersteuning vir sekuriteits-doeleindes ontvang nie. Ons kan ook nie 'n nuwer versie van PHP aanbeveel nie omdat die versie van Joomla ook verval het. Die aanbeveling is dus om Joomla eers op te dateer, en dan verdere PHP opdateerings-instruksies te volg.\""\
      >> /home/gerrit/git/af-ZA_joomla_lang/administrator/language/af-ZA/af-ZA.plg_quickicon_phpversioncheck.ini
 # No changes required for install installation
