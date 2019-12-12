@@ -600,7 +600,7 @@ Switched to branch '3.9.5v1'
 
 ### Step 5: Set up the package configuration file
 
-In the `utilities/configuration.sh` file, set the following values. The comments in the file should be self-explanitary:
+In the `utilities/configuration.sh` file, set the following values. Unless you are creating a language pack for a new language, you only need to change the first variable, ```TRANSLATIONVERSION_XML="3.9.5.1"```. The comments in the rest of the file should be self-explanitary:
 
    ```bash
    # For your first release of version 3.9.5, say this:
@@ -726,13 +726,15 @@ Check the changes back into the repository with the commands:
 [2019.10.28 11:55:49][af-ZA][INFO ][184] === END [PID 29222] on signal EXIT. Cleaning up ===
 ```
 
-This will create the work file called `Workfile_[isolang-isocountry]-[x.x.x.x].sh`. This work file is actually a BASH-script with spaces left for where the translations need to be inserted. If it is just a point release, this work file may be only a few pages long. Do not execute this BASH-script yet. If there are any new files that need to be added to the package, they will be created, named accordingly, and added to the current branch in your local repo (you did check out the correct branch, right?) 
+This will create the work file called `Workfile_[isolang-isocountry]-[x.x.x.x].sh`in the repo's root directory. This work file is actually a BASH-script with spaces left for where the translations need to be inserted. If it is just a point release, this work file may be only a few pages long. Do not execute this BASH-script yet. If there are any new files that need to be added to the package, they will be created, named accordingly, and added to the current branch in your local repo (you did check out the correct branch, right?) 
 
 ### Step 7: Prepare to distribute the workload: Push the changes to the remote repo
 
 Do a commit and a push to get all this work to the remote repo, from which the other team members can access it with a `pull` operation to their own local repo. Any new files that had to be created for this new released will now also exist in the branch, albeit empty files that only contain headers:
 
 ```bash
+~/git/af-ZA_joomla_lang/utilities $ cd ..
+~/git/af-ZA_joomla_lang $ git add .
 ~/git/af-ZA_joomla_lang $ git commit -m "ready for team to translate"
 [3.9.5v1 6408b5c] ready for team to translate
  xxx files changed, xxx insertions(+), xxx deletions(-)

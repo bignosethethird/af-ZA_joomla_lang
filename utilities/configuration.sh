@@ -5,7 +5,7 @@
 # x, y and z are given and correspond to the Joomla Version that you are building to.
 # n, however, starts at 1 and increments on every release that you and your team make.
 # All other variants of this representation will be calculated
-export TRANSLATIONVERSION_XML="3.9.13.1"
+export TRANSLATIONVERSION_XML="3.9.14.1"
 
 # What it this file for?
 # ~~~~~~~~~~~~~~~~~~~~~
@@ -27,37 +27,86 @@ export TRANSLATIONVERSION_XML="3.9.13.1"
 # made of the ISO 639-1 2-letter language code and the ISO 3166-1 2-letter 
 # country code. e.g. af-ZA, en-GB, etc..
 #
-# Git Repo Root
-# +...xx-XX_joomla-lang
-#     |
-#     +...administrator
-#     |   +...help
-#     |   .   +...LINGO
-#     |   +...language
-#     |       +...LINGO
-#     |       +...overrides
-#     |
-#     +...language
-#     |   +...LINGO
-#     |   +...overrides
-#     |
-#     +...installation
-#     |   +...language
-#     |   |   +...LINGO
-#     |   +...sql
-#     |        +...mysql
-#     |
-#     +---libraries
-#     |   +...joomla
-#     |       +...html
-#     |           +...language
-#     |               +...LINGO
-#     +...plugins
-#         +...system
-#             +...languagecode
-#                 +...language
-#                     +...LINGO
-
+# xx-XX_joomla-lang (Git Repo Root)
+# │
+# ├── administrator
+# │   ├── help
+# │   │   └── xx-XX
+# │   │       └── css
+# │   ├── language
+# │   │   ├── xx-XX
+# │   │   └── overrides
+# │   ├── modules
+# │   │   ├── mod_multilangstatus
+# │   │   │   └── language
+# │   │   │       └── xx-XX
+# │   │   ├── mod_stats_admin
+# │   │   │   └── language
+# │   │   │       └── xx-XX
+# │   │   └── mod_version
+# │   │       └── language
+# │   │           └── xx-XX
+# │   └── templates
+# │       ├── bluestork
+# │       │   └── language
+# │       │       └── xx-XX
+# │       ├── hathor
+# │       │   └── language
+# │       │       └── xx-XX
+# │       └── isis
+# │           └── language
+# │               └── xx-XX
+# ├── installation
+# │   ├── installer
+# │   ├── language
+# │   │   └── xx-XX
+# │   └── sql
+# │       └── mysql
+# ├── language
+# │   ├── xx-XX
+# │   └── overrides
+# ├── libraries
+# │   ├── cms
+# │   │   └── html
+# │   │       └── language
+# │   │           └── xx-XX
+# │   ├── src
+# │   │   └── Filesystem
+# │   │       └── Meta
+# │   │           └── language
+# │   │               └── xx-XX
+# │   └── vendor
+# │       └── joomla
+# │           └── filesystem
+# │               └── meta
+# │                   └── language
+# │                       └── xx-XX
+# ├── plugins
+# │   ├── editors
+# │   │   └── tinymce
+# │   │       └── jscripts
+# │   │           └── tiny_mce
+# │   │               ├── langs
+# │   │               ├── plugins
+# │   │               └── themes
+# │   │                   └── advanced
+# │   │                       └── langs
+# │   └── system
+# │       └── languagecode
+# │           └── language
+# │               └── xx-XX
+# ├── templates
+# │   ├── beez3
+# │   │   └── language
+# │   │       └── xx-XX
+# │   └── protostar
+# │       └── language
+# │           └── xx-XX
+# └── utilities
+#
+# Note: This diagram can be updated as follows: 
+#       $ tree -d .. | sed -e 's/^/# /' -e 's/af-ZA/xx-XX/'
+#
 # Set your local working folder (no trailing slashes)
 export WORKFOLDER="${HOME}/joomlawork"
 # Needs to be here for sub-shell use
@@ -94,11 +143,11 @@ export JOOMLAVERSION="${major}.${minor}.${point}"
 export TRANSLATIONVERSION="${major}.${minor}.${point}v${revision}"
 # Git files are in this repo (no leading slashes). Unlikely to change.
 export GITREPONAME="af-ZA_joomla_lang"
-# Language name - in your own language and the English exonym (
+# Language name in your own language (endonym) and the English (exonym)
 # Note: endonym is the local name for the language: 
-#           'Kiswahili' or 'Deutsch' or 'isiZulu'.
-#       exonym is what 'outsiders' use to refer to the language: 
-#           'Swahili' or 'German' or 'Zulu'.
+#       'Kiswahili' or 'Deutsch' or 'isiZulu'.
+#       exonym is what 'outsiders' use to refer to the language, in this case English:
+#       'Swahili' or 'German' or 'Zulu', respectively.
 export LINGONAME="Afrikaans (ZA)"
 export LINGOEXONYM="Afrikaans"
 # This is the native name for the language and needs to be in the local script
