@@ -917,21 +917,9 @@ Update the local and the remote branch again with any corrected changes. To reca
 ~/git/af-ZA_joomla_lang $ git push
 ```
 
-### Step 12: Build the package using the package build script 
+### Step 12: Tag the translation in the local and then the remote repo
 
-Team lead: Run the `MkLanguagePack.sh` script, which will produce a language pack file ready for you to install into Joomla.
-
-```bash
-~/git/af-ZA_joomla_lang $ cd utilities
-~/git/af-ZA_joomla_lang/utilities $ ./MkLanguagePack.sh
-...
-```
-
-### Step 13: Test the language pack in Joomla
-
-Make sure that the language pack installs in Joomla with no errors. Turn on Joomla Debugging for Language, and see if there are any errors while running through the features that were affected by the new translation strings. Now would be a good time to tag the local repo with the release number and to push this to the remote repo too.
-
-### Step 14: Tag the translation in the local and then the remote repo
+Remember that the tag name needs to complly to the format ```[major].[minor].[point]v[revision]```.
 
 ```bash
 ~/git/af-ZA_joomla_lang $ git tag '3.9.5v1' -m "Package built and tested"
@@ -947,6 +935,21 @@ Total 1 (delta 0), reused 0 (delta 0)
 To https://github.com/gerritonagoodday/af-ZA_joomla_lang.git
  * [new tag]         3.9.5v1 -> 3.9.5v1
 ```
+
+### Step 13: Build the package using the package build script 
+
+Team lead: Run the `MkLanguagePack.sh` script, which will produce a language pack file ready for you to install into Joomla.
+
+```bash
+~/git/af-ZA_joomla_lang $ cd utilities
+~/git/af-ZA_joomla_lang/utilities $ ./MkLanguagePack.sh
+...
+```
+
+### Step 14: Test the language pack in Joomla
+
+Make sure that the language pack installs in Joomla with no errors. Turn on Joomla Debugging for Language, and see if there are any errors while running through the features that were affected by the new translation strings. Now would be a good time to tag the local repo with the release number and to push this to the remote repo too.
+
 
 ### Step 15: Release the translation package
 

@@ -104,3 +104,13 @@
 [2019.10.31 14:03:42][af-ZA][INFO ][605] The latest package snapshots are in the build sandbox in /home/gerrit/git/af-ZA_joomla_lang/utilities/../.build
 [2019.10.31 14:03:42][af-ZA][INFO ][606] ============= END ============
 [2019.10.31 14:03:42][af-ZA][INFO ][167] === END [PID 22158] on signal EXIT. Cleaning up ===
+[2019.12.12 10:39:14][xx-XX][INFO ][181] === BEGIN [PID 16490] 
+[2019.12.12 10:39:14][xx-XX][INFO ][184] Checking configuration file
+[2019.12.12 10:39:14][xx-XX][INFO ][187] Reading configuration file configuration.sh
+[2019.12.12 10:39:14][af-ZA][INFO ][209] Check sandbox directory is where this is launched from
+[2019.12.12 10:39:14][af-ZA][INFO ][231] Get branch 3.9.14v1
+[2019.12.12 10:39:14][af-ZA][WARN ][237] There is no branch in git named '3.9.14v1'
+[2019.12.12 10:39:14][af-ZA][INFO ][238] trying to get the tag '3.9.14v1
+[2019.12.12 10:39:14][af-ZA][WARN ][244] There is no tag in git name 3.9.14v1
+[2019.12.12 10:39:14][af-ZA][FATAL][245] There is neither branch nor tag in git named 3.9.14v1
+[2019.12.12 10:39:14][af-ZA][INFO ][167] === END [PID 16490] on signal EXIT. Cleaning up ===
