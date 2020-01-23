@@ -408,7 +408,7 @@ $ find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut
     397 language
 ```
 
-The number of occurances of each word form a Zipfian distribution, as you would expect the case to be with word counts in a large corpus of any given spoken langauge. When you plot this file on a log-graph, you get a straight-ish line:
+The number of occurances of each word form a Zipfian distribution, which is what you would normally expect the case to be for word counts in a large corpus of any given spoken langauge. When you plot this file on a log-by-log graph, you get a straight-ish line:
 
 ```bash
 $ find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | sed -e 's/"//g'  -e 's/%.//g'   -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' -e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | sort -nr | head -300 | gnuplot -e "set terminal dumb; set logscale; set xrange [1:300]; plot '-' with lines notitle"
@@ -467,18 +467,29 @@ Here is a detailed step-wise explansion for this process:
 
 ### Step 0: Get you reference Joomla Core code base
 
-You will need to have the Joomla source code of the release that you are creating a language pack for. The language pack build process (more on this later) unpacks the Joomla installation and uses the default English (en-GB) language strings as a reference, against which the a report is generated of missing language strings so that your language can be brought into alignment with the source reference. If the Joomla installation package has already been published as a .zip or a .tar.gz file, you can use this as your source reference when you run the build process, however you can also use the source code out of the Joomla Git repository as a reference. The only difference s here are that the Git repo also contains test cases in a ```test``` directory, which will be ignored in the build process, and that you need to set the repo to the correct branch before running the build process. So, let's begin by getting the latest Joomla source code from its Git repo:
+You will need to have the Joomla source code of the release that you are creating a language pack for. The language pack build process (more on this later) unpacks the Joomla installation and uses the default English (en-GB) language strings as a reference, against which the a report is generated of missing language strings so that your language can be brought into alignment with the source reference. If the Joomla installation package has already been published as a .zip or a .tar.gz file, you can use this as your source reference when you run the build process.
 
-If you have not done some, create work space for holding all your Git repos, such as ```$HOME/git```:
+If latest Joomla package has not been released yet but the source code is ready to be translated, you can use the source code out of the Joomla Git repository instead as a reference. Some additional preparation is required to get the latest Joomla source code from the Joomla Git repo, however, before running the build process.
+
+If you previously created a local Joomla Git repo, just do a refresh of the repo with the `pull` command (ignore the last comments and instructions - these are meant for actual Joomla PHP developers). Also make sure that you are working in the root branch of the repo, which in the case of Joomla Git repo is call `staging`:
+
+
+```bash
+~/ $ cd ~/git/joomla-cms
+~/git/joomla-cms $ git pull
+remote: Enumerating objects: 360, done.
+etc...
+ 4022 files changed, 4591 insertions(+), 4367 deletions(-)
+~/git/joomla-cms $ git checkout staging
+Already on 'staging'
+Your branch is up-to-date with 'origin/staging'.
+```
+
+Otherwise, let's begin by getting the latest Joomla source code from its Git repo: If you have not done some, create a workspace for holding all your Git repos, such as ```$HOME/git``` and then clone the remote repo of the latest version of the Joomla CMS source into a local repo. You only need to this __once__ ever:
 
 ```bash
 ~/ $ mkdir git
 ~/ $ cd git
-```
-
-And if you have not done so already, clone the remote repo of the latest version of the Joomla CMS source into a local repo. You only need to this __once__ ever:
-
-```bash
 ~/git $ git clone https://github.com/joomla/joomla-cms.git
 Cloning into 'joomla-cms'...
 remote: Enumerating objects: 360, done.
@@ -495,19 +506,9 @@ Go into the newly-loaded repo directory:
 ~/git/joomla-cms
 ```
 
-If you already have a repo of this, you can skip to here and just do a refresh of the repo with the `pull` command:
-
-```bash
-~/git/joomla-cms $ git pull
-remote: Enumerating objects: 360, done.
-etc...
-```
-
-Ignore the last comments and instructions - these are meant for actual Joomla PHP developers.
-
 ### Step 1: Select the relevant release
 
-From the Joomla Translation leader, you will get an instruction to complete the language pack for Joomla release x.x.x:
+The releases in the Joomla Git repo are identified by their git __tags__, and not by their git __branches__. It is therefore important to check the code out that corresponds to the relevant tag. The release will be communicated to all Translation Teams and from this you can select the correct tag to use, e.g. from the Joomla Translation leader, you will get an instruction to create a new language pack for the new Joomla release `x.y.z`. You will need to look for the most recent tag that contains the `x.y.z`.
 
 ```email
 From: Ilagnayeru Manickam <mig.joomla@gmail.com>
@@ -527,11 +528,10 @@ Thanks.
 
 ### Step 2: Check out code against a tag from the reference Joomla Code Base
 
-Now that you have pulled the latest Joomla source code repo in the previous step, list the available tags and select the relevant required tag, for instance `3.9.5`: 
+Now that you have pulled the latest Joomla source code repo in the previous step, list the available tags and select the relevant required tag, for instance `3.9.5`:
 
 ```bash
-~/git/joomla-cms $ git tag -n | grep "^3\.9\.5"
-3.9.5           Joomla! 3.9.5
+~/git/joomla-cms $ git tag -n | grep "^3.9.5"
 3.9.5-rc        Joomla! 3.9.5 Release Candidate
 |<----Tag---->| |<----Tag Comment---------------...
 ```
@@ -543,10 +543,10 @@ _NOTE:_
 > Do not confuse Tags with Branches!
 
 
-Checking out a tag is similar to checking code against a branch, excepts that we need to explicity specify that this is a tag, or multiple tags, by using the `tags/`-specifier.
+Checking out a tag is similar to checking code against a branch, except that we need to explicity specify that this is a tag, or multiple tags, by using the `tags/`-specifier.
 
 ```bash
-~/git/joomla-cms $ git checkout tags/'3.9.5'
+~/git/joomla-cms $ git checkout tags/'3.9.5-rc'
 Checking out files: 100% (9506/9506), done.
 Previous HEAD position was 6b8fd2b21f Tag Alpha 6
 HEAD is now at 1547f8e760 Prepare 3.9.5 release
@@ -556,14 +556,15 @@ Check what we have:
 
 ```bash
 ~/git/joomla-cms $ git status
-HEAD detached at 3.9.5
+nothing to commit, working tree clean
+HEAD detached at 3.9.15
 ```
 
 We have now successfully checked out the required reference code from the Joomla Code Base. Since we are not going to develop any code off the Joomla main tree and are going to concentrate on developing the langauge pack only, we can leave this repo until the next time release.
 
 ### Step 3: Get your language pack repo
 
-Get the latest version of your language pack repo. Note that this is a different repo to the Joomla Core code base repo in [https://github.com/joomla/joomla-cms](#https://github.com/joomla/joomla-cms), this one is, for example, at [https://github.com/gerritonagoodday/af-ZA_joomla_lang](#https://github.com/gerritonagoodday/af-ZA_joomla_lang). Do a clone:
+Get the latest version of your language pack repo. Note that this is a different repo to the Joomla Core code base repo in [https://github.com/joomla/joomla-cms](#https://github.com/joomla/joomla-cms). This one is, for example, at [https://github.com/gerritonagoodday/af-ZA_joomla_lang](#https://github.com/gerritonagoodday/af-ZA_joomla_lang). Do a clone:
 
 ```bash
 $ cd ~git
