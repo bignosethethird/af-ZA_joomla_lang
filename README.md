@@ -591,13 +591,16 @@ If not, check out the master branch first:
 
 ### Step 4: Create a branch in your local remote repo 
 
-Create a new branch in the remote repo, named according to the Joomla release that you are creating this package for and also the release version (starting at 1), e.g. "3.9.5v1", pull the repo, and check-out the branch. This is your working area. 
+Create a new branch in the remote repo, named according to the Joomla release that you are creating this package for and also your own release version (starting at 1), e.g. "3.9.5v1", pull the repo, and check-out the branch. This is your working area. 
 
 ```bash
 ~/git/af-ZA_joomla_lang $ git branch 3.9.5v1
 ~/git/af-ZA_joomla_lang $ git checkout 3.9.5v1
 Switched to branch '3.9.5v1'
 ```
+
+_NOTE:_
+> It is very useful to stick to the x.y.zv[1..] naming convention throughout your process. 
 
 ### Step 5: Set up the package configuration file
 
@@ -675,7 +678,7 @@ In the `utilities/configuration.sh` file, set the following values. Unless you a
 
 ### Step 6: Produce a work file of what strings need to be translated
 
-You, as team lead: Run the `utilities/Chk4NewLanguageStrings.sh` utility:
+You, as team lead: Run the `./Chk4NewLanguageStrings.sh -p=~/git/joomla-cms`  utility:
 
 ```bash
 ~/git/af-ZA_joomla_lang $ cd utilities
@@ -711,15 +714,30 @@ You, as team lead: Run the `utilities/Chk4NewLanguageStrings.sh` utility:
 [2019.10.28 11:55:49][af-ZA][INFO ][877] ============= Next step: =====================================
 [2019.10.28 11:55:49][af-ZA][INFO ][892]
 
-Do all the translations by editing the patch file /home/gerrit/git/af-ZA_joomla_lang/WorkFile_af-ZA-x.x.x.x.sh.
-If a team worked on it, issue a pull-request to your team members and get them to check their merged mwork in.
-Do a pull to get the complete patch file.
+Add this file to git:
+
+  utilities $ cd ..
+  $ git add .
+  $ git commit -m \"ready to translate\"
+  $ git -u origin push
+
+Doing this by yourself?
+
+  Do all the translations by editing the patch file.
+
+Doing this as a team?
+
+  If a team worked on this file, issue a pull-request to your team members
+  and get them to check their merged work in, and then do a pull to get the 
+  hopefully completed patch file. Check that all strings are translated.
+
+As the project lead: 
 
 Execute the completed patch file. 
 
 Check the changes back into the repository with the commands:
 
-  $ cd /home/gerrit/git/af-ZA_joomla_lang
+  $ cd ~/git/af-ZA_joomla_lang
   $ git commit -m "Patched to next Joomla release"
   $ git push
 
@@ -727,16 +745,16 @@ Check the changes back into the repository with the commands:
 [2019.10.28 11:55:49][af-ZA][INFO ][184] === END [PID 29222] on signal EXIT. Cleaning up ===
 ```
 
-This will create the work file called `Workfile_[isolang-isocountry]-[x.x.x.x].sh`in the repo's root directory. This work file is actually a BASH-script with spaces left for where the translations need to be inserted. If it is just a point release, this work file may be only a few pages long. Do not execute this BASH-script yet. If there are any new files that need to be added to the package, they will be created, named accordingly, and added to the current branch in your local repo (you did check out the correct branch, right?) 
+This will create the work file called `Workfile_[isolang-isocountry]-[x.x.x.x].sh`in the repo's root directory. This work file is actually a BASH-script with space left for where the translations need to be inserted. If it is just a point release, this work file may be only a few pages long. Do not execute this BASH-script yet. If there are any new files that need to be added to the package, they will be created, named accordingly, and added to the current branch in your local repo (you did check out the correct branch, right?) 
 
 ### Step 7: Prepare to distribute the workload: Push the changes to the remote repo
 
-Do a commit and a push to get all this work to the remote repo, from which the other team members can access it with a `pull` operation to their own local repo. Any new files that had to be created for this new released will now also exist in the branch, albeit empty files that only contain headers:
+Do a commit and a push to get all this work to the remote repo, from which the other team members can access it with a `pull` operation to their own local repo. Any new files that had to be created for this new release will now also exist in the branch, albeit empty files that only contain headers:
 
 ```bash
-~/git/af-ZA_joomla_lang/utilities $ cd ..
-~/git/af-ZA_joomla_lang $ git add .
-~/git/af-ZA_joomla_lang $ git commit -m "ready for team to translate"
+utilities $ cd ..
+$ git add .
+$ git commit -m "ready for team to translate"
 [3.9.5v1 6408b5c] ready for team to translate
  xxx files changed, xxx insertions(+), xxx deletions(-)
 ```
@@ -744,7 +762,7 @@ Do a commit and a push to get all this work to the remote repo, from which the o
 Now push this branch 3.9.5v1 that you have created locally, to the remote repo:
 
 ```bash
-~/git/af-ZA_joomla_lang $ git push -u origin 3.9.5v1
+$ git push -u origin 3.9.5v1
 Username for 'https://github.com': xxxx
 Password for 'https://gerritonagoodday@github.com': xxxxx 
 Counting objects: 9, done.
@@ -774,11 +792,13 @@ You can check if the remote repo has this branch by listing the remote branches.
   origin/master
 ```
 
+At this stage, everything is prepared for a team of translators to get stuck in to translating the Workfile. 
+
 ### Step 8: Split the report out amoung the translation team members 
 
-Team lead: Allocate chunks of the work file `Workfile_[isolang-isocountry]-[x.x.x.x].sh` by line numbers or "jobs" and agree who in the team will translate what chunk and who will review each chunk. Usefully, the sections in the file are divided up into "jobs", with each "job" corresponding to an affected file. There is ont need to physically split the file, in fact, this would be counter-productive. Everyone must start their effort off by doing a clone or a pull and then a check-out of the relevant branch, e.g. "3.9.5" to get their copy of the (entire) work file:
+Team lead: Allocate chunks of the work file `Workfile_[isolang-isocountry]-[x.y.z.v].sh` by line numbers or "jobs" and agree who in the team will translate what chunk and who will review each chunk. Usefully, the sections in the file are divided up into "jobs", with each "job" corresponding to an affected file. There is no need to physically split the file, in fact, this would be counter-productive. Everyone must start their effort off by doing a clone or a pull, followed by a check-out of the relevant branch, e.g. "3.9.5v1" to get their copy of the (entire) work file:
 
-So, to recap for team members:
+Each of your team members will need to have performed Step 3 and Step 4, but here is a recap for team members:
 
 ```bash
 ~/git/ $ git clone

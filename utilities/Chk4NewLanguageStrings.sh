@@ -877,11 +877,19 @@ git add "$PATCHFILE"
 INFO "[$LINENO] ============= Next step: ====================================="
 INFO "[$LINENO]
 
-Do all the translations by editing the patch file $PATCHFILE.
-If a team worked on it, issue a pull-request to your team members and get them to check their merged mwork in.
-Do a pull to get the complete patch file.
+Doing this by yourself?
 
-Execute the completed patch file. 
+  Do all the translations by editing the patch file ${PATCHFILE}.
+
+Doing this as a team?
+
+  If a team worked on this file, issue a pull-request to your team members
+  and get them to check their merged work in, and then do a pull to get the 
+  hopefully completed patch file. Check that all strings are translated.
+
+As the project lead: 
+
+Execute the completed patch file.
 
 Check the changes back into the repository with the commands:
 
