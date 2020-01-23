@@ -25,7 +25,7 @@
     - [Step 6: Produce a work file of what strings need to be translated](#step-6-produce-a-work-file-of-what-strings-need-to-be-translated)
     - [Step 7: Prepare to distribute the workload: Push the changes to the remote repo](#step-7-prepare-to-distribute-the-workload-push-the-changes-to-the-remote-repo)
     - [Step 8: Split the report out amoung the translation team members](#step-8-split-the-report-out-amoung-the-translation-team-members)
-    - [Step 9: Do the translations and merge the resulting workfile back into the repo](#step-9-do-the-translations-and-merge-the-resulting-workfile-back-into-the-repo)
+    - [Step 9: Team members do the translations and merge the resulting workfile back into the repo](#step-9-team-members-do-the-translations-and-merge-the-resulting-workfile-back-into-the-repo)
     - [Step 10: Run the work file script and commit and push all the files](#step-10-run-the-work-file-script-and-commit-and-push-all-the-files)
     - [Step 11: Test the language files for integrity](#step-11-test-the-language-files-for-integrity)
     - [Step 12: Build the package using the package build script](#step-12-build-the-package-using-the-package-build-script)
@@ -798,39 +798,53 @@ At this stage, everything is prepared for a team of translators to get stuck in 
 
 Team lead: Allocate chunks of the work file `Workfile_[isolang-isocountry]-[x.y.z.v].sh` by line numbers or "jobs" and agree who in the team will translate what chunk and who will review each chunk. Usefully, the sections in the file are divided up into "jobs", with each "job" corresponding to an affected file. There is no need to physically split the file, in fact, this would be counter-productive. Everyone must start their effort off by doing a clone or a pull, followed by a check-out of the relevant branch, e.g. "3.9.5v1" to get their copy of the (entire) work file:
 
-Each of your team members will need to have performed Step 3 and Step 4, but here is a recap for team members:
+Each of the team members will need to have performed Step 3 and Step 4, but here is a recap for team members:
 
 ```bash
-~/git/ $ git clone
-~/git/ $ cd af-ZA_joomla_lang
+~/git/ $ git clone [git URL]
+~/git/ $ cd [git project]
 ```
 
 or, if you previously obtined a copy of the repo:
 
 ```bash
-$ cd ~/git/af-ZA_joomla_lang
-~/git/af-ZA_joomla_lang $ git pull
+$ cd ~/git/[git project]
+~/git/[git project] $ git pull
 ```
 
 Then check out the branch:
 
 ```bash
-~/git/af-ZA_joomla_lang $ git checkout 3.9.5v1
+~/git/[git project] $ git checkout 3.9.5v1
 
 ```
 
 Once the team member has done this, the translation effort can begin.
 
-### Step 9: Do the translations and merge the resulting workfile back into the repo
+### Step 9: Team members do the translations and merge the resulting workfile back into the repo
 
-Every translation team member translates / reviews their allocated chunk of the work file and then merges it back into the repo. GIT is very good at resolving the changes to a single file made by multiple users. 
+Every translation team member: Translate and review your allocated chunk of the work file and then merge it back from the working branch into the repo's master branch when completed or when the project lead has issued a pull request. 
 
-To merge the branch that you were working on into the 'master' branch, you need to go into the 'master' branch. Remember that you can only enter another branch if you have either committed all changes or have stashed any changes under keepsafe-name for later unstashing and use. If you don't do this, you will loose all your current changes. This may in rare cases be actually desired.
+To merge the branch that you were working on into the 'master' branch, you need to go into the 'master' branch. Remember that you can only enter another branch if you have either committed all changes or have stashed any changes under keepsafe-name for later unstashing and use. If you don't do this, you will loose all your current changes. This may in rare cases be actually desired. So, assuming that your translation work is completed in your working branch, check it into your local repo (i.e. no `push` to the remote repo):
+
+```bash
+$ git add .
+$ git commit -m "king_olav is complete"
+```
+
+No go into the master branch:
 
 ```bash
 $ git checkout master
 switched to branch 'master'
 Your branch is up-to-date with 'origin/master'.
+```
+
+Do a pull from the remote repo to collect all the work that other team members have already submitted, since 
+you are about to merge your work into theirs (and the next team member's work will be merged into yours and your predecessors' work:
+
+```bash
+$ git pull
 ```
 
 Now do the merge in your local repo:
@@ -839,7 +853,33 @@ Now do the merge in your local repo:
 $ git merge '3.9.5v1'
 Updating ed0cb7b..e945c5e
 Fast-forward
- WorkFile_af-ZA-3.9.12.1.sh                              | 258 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ WorkFile_af-ZA-3.9.5.1.sh  | 258 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+1 files changed, 944 insertions(+), 133 deletions(-)
+```
+
+Git is very good at resolving the changes to a single file made by multiple users. Your merge efforts will not be visible on the remote repo until you do a push of your master branch:
+
+```bash
+$ git push
+Total 0 (delta 0), reused 0 (delta 0)
+To https://github.com/gerritonagoodday/af-ZA_joomla_lang.git
+   ed0cb7b..e945c5e  master -> master
+```
+
+_NOTE:_
+>1. You need to 'be in the branch' that is being merged to. Use the `git checkout '[branch-name]'` for this.
+>2. The code is automatically commited after a merge. No need to do a `git commit` after a successful merge.
+>3. Sometimes, a merge conflict arrises and needs to be resolved through your manual intervention. See the next section.
+
+### Step 10: Run the work file script and commit and push all the files
+
+
+
+```bash
+$ git merge '3.9.5v1'
+Updating ed0cb7b..e945c5e
+Fast-forward
+ WorkFile_af-ZA-3.9.5.1.sh                              | 258 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  administrator/language/af-ZA/af-ZA.com_content.ini      |   1 +
  administrator/language/af-ZA/af-ZA.com_fields.ini       |  10 +--
  administrator/language/af-ZA/af-ZA.com_joomlaupdate.ini |   7 ++
@@ -849,15 +889,9 @@ Fast-forward
  language/af-ZA/af-ZA.finder_cli.ini                     |   3 +
  language/af-ZA/af-ZA.ini                                |  29 ++++++++
  language/af-ZA/af-ZA.lib_joomla.ini                     |   3 +
- utilities/configuration.sh                              |   4 +-
- 10 files changed, 949 insertions(+), 133 deletions(-)
- create mode 100755 WorkFile_af-ZA-3.9.12.1.sh
+ 9 files changed, 949 insertions(+), 133 deletions(-)
+ create mode 100755 WorkFile_af-ZA-3.9.5.1.sh
 ```
-
-_NOTE:_
->1. You need to 'be in the branch' that is being merged to. Use the `git checkout '[branch-name]'` for this.
->2. The code is automatically commited after a merge. No need to do a `git commit` after a successful merge.
->3. Sometimes, a merge conflict arrises and needs to be resolved through your manual intervention. See the next section.
 
 Your merge efforts will not be visible on the remote repo until you do a push of your master branch :
 
@@ -869,8 +903,6 @@ To https://github.com/gerritonagoodday/af-ZA_joomla_lang.git
 ```
 
 
-### Step 10: Run the work file script and commit and push all the files
-
 The team lead does a final pull of the work file, a final integrity check, and then executes the work file (which is a BASH shell script after all).
 This can only be done by the team lead, since the work file will be based on the lead's particular work directory setup. 
 This results in changes to many files and these all need to be added, committed and pushed to the remote repo. 
@@ -881,6 +913,7 @@ In the role of team lead, you do not need to do any merging as the translators w
 ```bash
  ~/git/af-ZA_joomla_lang $ ./WorkFile_af-ZA-3.9.5.1.sh 
 ```
+
 If there are no errors, then the work file script run successfully.
 Check if the changes made correspond to the file referred to in the work file. You should see all the language file that were altered:
 
@@ -892,7 +925,6 @@ Your branch is up-to-date with 'origin/3.9.5v1'.
 Changes not staged for commit:
   (use "git add <file>..." to update what will be committed)
   (use "git checkout -- <file>..." to discard changes in working directory)
-
         modified:   WorkFile_af-ZA-3.9.5.1.sh
         modified:   administrator/language/af-ZA/af-ZA.com_content.ini
         modified:   administrator/language/af-ZA/af-ZA.com_fields.ini
