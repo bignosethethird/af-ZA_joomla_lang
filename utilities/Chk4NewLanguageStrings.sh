@@ -877,6 +877,13 @@ git add "$PATCHFILE"
 INFO "[$LINENO] ============= Next step: ====================================="
 INFO "[$LINENO]
 
+Add this file to git:
+
+  ${local_sandbox_dir}/utilities $ cd ..
+  ${local_sandbox_dir} $ git add .
+  ${local_sandbox_dir} $ git commit -m \"ready to translate\"
+  ${local_sandbox_dir} $ git -u origin push
+
 Doing this by yourself?
 
   Do all the translations by editing the patch file ${PATCHFILE}.

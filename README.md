@@ -1018,7 +1018,7 @@ The work file is in fact a BASH script files and is a useful way of splitting th
 When all the strings in it have been translated, the file is simply executed, which will distribute the translated strings to the correct files. The work file is executed like this:
 
 ```bash
-./utilities/WorkFile_af-ZA-3.9.5v1.sh
+./utilities/WorkFile_af-ZA-x.y.z.v.sh
 ```
 
 The file consists of statements like these:
