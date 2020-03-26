@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metafile version="3.8" client="installation">
   <name>Afrikaans (Suid-Afrika)</name>
-  <version>3.8.3</version>
-  <creationDate>December 2017</creationDate>
+  <version>3.9.16</version>
+  <creationDate>March 2020</creationDate>
   <author>Gerrit Hoekstra en Span</author>
   <authorEmail>gerrit@hoekstra.co.uk</authorEmail>
   <authorUrl>http://forge.joomla.org/gf/project/afrikaans_taal</authorUrl>
-  <copyright>Copyright (C) 2005 - 2017 Open Source Matters. All rights reserved.</copyright>
+  <copyright>Copyright (C) 2005 - 2020 Open Source Matters. All rights reserved.</copyright>
   <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-  <description>3.8 Joomla Afrikaanse Taalpaket</description>
+  <description>3.9 Joomla Afrikaanse Taalpaket</description>
   <files>
     <filename>af-ZA.ini</filename>
   </files>
