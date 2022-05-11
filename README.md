@@ -382,10 +382,12 @@ Bare in mind that the context varies so a given English word such as 'file' can 
 
 * Top occurances of words
 
-This is for interest only, and may give you some insight in how to speed the translation process up. The most frequently-occurring word in the English  source language is the indicative article, 'the':
+This is for interest only, and may give you some insight in how to speed the translation process up. The most frequently-occurring word in the English  source language is the indicative article, 'the', and can be discovered using this rediculously-long BASH one-liner:
 
 ```bash
-$ find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | sed -e 's/"//g'  -e 's/%.//g' -e 's/\.//g' -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' -e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | sort -nr | head -20
+find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | sed -e 's/"//g'  -e 's/%.//g' -e 's/\.//g' -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' -e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | sort -nr | head -20
+```
+```bash
    3841 the
    2314 to
    1304 a
@@ -408,15 +410,13 @@ $ find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut
     397 language
 ```
 
-The number of occurances of each word form a Zipfian distribution, which is what you would normally expect the case to be for word counts in a large corpus of any given spoken langauge. When you plot this file on a log-by-log graph, you get a straight-ish line:
+The number of occurances of each word form a Zipfian distribution, which is what you would normally expect the case to be for word counts in a large corpus of any given spoken langauge. When you plot this data on a log-by-log graph, you get a straight-ish line:
 
 ```bash
-$ find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | \
-sed -e 's/"//g' -e 's/%.//g' -e 's/\.//g' -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' \
--e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | \
-sort -nr | head -300 | gnuplot -e "set terminal dumb; set logscale; set xrange [1:300]; \
-plot '-' with lines notitle"
-
+$ find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | sed -e 's/"//g' -e 's/%.//g' -e 's/\.//g' -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' -e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | sort -nr | head -300 | gnuplot -e "set terminal dumb; set logscale; set xrange [1:300]; plot '-' with lines notitle"
+```
+This gives us this graph:
+```bash
                                                                                
   10000 +------------------------------------------------------------------+   
         |+                         +                          +           +|   
@@ -441,10 +441,15 @@ plot '-' with lines notitle"
      10 +------------------------------------------------------------------+   
         1                          10                        100               
 ```
-It is interesting to compare the graph of the translated package to this, which should be more or less the same straight line shape. First we get all our words. Here are the top 20 of the af-ZA language pack:
+It is interesting to compare the graph of the translated package to that generated from the source language. They should be more or less the same straight line shape. So, here goes:
+
+First we get all our words. Here are the top 20 of the af-ZA language pack:
 
 ```bash
 $ find ~/git/af-ZA_joomla_lang/ -name "af-ZA.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | sed -e 's/"//g'  -e 's/%.//g' -e 's/\.//g' -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' -e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | sort -nr | head -20
+```
+
+```bash
    4224 die
    2664 nie
    1683 'n
@@ -470,9 +475,12 @@ $ find ~/git/af-ZA_joomla_lang/ -name "af-ZA.*ini" -exec grep '[A-Z_0-9]*="' {} 
 Graphing the top 300 word occurances, we get:
 
 ```bash
+find ~/git/af-ZA_joomla_lang/ -name "af-ZA.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | sed -e 's/"//g'  -e 's/%.//g' -e 's/\.//g' -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' -e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | sort -nr | head -300 | gnuplot -e "set terminal dumb; set logscale; set xrange [1:300]; plot '-' with lines notitle"
+```
 
-$ find ~/git/af-ZA_joomla_lang/ -name "af-ZA.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | sed -e 's/"//g'  -e 's/%.//g' -e 's/\.//g' -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' -e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | sort -nr | head -300 | gnuplot -e "set terminal dumb; set logscale; set xrange [1:300]; plot '-' with lines notitle"
+This gives us:
 
+```bash
                                                                                
   10000 +------------------------------------------------------------------+   
         |+                         +                          +           +|   
