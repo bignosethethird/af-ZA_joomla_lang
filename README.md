@@ -100,7 +100,7 @@ Note that we are only interested here in producing the translations of Joomla's 
 
 ## Introduction to GIT
 
-### Install Git
+### Install the Git client
 
 By assumption, you are running on a Linux or a Mac, or at least have Linux for Windows installed on your Windows machine. You should also have GIT installed on your machine. If it is not installed yet, install GIT using your OS's standard software installation tool, e.g. for Ubuntu Linux variants, do the following:
 
@@ -382,10 +382,10 @@ Bare in mind that the context varies so a given English word such as 'file' can 
 
 * Top occurances of words
 
-This is for interest only, and may give you some insight in how to speed the translation process up. The most frequently-occurring word is the indicative article, 'the':
+This is for interest only, and may give you some insight in how to speed the translation process up. The most frequently-occurring word in the English  source language is the indicative article, 'the':
 
 ```bash
-$ find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | sed -e 's/"//g'  -e 's/%.//g'   -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' -e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | sort -nr | head -20
+$ find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | sed -e 's/"//g'  -e 's/%.//g' -e 's/\.//g' -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' -e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | sort -nr | head -20
    3841 the
    2314 to
    1304 a
@@ -411,7 +411,11 @@ $ find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut
 The number of occurances of each word form a Zipfian distribution, which is what you would normally expect the case to be for word counts in a large corpus of any given spoken langauge. When you plot this file on a log-by-log graph, you get a straight-ish line:
 
 ```bash
-$ find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | sed -e 's/"//g'  -e 's/%.//g'   -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' -e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | sort -nr | head -300 | gnuplot -e "set terminal dumb; set logscale; set xrange [1:300]; plot '-' with lines notitle"
+$ find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | \
+sed -e 's/"//g' -e 's/%.//g' -e 's/\.//g' -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' \
+-e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | \
+sort -nr | head -300 | gnuplot -e "set terminal dumb; set logscale; set xrange [1:300]; \
+plot '-' with lines notitle"
 
                                                                                
   10000 +------------------------------------------------------------------+   
@@ -437,6 +441,64 @@ $ find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut
      10 +------------------------------------------------------------------+   
         1                          10                        100               
 ```
+It is interesting to compare the graph of the translated package to this, which should be more or less the same straight line shape. First we get all our words. Here are the top 20 of the af-ZA language pack:
+
+```bash
+$ find ~/git/af-ZA_joomla_lang/ -name "af-ZA.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | sed -e 's/"//g'  -e 's/%.//g' -e 's/\.//g' -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' -e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | sort -nr | head -20
+   4224 die
+   2664 nie
+   1683 'n
+   1247 is
+   1118 in
+   1102 van
+    921 hierdie
+    902 vir
+    861 te
+    858 vertoon
+    800 word
+    777 om
+    703 jy
+    661 sal
+    625 kan
+    598 en
+    580 of
+    570 wat
+    564 jou
+    536 met
+```
+
+Graphing the top 300 word occurances, we get:
+
+```bash
+
+$ find ~/git/af-ZA_joomla_lang/ -name "af-ZA.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | sed -e 's/"//g'  -e 's/%.//g' -e 's/\.//g' -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' -e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | sort -nr | head -300 | gnuplot -e "set terminal dumb; set logscale; set xrange [1:300]; plot '-' with lines notitle"
+
+                                                                               
+  10000 +------------------------------------------------------------------+   
+        |+                         +                          +           +|   
+        |+                                                                +|   
+        |+                                                                +|   
+        |*******                                                           |   
+        |+      *****                                                     +|   
+        |            ********                                              |   
+   1000 |-+                  ********                                    +-|   
+        |+                           *******                              +|   
+        |+                                 ******                         +|   
+        |+                                      ****                      +|   
+        |+                                         *******                +|   
+        |                                                ******            |   
+    100 |-+                                                   *****      +-|   
+        |+                                                        *****   +|   
+        |+                                                            *****|   
+        |+                                                                *|   
+        |+                                                                +|   
+        |+                                                                +|   
+        |                          +                          +            |   
+     10 +------------------------------------------------------------------+   
+        1                          10                        100               
+```
+
+QED.
 
 ## How much work will I continually need to invest to maintain a language pack?
 
