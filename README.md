@@ -9,7 +9,7 @@
   - [Introduction to GIT](#introduction-to-git)
     - [Install Git](#install-git)
     - [Create an account for yourself on Github](#create-an-account-for-yourself-on-github)
-    - [First](#first)
+    - [First Operations in GIT](#first-operations-in-git)
   - [Cool things you can do in GIT](#cool-things-you-can-do-in-git)
   - [How much work is involved in creating a language pack?](#how-much-work-is-involved-in-creating-a-language-pack)
   - [How much work will I continually need to invest to maintain a language pack?](#how-much-work-will-i-continually-need-to-invest-to-maintain-a-language-pack)
