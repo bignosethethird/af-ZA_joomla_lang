@@ -100,9 +100,12 @@ Note that we are only interested here in producing the translations of Joomla's 
 
 ## Introduction to GIT
 
+A great introduction to using GIT is to watch this YouTube video: https://youtu.be/ulQA5tjJark by a very good presenter who deeply understands the subject 
+and introduced and explains GIT very gently. Highly recommended!
+
 ### Install the Git client
 
-By assumption, you are running on a Linux or a Mac, or at least have Linux for Windows installed on your Windows machine. You should also have GIT installed on your machine. If it is not installed yet, install GIT using your OS's standard software installation tool, e.g. for Ubuntu Linux variants, do the following:
+By assumption, you are running on a Linux or a Mac, or at least have Linux for Windows installed on your Windows machine. You should also have the GIT application installed on your machine. If it is not installed yet, install GIT using your O/S's standard software installation tool, e.g. for Ubuntu Linux variants, do the following:
 
 ```bash
 $ sudo apt install git
@@ -123,9 +126,12 @@ $ cd ~/git
 
 ### Create an account for yourself on Github
 
-Got to https://github.com and sign up for the free option. No need to part with any money! You need to do this if you want to be able to contribute back into a language pack, or want to manage your own language pack.  
+Got to https://github.com and sign up for the free option. No need to part with any money! 
+You need to do this if you want to be able to contribute back into a language pack, or want to manage your own language pack.  
 
 * Configure yourself in Git
+
+*(TO DO - needs updating to TFA)*
 
 Set your user name, email address and password up if this is the only Git account that you are likely to use. Only set your password up like this if you are on your personal computer:
 
@@ -157,24 +163,25 @@ Password for 'https://gerritonagoodday@github.com': XXXXX
 
 ### First operations in GIT
 
-Let's look at Joomla Release 3.9.5 for example: You would first need to *clone* the entire repository (a.k.a. "repo") from [https://github.com/joomla/joomla-cms](#https://github.com/joomla/joomla-cms). This will bring down all the branches end basically the entire history of the project. Do this as follows . A new directory, ```joomla-cms```, will be created off the the ```git```-directory:
+Let's look at the latest Joomla Release for example: You would first need to *clone* the entire repository (a.k.a. "repo") from [https://github.com/joomla/joomla-cms](#https://github.com/joomla/joomla-cms). This will bring down all the branches and also the complete history of all the file changes in the project over the course of project's lifetime. Follows the commands below. You will see that a new directory, ```joomla-cms```, will be created off the the ```git```-directory:
 
 ```bash
 $ cd ~/git
 ~/git $ git clone https://github.com/joomla/joomla-cms
 Cloning into 'joomla-cms'...
-remote: Enumerating objects: 84, done.
-remote: Counting objects: 100% (84/84), done.
-remote: Compressing objects: 100% (59/59), done.
-remote: Total 747727 (delta 38), reused 28 (delta 25), pack-reused 747643
-Receiving objects: 100% (747727/747727), 255.86 MiB | 6.57 MiB/s, done.
-Resolving deltas: 100% (497701/497701), done.
-~/git $ cd joomla-cms
+remote: Enumerating objects: 896503, done.
+remote: Counting objects: 100% (524/524), done.
+remote: Compressing objects: 100% (307/307), done.
+remote: Total 896503 (delta 230), reused 398 (delta 183), pack-reused 895979
+Receiving objects: 100% (896503/896503), 310.54 MiB | 2.51 MiB/s, done.
+Resolving deltas: 100% (597396/597396), done.
 ```
 
 If you have already previously cloned the repo, you do not need to do a *clone*, just do a *pull* from the code's root directory to get a complete refresh of the codebase:
 
+
 ```bash
+$ cd ~/git/joomla-cms
 ~/git/joomla-cms $ git pull
 remote: Enumerating objects: 619, done.
 remote: Counting objects: 100% (619/619), done.
@@ -182,23 +189,91 @@ remote: Compressing objects: 100% (33/33), done.
 remote: Total 943 (delta 571), reused 614 (delta 571), pack-reused 324
 Receiving objects: 100% (943/943), 323.41 KiB | 1.54 MiB/s, done.
 Resolving deltas: 100% (620/620), completed with 329 local objects.
-From https://github.com/joomla/joomla-cms
-   39b2d95339..10d5ce2566  3.10-dev   -> origin/3.10-dev
-   bf74e0090b..42ad599899  4.0-dev    -> origin/4.0-dev
-   9c437d0de8..540071027c  staging    -> origin/staging
- * [new tag]               4.0.0-alpha12 -> 4.0.0-alpha12
-You are not currently on a branch.
-Please specify which branch you want to merge with.
-See git-pull(1) for details.
-    git pull <remote> <branch>
 ```
 
-To get to the code that relates to release 3.9.5, you need to *checkout* the code that has been tagged as release 3.9.5. 
-The convention at Joomla Dev HQ for release-based tags is to use the ```major.minor.point[-attribute]``` format for tags, so expect to find a tag named ```3.9.5```:
+And if you do anothe *pull*, it will simply tell you that no-one has checked in any new file changes since the last *pull*:
+
+
+```
+~/git/joomla-cms $ git pull
+Already up-to-date.
+```
+
+### So, what do we have here?
+
+In its simplest form, a GIT repository is chronological tree of branches, that have been tagged at arbitrary points in time as
+markers that constitute code releases or other significant coding events in the code development life cycle.
+
+Here is a friendly way to see what has arrived from the remote repository: 
+
+
+```
+~/git/joomla-cms $ git status
+On branch 4.2-dev
+Your branch is up-to-date with 'origin/4.2-dev'.
+
+nothing to commit, working tree clean
+```
+
+You can assert that the default branch that we are in after this new pull, is ```4.2-dev```. 
+Sometimes, more that one brach will be listed, and the currently-checked out branch will be indicated with a '*'. 
+
+```
+~/git/joomla-cms $ git branch
+* 4.2-dev
+```
+
+You can see the code-event tags that have been allocated to the source tree over time, listed in alphabetical (*not chronological*) order. 
+In this case, most of the tags indicate code release events:
 
 ```bash
-~/git/joomla-cms $ git checkout tags/'3.9.5' 
-Note: checking out 'tags/3.9.5'.
+~/git/joomla-cms $ git tag -n
+...
+...
+4.2.0           Joomla! 4.2.0 Stable
+4.2.0-alpha1    Joomla! 4.2.0 Alpha 1
+4.2.0-alpha2    Joomla! 4.2.0 Alpha 2
+4.2.0-alpha3    Joomla! 4.2.0 Alpha 3
+4.2.0-beta1     Joomla! 4.2.0 Beta 1
+4.2.0-beta2     Joomla! 4.2.0 Beta 2
+4.2.0-beta3     Bump to version 4.2.0-beta3
+4.2.0-rc1       Joomla! 4.2.0 Release Candidate 1
+4.2.1           Joomla! 4.2.1 Stable
+4.2.1-rc1       Joomla! 4.2.1 Release Candidate 1
+4.2.1-rc2       Joomla! 4.2.1 Release Candidate 2
+4.2.1-rc3       Joomla! 4.2.1 Release Candidate 3
+4.2.2           Joomla! 4.2.2 Stable
+4.2.3           Joomla! 4.2.3 Stable
+4.2.3-rc1       Joomla! 4.2.3 Release Candidate 1
+4.2.4           Joomla! 4.2.4 Stable
+4.2.5           Joomla! 4.2.5 Stable
+4.2.5-rc1       Joomla! 4.2.5 Release Candidate 1
+4.2.5-rc1-sec   Joomla! 4.2.5 Release Candidate 1 with security patches
+4.2.6           Joomla! 4.2.6 Stable
+4.2.6-rc1       Joomla! 4.2.6 Release Candidate 1
+4.2.7           Joomla! 4.2.7 Stable
+4.2.7-rc1       Joomla! 4.2.7 Release Candidate 1
+4.2.8           Joomla! 4.2.8 Stable
+4.3.0-alpha1    Joomla! 4.3.0 Alpha 1
+4.3.0-alpha2    Joomla! 4.3.0 Alpha 2
+4.3.0-alpha3    Joomla! 4.3.0 Alpha 3
+4.3.0-beta1     Joomla! 4.3.0 Beta 1
+4.3.0-beta2     Joomla! 4.3.0 Beta 2
+4.3.0-beta3     Joomla! 4.3.0 Beta 3
+...
+...
+...
+```
+
+As of the time of writing, we will be working on producing a translation update for release ```4.2.8```. 
+Since the Joomla project team is very diligent about tagging their releases, we can reliably get the desired Joomla release by checking out the *tag* (*not the  branch!*):
+The convention at Joomla Dev HQ for release-based tags is to use the ```major.minor.point[-attribute]``` format for tags.
+To get to the code that relates to release 4.2.8, you need to *checkout* the code that has been tagged as release 4.2.8:
+
+
+```bash
+~/git/joomla-cms $ git checkout tags/'4.2.8' 
+Note: checking out 'tags/4.2.8'.
 
 You are in 'detached HEAD' state. You can look around, make experimental
 changes and commit them, and you can discard any commits you make in this
@@ -209,95 +284,78 @@ do so (now or later) by using -b with the checkout command again. Example:
 
   git checkout -b <new-branch-name>
 
-HEAD is now at 1547f8e760 Prepare 3.9.5 release
+HEAD is now at 1547f8e760 Prepare 4.2.8 release
 ```
 
-There! You now have all the code that is used for the 3.9.5 release of Joomla. The code for the other releases is hidden in the various .git directories and you can always do a checkout of the other releases if you need to peak into these. 
+There! You now have all the code that is used for the 4.2.8 release of Joomla. You have also detached yourself from a branch-based reference 
+and your code is now organized on a tag-based reference. The code for the other releases is hidden in the various .git directories and you 
+can always do a checkout of the other releases if you need to take a peak in them. 
 
+With the up-to-date code for this release in hand, it is now a matter of determining which new language strings need to be translated by 
+comparing the existing language files in the language pack repository with those in the joomla-cms repository.
 
 ### Cool things you can do in GIT
 
-Now that you have a working copy of the Joomla Core code, here are some interesting things you do though Git:
-
-* You can see the tags that have been allocated to the source tree:
-
-```bash
-~/git/joomla-cms $ git tag
-...
-3.9.0
-3.9.0-alpha
-3.9.0-beta
-3.9.0-beta2
-3.9.0-beta3
-3.9.0-beta4
-3.9.0-rc
-3.9.0-rc2
-3.9.1
-3.9.1-rc
-3.9.10
-3.9.11
-3.9.11-rc
-3.9.12
-3.9.12-rc
-3.9.2
-3.9.2-rc
-3.9.3
-3.9.3-rc
-3.9.4
-3.9.4-rc
-3.9.5
-3.9.5-rc
-...
-```
-
-
 * Create an alias to see the most recent forks, merges and commits:
 
-Add the alias to your ```~/.bashrc``` file.
+Add the following alias to your ```~/.bashrc``` file, re-source your ```~/.bashrc``` file, and then run the alias:
+
+Enter this using vi or nano in your ```~/.bashrc``` file:
+
 
 ```bash
 alias gg="git log --graph --all --decorate --oneline"
 ```
 
+Re-source your ```~/.bashrc``` file:
+
+
+```bash
+$ source ~/.bashrc
+```
+
+Now run the new ```gg``` command. It should liik something like this:
+
+
 ```bash
 ~/git/joomla-cms $ gg
-| * | | | | | | | | | | | | | | | | | | | | 37299b49eb [4.0]Namespace com_contact (#20911)
-| | |_|_|_|_|_|_|_|_|_|/ / / / / / / / / /  
-| |/| | | | | | | | | | | | | | | | | | |   
-| * | | | | | | | | | | | | | | | | | | | 3e067618a6 Correct class fa-eye-o to fa-eye for hits count (#21018)
-| * | | | | | | | | | | | | | | | | | | | a001ccc6df One use Joomla\CMS\Factory; too much (#21016)
-| * | | | | | | | | | | | | | | | | | | | 4b1214a4ca [4.0] Reworking result layout of com_finder (#20572)
-| * | | | | | | | | | | | | | | | | | | | f41772c8b4 [4.0] com_finder: add search statistics (#20681)
-| * | | | | | | | | | | | | | | | | | | | 1b59d75de1 [4.0] Implementing OpenSearch in com_finder (#20936)
-| * | | | | | | | | | | | | | | | | | | | 0650916437 [4.0] Decoupling highlighter plugin from com_finder (#20571)
-| |/ / / / / / / / / / / / / / / / / / /  
-| * | | | | | | | | | | | | | | | | | |   1a00baf04e Merge commit '6a0f21a' into 4.0-dev
-| |\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
-| | | |_|_|_|_|_|_|_|_|/ / / / / / / / /  
-| | |/| | | | | | | | | | | | | | | | |   
-| | * | | | | | | | | | | | | | | | | | 6a0f21acb8 Plain English cont. (#19654)
-| * | | | | | | | | | | | | | | | | | |   d00d1fa795 Merge commit '65b8596' into 4.0-dev
-| |\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
-| | |/ / / / / / / / / / / / / / / / / /  
-| | * | | | | | | | | | | | | | | | | | 65b8596b7e Typo Joomla is vegetarian (#19649)
-| * | | | | | | | | | | | | | | | | | | 446e2b3b56 [4.0] Fix manage folder not working (#20981)
-| * | | | | | | | | | | | | | | | | | |   0044c708ee Merge pull request #20987 from wilsonge/feature/hasProperty
-| |\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  
-| | * | | | | | | | | | | | | | | | | | | 0afcd3b9e7 Fix code style
-| | * | | | | | | | | | | | | | | | | | | 3d7cacce52 Add hasField method to the interface
-| * | | | | | | | | | | | | | | | | | | | c6946c0f33 [4.0] Transpile es6 files (#20954)
-| * | | | | | | | | | | | | | | | | | | | fe39161cd0 Fix markup (#20984)
-| * | | | | | | | | | | | | | | | | | | | 272cc60a1d Combine class attributes (#20978)
-| |/ / / / / / / / / / / / / / / / / / /  
-| * | | | | | | | | | | | | | | | | | | a1f03695c4 Use function for primary key
+* ddcb66cded (origin/4.3-dev) [4.3] Use CSRF only for the site''s domain (#39580)
+* ce66f242a1 Add option to pass a release date to the bumb script (#39904)
+* ba80d44d60 Remove dead code from plugin (#39530)
+* 4b0a3d6a53 Fix version for now
+* a9048d900c Add more information to CS fixer when failed (#39905)
+*   000f357107 Merge branch '4.3-dev' of https://github.com/joomla/joomla-cms into 4.3-dev
+|\  
+| * 4d67edf23c correct folder in gitignore (#39890)
+* | 408c0be2a4 Revert to dev
+* | bfd0190632 (tag: 4.3.0-beta3) Joomla! 4.3.0 Beta 3
+|/  
+* 399a853709 [4.3] Update deleted files list in script.php for upcoming 4.3.0-beta3 (#39886)
+* 9e68b74d48 Converts the captcha plugins to service providers (#39729)
+* 1b74c76142 Converts the finder plugins to service providers (#39770)
+*   90457c90e2 Merge pull request #39883 from sdwjoomla/upmerge-20230217-sdw-2
+|\  
+| * 9140ad087c Update SiteRouter.php
+| * 2efb60f641 Merge branch '4.2-dev' into upmerge-20230217-sdw-2
+|/| 
+* | 85c43acbe5 [4.3] Media Manager error message (#39741)
+* | 9d73496bb7 Converts local filesystem plugin to service providers (#39642)
+* | 3a1114d736 [4.3] Fix the mobile footer of the source modal (#39873)
+* |   76d21f9a31 Revert to dev
+|\ \  
+| * | 8a1a1816ec correct name of cypress.config in build/build.php (#39841)
+| * | 3d0b247bfd add the missing lock component (#39833)
+| * | 5fbdbab517 List views onclick (#39730)
+| * | c28c8e3db3 [4.3] Admin modules and xtd-editor plugins (#39834)
+| * | 34cfccdaa3 Skip side by side (#39828)
 ...
 ```
- - all in beautiful technicolour!
+ - all in beautiful technicolour - hit Q to stop the scrolling!
 
 
-* Avoid confusion: always know your current branch!
+* Avoid confusion: always know your current branch / tag!
 
-You can avoid a lot of confusion and possible mishaps of getting code in branches mixed up by always displaying the currently-selected branch on the command line. This is shown by default if you installed the Linux Git features on Windows. On the Linux terminal, you need to modify the PS1 variable in your local ```~/.bashrc``` file to show the current branch. For Debian-based Linux distros (around line 68), change the PS1 assignment to this:
+You can avoid a lot of confusion and possible mishaps of getting code in branches mixed up by always displaying the currently-selected branch or tag on the command line. This is shown by default if you installed the Linux Git features on Windows. On the Linux terminal, you need to modify the PS1 variable in your local ```~/.bashrc``` file to show the current branch. Remeber to re-source your ```~/.bashrc``` file after such a change. For Debian-based Linux distros (around line 68), change the PS1 assignment to this:
 
 For Debian and Ubuntu variants:
 
@@ -311,20 +369,11 @@ For all other Linuxes:
 PS1="\[\e]0;\u@\h \w\a\]\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w \[\033[33;1m\]$(git status 2>/dev/null | head -n1 | cut -d' ' -f3- | sed -e 's/\(at \)*\(.*\)/(\2) /')\[\033[01;34m\]$\[\033[00m\] "
 ```
 
-This will now show this (assuming you have select branch 3.9.5):
+This will now show this (assuming you have select branch 4.2.8):
+
 
 ```bash
-gerrit@z2 ~/git/joomla-cms (3.9.5) $ 
-```
-
-* Local vs Global configuration
-
-If you have need to work on this repo as a different user on this user because you are already have multiple Git accounts elsewhere, use the ```--local```-bit 
-
-```bash
-~/ $ git config --local user.name "yourusername"
-~/ $ git config --local user.emai "your@email"
-~/ $ git config --local user.password "XXXXX"
+gerrit@z2 ~/git/joomla-cms (4.2.8) $ 
 ```
 
 ## How much work is involved in creating a language pack?
@@ -333,12 +382,7 @@ Let's answer this question with a real-life example and re-usable code that you 
 
 ```bash
 ~/git/joomla-cms $ git pull
-```
-
-
-```bash
-~/git/joomla-cms $ git checkout tags/'3.9.5'
-...
+Already up-to-date.
 ```
 
 Use the following commands to determine the workload. The files that need to be translated from are all called ```en-GB.[name].ini``` and a few called ```en-GB.ini```:
@@ -378,7 +422,7 @@ $ find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut
 4997
 ```
 
-Bare in mind that the context varies so a given English word such as 'file' can end up having to be translated into many different words.
+Bear in mind that the context varies so a given English word such as 'file' can end up having to be translated into many different words.
 
 * Top occurances of words
 
@@ -541,39 +585,16 @@ You will need to have the Joomla source code of the release that you are creatin
 
 If latest Joomla package has not been released yet but the source code is ready to be translated, you can use the source code out of the Joomla Git repository instead as a reference. Some additional preparation is required to get the latest Joomla source code from the Joomla Git repo, however, before running the build process.
 
-If you previously created a local Joomla Git repo, just do a refresh of the repo with the `pull` command (ignore the last comments and instructions - these are meant for actual Joomla PHP developers). Also make sure that you are working in the root branch of the repo, which in the case of Joomla Git repo is call `staging`:
+If you previously created a local Joomla Git repo, just do a refresh of the repo with the `pull` command (ignore the last comments and instructions - these are meant for actual Joomla PHP developers). Also make sure that you are working with the correct Joomla release, which is marked as a tag, and not as a branch. In this example case, we will be producing an updated language pack for Joomla 4.2.8:
 
 
 ```bash
 ~/ $ cd ~/git/joomla-cms
 ~/git/joomla-cms $ git pull
-remote: Enumerating objects: 360, done.
 etc...
- 4022 files changed, 4591 insertions(+), 4367 deletions(-)
-~/git/joomla-cms $ git checkout staging
-Already on 'staging'
-Your branch is up-to-date with 'origin/staging'.
-```
-
-Otherwise, let's begin by getting the latest Joomla source code from its Git repo: If you have not done some, create a workspace for holding all your Git repos, such as ```$HOME/git``` and then clone the remote repo of the latest version of the Joomla CMS source into a local repo. You only need to this __once__ ever:
-
-```bash
-~/ $ mkdir git
-~/ $ cd git
-~/git $ git clone https://github.com/joomla/joomla-cms.git
-Cloning into 'joomla-cms'...
-remote: Enumerating objects: 360, done.
-remote: Counting objects: 100% (xxx/xxx), done.
-remote: Compressing objects: 100% (xxx/xxx), done.
-remote: Total xxx (delta 0), reused 0 (delta 0), pack-reused 0
-Unpacking objects: 100% (xxx/xxx), done.
-```
-
-Go into the newly-loaded repo directory:
-
-```bash
-~/git $ cd joomla-cms
-~/git/joomla-cms
+~/git/joomla-cms $ git checkout tags/'4.2.8'
+etc...
+...
 ```
 
 ### Step 1: Select the relevant release
@@ -601,8 +622,8 @@ Thanks.
 Now that you have pulled the latest Joomla source code repo in the previous step, list the available tags and select the relevant required tag, for instance `3.9.5`:
 
 ```bash
-~/git/joomla-cms $ git tag -n | grep "^3.9.5"
-3.9.5-rc        Joomla! 3.9.5 Release Candidate
+~/git/joomla-cms $ git tag -n | grep "^4.2.8"
+4.2.8           Joomla! 4.2.8 Stable
 |<----Tag---->| |<----Tag Comment---------------...
 ```
 
@@ -611,6 +632,7 @@ _NOTE:_
 > Do not confuse Tags with Tag Comments, 
 > Do not confuse Tag Comments with Code Commit comments!
 > Do not confuse Tags with Branches!
+> Do not confuse Branches with Tags!
 
 
 Checking out a tag is similar to checking code against a branch, except that we need to explicity specify that this is a tag, or multiple tags, by using the `tags/`-specifier.
@@ -661,12 +683,15 @@ If not, check out the master branch first:
 
 ### Step 4: Create a branch in your local remote repo 
 
+We need to branch our existing language pack, to a banch called "4.2.8", since a number of candidate translation files will be
+prduced, that need to collected by translation team members, translated and then checked back in. 
+
 Create a new branch in the remote repo, named according to the Joomla release that you are creating this package for and also your own release version (starting at 1), e.g. "3.9.5v1", pull the repo, and check-out the branch. This is your working area. 
 
 ```bash
-~/git/af-ZA_joomla_lang $ git branch 3.9.5v1
-~/git/af-ZA_joomla_lang $ git checkout 3.9.5v1
-Switched to branch '3.9.5v1'
+~/git/af-ZA_joomla_lang $ git branch 4.2.8v1
+~/git/af-ZA_joomla_lang $ git checkout 4.2.8v1
+Switched to branch '4.2.8v1'
 ```
 
 _NOTE:_
@@ -674,11 +699,14 @@ _NOTE:_
 
 ### Step 5: Set up the package configuration file
 
-In the `utilities/configuration.sh` file, set the following values. Unless you are creating a language pack for a new language, you only need to change the first variable, ```TRANSLATIONVERSION_XML="3.9.5.1"```. The comments in the rest of the file should be self-explanitary:
+In the `utilities/configuration.sh` file, set the following values. 
+Unless you are creating a language pack for a new language, you only need to change the first variable, 
+```export TRANSLATIONVERSION_XML="4.2.8.1"```. 
+The comments in the rest of the file should be self-explanitary:
 
    ```bash
    # For your first release of version 3.9.5, say this:
-   TRANSLATIONVERSION_XML="3.9.5.1"
+   export TRANSLATIONVERSION_XML="4.2.8.1"
    # If your lanaguage is something other than af-ZA, change this:
    TARGETLINGO="af-ZA"
    # You may have called the repo for your language something else, 
@@ -748,11 +776,13 @@ In the `utilities/configuration.sh` file, set the following values. Unless you a
 
 ### Step 6: Produce a work file of what strings need to be translated
 
-You, as team lead: Run the `./Chk4NewLanguageStrings.sh -p=~/git/joomla-cms`  utility:
+You, as team lead: Run the ```Chk4NewLanguageStrings``` utility:
+
 
 ```bash
 ~/git/af-ZA_joomla_lang $ cd utilities
 ~/git/af-ZA_joomla_lang/utilities $ ./Chk4NewLanguageStrings.sh -p=~/git/joomla-cms
+[97] Making /home/gerrit/git/af-ZA_joomla_lang/utilities/../.build...
 [2019.10.28 11:55:35][][INFO ][332] === BEGIN [PID 29222] Chk4NewLanguageStrings.sh ===
 [2019.10.28 11:55:35][][INFO ][210] Checking configuration file
 [2019.10.28 11:55:35][][INFO ][213] Reading configuration file configuration.sh

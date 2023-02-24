@@ -5,7 +5,7 @@
 # x, y and z are given and correspond to the Joomla Version that you are building to.
 # n, however, starts at 1 and increments on every release that you and your team make.
 # All other variants of this representation will be calculated
-export TRANSLATIONVERSION_XML="3.9.16.1"
+export TRANSLATIONVERSION_XML="4.2.8.1"
 
 # What it this file for?
 # ~~~~~~~~~~~~~~~~~~~~~
