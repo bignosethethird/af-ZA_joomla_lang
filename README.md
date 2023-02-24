@@ -100,7 +100,7 @@ Note that we are only interested here in producing the translations of Joomla's 
 
 ## Introduction to GIT
 
-### Install Git
+### Install the Git client
 
 By assumption, you are running on a Linux or a Mac, or at least have Linux for Windows installed on your Windows machine. You should also have GIT installed on your machine. If it is not installed yet, install GIT using your OS's standard software installation tool, e.g. for Ubuntu Linux variants, do the following:
 
@@ -382,10 +382,12 @@ Bare in mind that the context varies so a given English word such as 'file' can 
 
 * Top occurances of words
 
-This is for interest only, and may give you some insight in how to speed the translation process up. The most frequently-occurring word is the indicative article, 'the':
+This is for interest only, and may give you some insight in how to speed the translation process up. The most frequently-occurring word in the English  source language is the indicative article, 'the', and can be discovered using this rediculously-long BASH one-liner:
 
 ```bash
-$ find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | sed -e 's/"//g'  -e 's/%.//g'   -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' -e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | sort -nr | head -20
+find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | sed -e 's/"//g'  -e 's/%.//g' -e 's/\.//g' -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' -e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | sort -nr | head -20
+```
+```bash
    3841 the
    2314 to
    1304 a
@@ -408,11 +410,13 @@ $ find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut
     397 language
 ```
 
-The number of occurances of each word form a Zipfian distribution, which is what you would normally expect the case to be for word counts in a large corpus of any given spoken langauge. When you plot this file on a log-by-log graph, you get a straight-ish line:
+The number of occurances of each word form a Zipfian distribution, which is what you would normally expect the case to be for word counts in a large corpus of any given spoken langauge. When you plot this data on a log-by-log graph, you get a straight-ish line:
 
 ```bash
-$ find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | sed -e 's/"//g'  -e 's/%.//g'   -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' -e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | sort -nr | head -300 | gnuplot -e "set terminal dumb; set logscale; set xrange [1:300]; plot '-' with lines notitle"
-
+$ find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | sed -e 's/"//g' -e 's/%.//g' -e 's/\.//g' -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' -e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | sort -nr | head -300 | gnuplot -e "set terminal dumb; set logscale; set xrange [1:300]; plot '-' with lines notitle"
+```
+This gives us this graph:
+```bash
                                                                                
   10000 +------------------------------------------------------------------+   
         |+                         +                          +           +|   
@@ -437,6 +441,72 @@ $ find ~/git/joomla-cms -name "en-GB.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut
      10 +------------------------------------------------------------------+   
         1                          10                        100               
 ```
+It is interesting to compare the graph of the translated package to that generated from the source language. They should be more or less the same straight line shape. So, here goes:
+
+First we get all our words. Here are the top 20 of the af-ZA language pack:
+
+```bash
+$ find ~/git/af-ZA_joomla_lang/ -name "af-ZA.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | sed -e 's/"//g'  -e 's/%.//g' -e 's/\.//g' -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' -e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | sort -nr | head -20
+```
+
+```bash
+   4224 die
+   2664 nie
+   1683 'n
+   1247 is
+   1118 in
+   1102 van
+    921 hierdie
+    902 vir
+    861 te
+    858 vertoon
+    800 word
+    777 om
+    703 jy
+    661 sal
+    625 kan
+    598 en
+    580 of
+    570 wat
+    564 jou
+    536 met
+```
+
+Graphing the top 300 word occurances, we get:
+
+```bash
+find ~/git/af-ZA_joomla_lang/ -name "af-ZA.*ini" -exec grep '[A-Z_0-9]*="' {} \; | cut -d"=" -f2- | sed -e 's/"//g'  -e 's/%.//g' -e 's/\.//g' -e 's/\s*%//' -e 's/<[^>]*>//g' -e 's/\\n/ /g' -e 's/-/ /g' -e 's/:/ /g' | tr [A-Z] [a-z] | tr ' ' '\n' | sort | grep -v "^$" | uniq -c | sort -nr | head -300 | gnuplot -e "set terminal dumb; set logscale; set xrange [1:300]; plot '-' with lines notitle"
+```
+
+This gives us:
+
+```bash
+                                                                               
+  10000 +------------------------------------------------------------------+   
+        |+                         +                          +           +|   
+        |+                                                                +|   
+        |+                                                                +|   
+        |*******                                                           |   
+        |+      *****                                                     +|   
+        |            ********                                              |   
+   1000 |-+                  ********                                    +-|   
+        |+                           *******                              +|   
+        |+                                 ******                         +|   
+        |+                                      ****                      +|   
+        |+                                         *******                +|   
+        |                                                ******            |   
+    100 |-+                                                   *****      +-|   
+        |+                                                        *****   +|   
+        |+                                                            *****|   
+        |+                                                                *|   
+        |+                                                                +|   
+        |+                                                                +|   
+        |                          +                          +            |   
+     10 +------------------------------------------------------------------+   
+        1                          10                        100               
+```
+
+QED.
 
 ## How much work will I continually need to invest to maintain a language pack?
 
@@ -1145,37 +1215,35 @@ If the file was also previously committed, you need to commit this deletion:
 $ git commit -m "cleanup" filename
 ```
 
-## Post changes
+## Post your changes to the staging area
 
-A Git repository can be thought of as 3 file storage areas, being:
- * The Working Directory
- * The Staging area,a.k.a. the Index
- * The HEAD, which contains the most recently-committed changes
+Your local Git repository can be thought of as these file storage areas:
 
-|my       | => |addded to| => |committed to  |
-|Working  |    |Staging  |    |current branch|
-|Direcory |    |Area     |    |HEAD          |
-|:-------:|    |:-------:|    |:------------:|
+* Your Working Directory
+* The Staging area,a.k.a. the Index
+* The local HEAD, which contains the most recently-committed changes
+* The remote HEAD, which contains the most recently-committed changes from all contributors
 
-* Post all changes from your working directory to the staging area. Remember to save the working files first!
+We use the following processes to progress our work through these phases:
+
+1. To *Post* all changes from your working directory to the staging area, save your working files first and then do this:
 
 ```bash
 $ git add .
 ```
 
-* Commit all staged changes to the current branch. Add a useful comment here to explain your working. If you are using an issue management system such as Jira, start the comment with comment with the Issue Number:
+2. To *Commit* all staged changes to the current branch,use the *commit* command. Add a useful comment here to explain your working. If you are using an issue management system such as JIRA, start the comment with the JIRA Issue Number:
 
 ```bash
-$ git commit -m "Update"
+$ git commit -m "[PROJECT]-[ISSUE#] [Explanation of commit]"
 [3.9 642042e] Update
  1 file changed, 184 insertions(+), 5 deletions(-)
 ```
 
-* Push changes through to the remote repository's corresponding branch. If the branch does not yet exist on the remote repo, it will be created. If you have nt configured your access credentials yet with the `git config
+3. *Push* these changes through to the remote repository's corresponding branch. If the branch does not yet exist on the remote repo because you have created a new branch and have now worked on it, this new branch will be created.
 
 ```bash
 $ git push 
-...
 Counting objects: 3, done.
 Delta compression using up to 4 threads.
 Compressing objects: 100% (3/3), done.
@@ -1385,7 +1453,7 @@ Now do the merge in your local repo:
 $ git merge '3.9.5v1'
 Updating ed0cb7b..e945c5e
 Fast-forward
- WorkFile_af-ZA-3.9.12.1.sh                              | 258 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ WorkFile_af-ZA-3.9.12.1.sh                              | 258 +++++++++++++++++++++++
  administrator/language/af-ZA/af-ZA.com_content.ini      |   1 +
  administrator/language/af-ZA/af-ZA.com_fields.ini       |  10 +--
  administrator/language/af-ZA/af-ZA.com_joomlaupdate.ini |   7 ++
@@ -1452,6 +1520,8 @@ Branches (mostly) rendevouz back to the `master` branch eventually after perform
 
 ### Create a tag 
 
+Simply _tag_ your code like this:
+
 ```bash
 $ git tag '3.9.5v1'
 ```
@@ -1462,7 +1532,7 @@ What can be very helpful is to add a comment to your new tag:
 $ git tag '3.9.5v1' -m 'First point release'
 ```
 
-Remember to do this only after you have committed your code. 
+For this project, it is important to remember to do this only after you have committed your code. 
 
 ### List tags in a repository 
 
@@ -1482,7 +1552,7 @@ $ git tag -n | grep "^3\.9\.5"
 3.9.5-rc        Joomla! 3.9.5 Release Candidate
 ```
 
-Do not confuse Tags with Tag Comments, or with Code Commit comments!
+Do not confuse *Tags* with *Tag Comments*, or with *Code Commit comments*!
 
 ### Checkout code against a tag
 
@@ -1517,8 +1587,7 @@ $ git branch                        # Check if this branch is now active
   ...
 ```
 
-
-## Escaping from Calamity
+## Escaping from Calamity / Groot Gemors
 
 Here are a few methods that you can use to recover back to a known point 
 
